@@ -14,7 +14,7 @@ import org.jspecify.annotations.NonNull;
 public class RestClient {
   private static final HttpClient client = HttpClient.newHttpClient();
 
-  static MirrorNodeResponse send(@NonNull final MirrorNodeRequest request)
+  public static MirrorNodeResponse send(@NonNull final MirrorNodeRequest request)
       throws IOException, InterruptedException {
     Objects.requireNonNull(request, "request must not be null");
     HttpRequest httpRequest =
