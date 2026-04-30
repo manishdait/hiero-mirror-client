@@ -30,7 +30,7 @@ public class JsonParserImpl {
     }
   }
 
-  private static Optional<Account> parseAccount(JsonNode node) {
+  public static Optional<Account> parseAccount(JsonNode node) {
     if (node == null || node.isEmpty()) {
       return Optional.empty();
     }

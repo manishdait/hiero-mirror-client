@@ -1,8 +1,10 @@
 package io.github.manishdait.mirrornodeclientj.resource;
 
+import com.hedera.hashgraph.sdk.AccountId;
 import io.github.manishdait.mirrornodeclientj.AccountResource;
 import io.github.manishdait.mirrornodeclientj.MirrorNodeClient;
 import io.github.manishdait.mirrornodeclientj.query.AccountListQuery;
+import io.github.manishdait.mirrornodeclientj.query.AccountQuery;
 import org.jspecify.annotations.NonNull;
 
 public class AccountResourceImpl implements AccountResource {
@@ -18,7 +20,7 @@ public class AccountResourceImpl implements AccountResource {
   }
 
   @Override
-  public @NonNull AccountResource findById() {
-    return null;
+  public @NonNull AccountQuery findById(AccountId accountId) {
+    return new AccountQuery(client, accountId);
   }
 }
