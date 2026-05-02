@@ -1,5 +1,8 @@
 package io.github.manishdait.mirrornodeclientj;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public enum TransactionType {
   ATOMIC_BATCH("ATOMICBATCH"),
   CONSENSUS_CREATE_TOPIC("CONSENSUSCREATETOPIC"),
@@ -59,6 +62,13 @@ public enum TransactionType {
   UTIL_PRNG("UTILPRNG");
 
   private final String value;
+  private static final Map<String, TransactionType> LOOKUP = new HashMap<>();
+
+  static {
+    for (TransactionType type : TransactionType.values()) {
+      LOOKUP.put(type.value, type);
+    }
+  }
 
   TransactionType(String value) {
     this.value = value;
@@ -66,5 +76,9 @@ public enum TransactionType {
 
   public String getValue() {
     return this.value;
+  }
+
+  public static TransactionType fromValue(String value) {
+    return LOOKUP.get(value);
   }
 }

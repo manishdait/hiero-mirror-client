@@ -20,7 +20,7 @@ import tools.jackson.databind.JsonNode;
 public class AccountQuery extends Query<Optional<Account>> {
   private final AccountId accountId;
 
-  private Order order = Order.ASC;
+  private Order order = Order.DESC;
   private int limit = 25;
   private boolean includeTransaction = false;
   private TransactionType transactionType;

@@ -23,6 +23,8 @@ public class RestClient {
     HttpResponse<String> httpResponse =
         client.send(httpRequest, HttpResponse.BodyHandlers.ofString());
 
+    System.out.println(parseUrl(request));
+
     return new MirrorNodeResponse(httpResponse.statusCode(), httpResponse.body());
   }
 

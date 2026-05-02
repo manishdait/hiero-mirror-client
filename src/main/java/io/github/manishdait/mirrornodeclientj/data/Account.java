@@ -3,11 +3,13 @@ package io.github.manishdait.mirrornodeclientj.data;
 import com.hedera.hashgraph.sdk.AccountId;
 import com.hedera.hashgraph.sdk.Key;
 import java.time.Instant;
+import java.util.List;
 
 public record Account(
     AccountId accountId,
     String alias,
     Long autoRenewPeriod,
+    AccountBalance balance,
     Instant createdTimestamp,
     boolean declineReward,
     boolean deleted,
@@ -21,4 +23,5 @@ public record Account(
     AccountId stakedAccountId,
     Long stakedNodeId,
     Instant stakePeriodStart,
-    long pendingReward) {}
+    long pendingReward,
+    List<Transaction> transactions) {}
