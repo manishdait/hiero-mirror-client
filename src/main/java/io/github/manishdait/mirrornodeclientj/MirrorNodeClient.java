@@ -1,6 +1,7 @@
 package io.github.manishdait.mirrornodeclientj;
 
 import io.github.manishdait.mirrornodeclientj.resource.AccountResourceImpl;
+import io.github.manishdait.mirrornodeclientj.resource.AllowanceResourceImpl;
 
 public class MirrorNodeClient {
   private final String baseUrl;
@@ -19,5 +20,9 @@ public class MirrorNodeClient {
 
   public AccountResource account() {
     return new AccountResourceImpl(this);
+  }
+
+  public AllowanceResource allowance() {
+    return new AllowanceResourceImpl(this);
   }
 }

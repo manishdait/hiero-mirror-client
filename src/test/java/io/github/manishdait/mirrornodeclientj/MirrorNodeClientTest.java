@@ -10,5 +10,8 @@ public class MirrorNodeClientTest {
     var list = client.account().findById("0.0.6105114").includeTransaction(true).execute();
     System.out.println(list);
     list.get().transactions().stream().forEach(t -> System.out.println(t.name()));
+
+    var l2 = client.allowance().cryptoAllowance("0.0.6105114").execute();
+    System.out.println(l2);
   }
 }

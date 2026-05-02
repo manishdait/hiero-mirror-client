@@ -8,9 +8,11 @@ import com.hedera.hashgraph.sdk.TokenId;
 import io.github.manishdait.mirrornodeclientj.data.Account;
 import io.github.manishdait.mirrornodeclientj.data.AccountBalance;
 import io.github.manishdait.mirrornodeclientj.data.AssessedCustomFee;
+import io.github.manishdait.mirrornodeclientj.data.CryptoAllowance;
 import io.github.manishdait.mirrornodeclientj.data.CustomFee;
 import io.github.manishdait.mirrornodeclientj.data.NftTransfer;
 import io.github.manishdait.mirrornodeclientj.data.StakingRewardTransfer;
+import io.github.manishdait.mirrornodeclientj.data.TimestampRange;
 import io.github.manishdait.mirrornodeclientj.data.TokenTransfer;
 import io.github.manishdait.mirrornodeclientj.data.Transaction;
 import io.github.manishdait.mirrornodeclientj.data.Transfer;
@@ -38,8 +40,6 @@ public class JsonParserImpl {
       ArrayNode accounts = node.get("accounts").asArray();
       return accounts.valueStream().map(account -> parseAccount(account).get()).toList();
     } catch (Exception e) {
-      System.out.println(node);
-      e.printStackTrace();
       throw new RuntimeException("Unable to parse json");
     }
   }
@@ -335,6 +335,60 @@ public class JsonParserImpl {
               validDurationSecond,
               validStartTimestamp,
               assessedCustomFees));
+    } catch (Exception e) {
+      throw new RuntimeException("Unable to parse json");
+    }
+  }
+
+  public static List<CryptoAllowance> parseCryptoAllowances(JsonNode node) {
+    if (node == null
+        || node.isEmpty()
+        || node.get("allowances").isEmpty()
+        || !node.get("allowances").isArray()) {
+      return List.of();
+    }
+
+    try {
+      ArrayNode allowances = node.get("allowances").asArray();
+      return allowances
+          .valueStream()
+          .map(allowance -> parseCryptoAllowance(allowance).get())
+          .toList();
+    } catch (Exception e) {
+      throw new RuntimeException("Unable to parse json");
+    }
+  }
+
+  public static Optional<CryptoAllowance> parseCryptoAllowance(JsonNode node) {
+    if (node == null || node.isEmpty()) {
+      return Optional.empty();
+    }
+
+    try {
+      long amount = node.has("amount") ? node.get("amount").asLong() : 0;
+      long amountGranted = node.has("amount_granted") ? node.get("amount_granted").asLong() : 0;
+      AccountId owner =
+          node.has("owner") ? AccountId.fromString(node.get("owner").asString()) : null;
+      AccountId spender =
+          node.has("spender") ? AccountId.fromString(node.get("spender").asString()) : null;
+
+      TimestampRange timestampRange = null;
+      if (node.has("timestamp")) {
+        JsonNode timestamp = node.get("timestamp");
+        Instant from =
+            node.has("from") && !node.get("from").asString().isEmpty()
+                ? parseTimestamp(node.get("from").asString())
+                : null;
+        Instant to =
+            node.has("to") && !node.get("to").asString().isEmpty()
+                ? parseTimestamp(node.get("to").asString())
+                : null;
+
+        timestampRange = new TimestampRange(from, to);
+      }
+
+      return Optional.of(
+          new CryptoAllowance(amount, amountGranted, owner, spender, timestampRange));
     } catch (Exception e) {
       throw new RuntimeException("Unable to parse json");
     }
