@@ -4,6 +4,7 @@ import com.hedera.hashgraph.sdk.AccountId;
 import io.github.manishdait.mirrornodeclientj.AllowanceResource;
 import io.github.manishdait.mirrornodeclientj.MirrorNodeClient;
 import io.github.manishdait.mirrornodeclientj.query.CryptoAllowanceQuery;
+import io.github.manishdait.mirrornodeclientj.query.NftAllowanceQuery;
 import io.github.manishdait.mirrornodeclientj.query.TokenAllowanceQuery;
 import org.jspecify.annotations.NonNull;
 
@@ -22,5 +23,10 @@ public class AllowanceResourceImpl implements AllowanceResource {
   @Override
   public @NonNull TokenAllowanceQuery tokenAllowance(AccountId accountId) {
     return new TokenAllowanceQuery(client, accountId);
+  }
+
+  @Override
+  public @NonNull NftAllowanceQuery nftAllowance(AccountId accountId) {
+    return new NftAllowanceQuery(client, accountId);
   }
 }

@@ -3,10 +3,10 @@ package io.github.manishdait.mirrornodeclientj.data;
 import com.hedera.hashgraph.sdk.AccountId;
 import com.hedera.hashgraph.sdk.TokenId;
 
-public record TokenAllowance(
-    long amount,
-    long amountGranted,
+public record NftAllowance(
+    boolean approvedForAll,
     AccountId owner,
+    AccountId payerAccountId,
     AccountId spender,
     TimestampRange timestamp,
     TokenId tokenId) {}

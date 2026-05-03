@@ -10,6 +10,7 @@ import io.github.manishdait.mirrornodeclientj.data.AccountBalance;
 import io.github.manishdait.mirrornodeclientj.data.AssessedCustomFee;
 import io.github.manishdait.mirrornodeclientj.data.CryptoAllowance;
 import io.github.manishdait.mirrornodeclientj.data.CustomFee;
+import io.github.manishdait.mirrornodeclientj.data.NftAllowance;
 import io.github.manishdait.mirrornodeclientj.data.NftTransfer;
 import io.github.manishdait.mirrornodeclientj.data.StakingRewardTransfer;
 import io.github.manishdait.mirrornodeclientj.data.TimestampRange;
@@ -139,7 +140,9 @@ public class JsonParserImpl {
               ? parseTimestamp(node.get("consensus_timestamp").asString())
               : null;
       AccountId entityId =
-          node.has("entity_id") && !node.get("entity_id").asString().isEmpty() ? AccountId.fromString(node.get("entity_id").asString()) : null;
+          node.has("entity_id") && !node.get("entity_id").asString().isEmpty()
+              ? AccountId.fromString(node.get("entity_id").asString())
+              : null;
 
       List<CustomFee> maxCustomFees = new ArrayList<>();
       if (node.has("max_custom_fees")) {
@@ -377,12 +380,12 @@ public class JsonParserImpl {
       if (node.has("timestamp")) {
         JsonNode timestamp = node.get("timestamp");
         Instant from =
-            node.has("from") && !node.get("from").asString().isEmpty()
-                ? parseTimestamp(node.get("from").asString())
+            timestamp.has("from") && !timestamp.get("from").asString().isEmpty()
+                ? parseTimestamp(timestamp.get("from").asString())
                 : null;
         Instant to =
-            node.has("to") && !node.get("to").asString().isEmpty()
-                ? parseTimestamp(node.get("to").asString())
+            timestamp.has("to") && !timestamp.get("to").asString().isEmpty()
+                ? parseTimestamp(timestamp.get("to").asString())
                 : null;
 
         timestampRange = new TimestampRange(from, to);
@@ -397,18 +400,18 @@ public class JsonParserImpl {
 
   public static List<TokenAllowance> parseTokenAllowances(JsonNode node) {
     if (node == null
-      || node.isEmpty()
-      || node.get("allowances").isEmpty()
-      || !node.get("allowances").isArray()) {
+        || node.isEmpty()
+        || node.get("allowances").isEmpty()
+        || !node.get("allowances").isArray()) {
       return List.of();
     }
 
     try {
       ArrayNode allowances = node.get("allowances").asArray();
       return allowances
-        .valueStream()
-        .map(allowance -> parseTokenAllowance(allowance).get())
-        .toList();
+          .valueStream()
+          .map(allowance -> parseTokenAllowance(allowance).get())
+          .toList();
     } catch (Exception e) {
       throw new RuntimeException("Unable to parse json");
     }
@@ -423,29 +426,89 @@ public class JsonParserImpl {
       long amount = node.has("amount") ? node.get("amount").asLong() : 0;
       long amountGranted = node.has("amount_granted") ? node.get("amount_granted").asLong() : 0;
       AccountId owner =
-        node.has("owner") ? AccountId.fromString(node.get("owner").asString()) : null;
+          node.has("owner") ? AccountId.fromString(node.get("owner").asString()) : null;
       AccountId spender =
-        node.has("spender") ? AccountId.fromString(node.get("spender").asString()) : null;
+          node.has("spender") ? AccountId.fromString(node.get("spender").asString()) : null;
 
       TimestampRange timestampRange = null;
       if (node.has("timestamp")) {
         JsonNode timestamp = node.get("timestamp");
         Instant from =
-          node.has("from") && !node.get("from").asString().isEmpty()
-            ? parseTimestamp(node.get("from").asString())
-            : null;
+            timestamp.has("from") && !timestamp.get("from").asString().isEmpty()
+                ? parseTimestamp(timestamp.get("from").asString())
+                : null;
         Instant to =
-          node.has("to") && !node.get("to").asString().isEmpty()
-            ? parseTimestamp(node.get("to").asString())
-            : null;
+            timestamp.has("to") && !timestamp.get("to").asString().isEmpty()
+                ? parseTimestamp(timestamp.get("to").asString())
+                : null;
 
         timestampRange = new TimestampRange(from, to);
       }
 
-      TokenId tokenId = node.has("token_id")? TokenId.fromString(node.get("token_id").asString()) : null;
+      TokenId tokenId =
+          node.has("token_id") ? TokenId.fromString(node.get("token_id").asString()) : null;
 
       return Optional.of(
-        new TokenAllowance(amount, amountGranted, owner, spender, timestampRange, tokenId));
+          new TokenAllowance(amount, amountGranted, owner, spender, timestampRange, tokenId));
+    } catch (Exception e) {
+      throw new RuntimeException("Unable to parse json");
+    }
+  }
+
+  public static List<NftAllowance> parseNftAllowances(JsonNode node) {
+    if (node == null
+        || node.isEmpty()
+        || node.get("allowances").isEmpty()
+        || !node.get("allowances").isArray()) {
+      return List.of();
+    }
+
+    try {
+      ArrayNode allowances = node.get("allowances").asArray();
+      return allowances.valueStream().map(allowance -> parseNftAllowance(allowance).get()).toList();
+    } catch (Exception e) {
+      throw new RuntimeException("Unable to parse json");
+    }
+  }
+
+  public static Optional<NftAllowance> parseNftAllowance(JsonNode node) {
+    if (node == null || node.isEmpty()) {
+      return Optional.empty();
+    }
+
+    try {
+      boolean approvedForAll =
+          node.has("approved_for_all") ? node.get("approved_for_all").asBoolean() : false;
+      AccountId owner =
+          node.has("owner") ? AccountId.fromString(node.get("owner").asString()) : null;
+      AccountId payerAccountId =
+          node.has("payer_account_id")
+              ? AccountId.fromString(node.get("payer_account_id").asString())
+              : null;
+      AccountId spender =
+          node.has("spender") ? AccountId.fromString(node.get("spender").asString()) : null;
+
+      TimestampRange timestampRange = null;
+      if (node.has("timestamp")) {
+        JsonNode timestamp = node.get("timestamp");
+        Instant from =
+            timestamp.has("from") && !timestamp.get("from").asString().isEmpty()
+                ? parseTimestamp(timestamp.get("from").asString())
+                : null;
+        Instant to =
+            timestamp.has("to") && !timestamp.get("to").asString().isEmpty()
+                ? parseTimestamp(timestamp.get("to").asString())
+                : null;
+
+        timestampRange = new TimestampRange(from, to);
+      }
+
+      TokenId tokenId =
+          node.has("token_id") ? TokenId.fromString(node.get("token_id").asString()) : null;
+
+      return Optional.of(
+          new NftAllowance(
+              approvedForAll, owner, payerAccountId, spender, timestampRange, tokenId));
     } catch (Exception e) {
       throw new RuntimeException("Unable to parse json");
     }
