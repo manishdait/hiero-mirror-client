@@ -13,6 +13,7 @@ import io.github.manishdait.mirrornodeclientj.data.CustomFee;
 import io.github.manishdait.mirrornodeclientj.data.NftTransfer;
 import io.github.manishdait.mirrornodeclientj.data.StakingRewardTransfer;
 import io.github.manishdait.mirrornodeclientj.data.TimestampRange;
+import io.github.manishdait.mirrornodeclientj.data.TokenAllowance;
 import io.github.manishdait.mirrornodeclientj.data.TokenTransfer;
 import io.github.manishdait.mirrornodeclientj.data.Transaction;
 import io.github.manishdait.mirrornodeclientj.data.Transfer;
@@ -115,7 +116,7 @@ public class JsonParserImpl {
               pendingReward,
               transactions));
     } catch (Exception e) {
-      throw new RuntimeException("Unable to parse json");
+      throw new RuntimeException("Unable to parse json", e);
     }
   }
 
@@ -138,7 +139,7 @@ public class JsonParserImpl {
               ? parseTimestamp(node.get("consensus_timestamp").asString())
               : null;
       AccountId entityId =
-          node.has("entity_id") ? AccountId.fromString(node.get("entity_id").asString()) : null;
+          node.has("entity_id") && !node.get("entity_id").asString().isEmpty() ? AccountId.fromString(node.get("entity_id").asString()) : null;
 
       List<CustomFee> maxCustomFees = new ArrayList<>();
       if (node.has("max_custom_fees")) {
@@ -336,7 +337,7 @@ public class JsonParserImpl {
               validStartTimestamp,
               assessedCustomFees));
     } catch (Exception e) {
-      throw new RuntimeException("Unable to parse json");
+      throw new RuntimeException("Unable to parse json", e);
     }
   }
 
@@ -389,6 +390,62 @@ public class JsonParserImpl {
 
       return Optional.of(
           new CryptoAllowance(amount, amountGranted, owner, spender, timestampRange));
+    } catch (Exception e) {
+      throw new RuntimeException("Unable to parse json");
+    }
+  }
+
+  public static List<TokenAllowance> parseTokenAllowances(JsonNode node) {
+    if (node == null
+      || node.isEmpty()
+      || node.get("allowances").isEmpty()
+      || !node.get("allowances").isArray()) {
+      return List.of();
+    }
+
+    try {
+      ArrayNode allowances = node.get("allowances").asArray();
+      return allowances
+        .valueStream()
+        .map(allowance -> parseTokenAllowance(allowance).get())
+        .toList();
+    } catch (Exception e) {
+      throw new RuntimeException("Unable to parse json");
+    }
+  }
+
+  public static Optional<TokenAllowance> parseTokenAllowance(JsonNode node) {
+    if (node == null || node.isEmpty()) {
+      return Optional.empty();
+    }
+
+    try {
+      long amount = node.has("amount") ? node.get("amount").asLong() : 0;
+      long amountGranted = node.has("amount_granted") ? node.get("amount_granted").asLong() : 0;
+      AccountId owner =
+        node.has("owner") ? AccountId.fromString(node.get("owner").asString()) : null;
+      AccountId spender =
+        node.has("spender") ? AccountId.fromString(node.get("spender").asString()) : null;
+
+      TimestampRange timestampRange = null;
+      if (node.has("timestamp")) {
+        JsonNode timestamp = node.get("timestamp");
+        Instant from =
+          node.has("from") && !node.get("from").asString().isEmpty()
+            ? parseTimestamp(node.get("from").asString())
+            : null;
+        Instant to =
+          node.has("to") && !node.get("to").asString().isEmpty()
+            ? parseTimestamp(node.get("to").asString())
+            : null;
+
+        timestampRange = new TimestampRange(from, to);
+      }
+
+      TokenId tokenId = node.has("token_id")? TokenId.fromString(node.get("token_id").asString()) : null;
+
+      return Optional.of(
+        new TokenAllowance(amount, amountGranted, owner, spender, timestampRange, tokenId));
     } catch (Exception e) {
       throw new RuntimeException("Unable to parse json");
     }

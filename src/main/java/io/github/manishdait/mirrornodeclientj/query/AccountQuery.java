@@ -70,6 +70,7 @@ public class AccountQuery extends Query<Optional<Account>> {
         MirrorNodeRequest.newBuilder()
             .url(this.client.getBaseUrl() + "/api/v1/accounts/" + accountId)
             .method("GET")
+            .queryParam("transactions", String.valueOf(includeTransaction))
             .queryParam("limit", String.valueOf(limit))
             .queryParam("order", order.getValue());
 
@@ -81,10 +82,6 @@ public class AccountQuery extends Query<Optional<Account>> {
               + timestamp.getValue().getEpochSecond()
               + "."
               + timestamp.getValue().getNano());
-    }
-
-    if (includeTransaction) {
-      request.queryParam("transactions", String.valueOf(includeTransaction));
     }
 
     if (transactionType != null) {

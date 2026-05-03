@@ -16,7 +16,7 @@ import org.jspecify.annotations.NonNull;
 import tools.jackson.databind.JsonNode;
 
 public class AccountListQuery extends Query<List<Account>> {
-  private boolean balance;
+  private boolean balance = false;
   private Order order = Order.ASC;
   private int limit = 25;
   private PublicKey publicKey;
