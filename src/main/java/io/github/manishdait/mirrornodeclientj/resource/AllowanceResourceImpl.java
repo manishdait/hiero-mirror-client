@@ -16,17 +16,17 @@ public class AllowanceResourceImpl implements AllowanceResource {
   }
 
   @Override
-  public @NonNull CryptoAllowanceQuery cryptoAllowance(AccountId accountId) {
+  public @NonNull CryptoAllowanceQuery getCryptoAllowance(AccountId accountId) {
     return new CryptoAllowanceQuery(client, accountId);
   }
 
   @Override
-  public @NonNull TokenAllowanceQuery tokenAllowance(AccountId accountId) {
+  public @NonNull TokenAllowanceQuery getTokenAllowance(AccountId accountId) {
     return new TokenAllowanceQuery(client, accountId);
   }
 
   @Override
-  public @NonNull NftAllowanceQuery nftAllowance(AccountId accountId) {
+  public @NonNull NftAllowanceQuery getNftAllowance(AccountId accountId) {
     return new NftAllowanceQuery(client, accountId);
   }
 }

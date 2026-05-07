@@ -11,7 +11,9 @@ public class MirrorNodeClientTest {
     System.out.println(list);
     list.get().transactions().stream().forEach(t -> System.out.println(t.name()));
 
-    var l2 = client.allowance().nftAllowance("0.0.6105114").execute();
+    var l2 = client.allowance().getNftAllowance("0.0.6105114").execute();
     System.out.println(l2);
+
+    System.out.println(client.token().findById("0.0.8881341").execute());
   }
 }

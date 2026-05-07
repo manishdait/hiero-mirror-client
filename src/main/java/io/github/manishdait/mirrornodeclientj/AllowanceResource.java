@@ -7,21 +7,21 @@ import io.github.manishdait.mirrornodeclientj.query.TokenAllowanceQuery;
 import org.jspecify.annotations.NonNull;
 
 public interface AllowanceResource {
-  @NonNull CryptoAllowanceQuery cryptoAllowance(AccountId accountId);
+  @NonNull CryptoAllowanceQuery getCryptoAllowance(AccountId accountId);
 
-  default @NonNull CryptoAllowanceQuery cryptoAllowance(String accountId) {
-    return cryptoAllowance(AccountId.fromString(accountId));
+  default @NonNull CryptoAllowanceQuery getCryptoAllowance(String accountId) {
+    return getCryptoAllowance(AccountId.fromString(accountId));
   }
 
-  @NonNull TokenAllowanceQuery tokenAllowance(AccountId accountId);
+  @NonNull TokenAllowanceQuery getTokenAllowance(AccountId accountId);
 
-  default @NonNull TokenAllowanceQuery tokenAllowance(String accountId) {
-    return tokenAllowance(AccountId.fromString(accountId));
+  default @NonNull TokenAllowanceQuery getTokenAllowance(String accountId) {
+    return getTokenAllowance(AccountId.fromString(accountId));
   }
 
-  @NonNull NftAllowanceQuery nftAllowance(AccountId accountId);
+  @NonNull NftAllowanceQuery getNftAllowance(AccountId accountId);
 
-  default @NonNull NftAllowanceQuery nftAllowance(String accountId) {
-    return nftAllowance(AccountId.fromString(accountId));
+  default @NonNull NftAllowanceQuery getNftAllowance(String accountId) {
+    return getNftAllowance(AccountId.fromString(accountId));
   }
 }

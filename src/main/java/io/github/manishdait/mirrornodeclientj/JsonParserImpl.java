@@ -2,9 +2,10 @@ package io.github.manishdait.mirrornodeclientj;
 
 import com.hedera.hashgraph.sdk.AccountId;
 import com.hedera.hashgraph.sdk.Key;
-import com.hedera.hashgraph.sdk.PublicKey;
 import com.hedera.hashgraph.sdk.Status;
 import com.hedera.hashgraph.sdk.TokenId;
+import com.hedera.hashgraph.sdk.TokenSupplyType;
+import com.hedera.hashgraph.sdk.TokenType;
 import io.github.manishdait.mirrornodeclientj.data.Account;
 import io.github.manishdait.mirrornodeclientj.data.AccountBalance;
 import io.github.manishdait.mirrornodeclientj.data.AssessedCustomFee;
@@ -14,14 +15,15 @@ import io.github.manishdait.mirrornodeclientj.data.NftAllowance;
 import io.github.manishdait.mirrornodeclientj.data.NftTransfer;
 import io.github.manishdait.mirrornodeclientj.data.StakingRewardTransfer;
 import io.github.manishdait.mirrornodeclientj.data.TimestampRange;
+import io.github.manishdait.mirrornodeclientj.data.Token;
 import io.github.manishdait.mirrornodeclientj.data.TokenAllowance;
+import io.github.manishdait.mirrornodeclientj.data.TokenPauseStatus;
 import io.github.manishdait.mirrornodeclientj.data.TokenTransfer;
 import io.github.manishdait.mirrornodeclientj.data.Transaction;
 import io.github.manishdait.mirrornodeclientj.data.Transfer;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HexFormat;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -42,7 +44,7 @@ public class JsonParserImpl {
       ArrayNode accounts = node.get("accounts").asArray();
       return accounts.valueStream().map(account -> parseAccount(account).get()).toList();
     } catch (Exception e) {
-      throw new RuntimeException("Unable to parse json");
+      throw new RuntimeException("Unable to parse json", e);
     }
   }
 
@@ -52,39 +54,30 @@ public class JsonParserImpl {
     }
 
     try {
-      AccountId accountId = AccountId.fromString(node.get("account").asString());
-      String alias = node.has("alias") ? node.get("alias").asString() : null;
-      Long autoRenewPeriod =
-          node.has("auto_renew_period") ? node.get("auto_renew_period").asLong() : null;
+      AccountId accountId = JsonUtils.toEntityId(node, "account", AccountId.class);
+      String alias = JsonUtils.toNullableString(node, "alias");
+      Long autoRenewPeriod = JsonUtils.toNullableLong(node, "auto_renew_period");
+
       AccountBalance accountBalance = null;
       if (node.has("balance")) {
         accountBalance = parseAccountBalance(node.get("balance"));
       }
 
-      Instant createdTimestamp = parseTimestamp(node.get("created_timestamp").asString());
-      boolean declineReward = node.get("decline_reward").asBoolean();
-      boolean deleted = node.get("deleted").asBoolean();
-      Long ethereumNonce = node.has("ethereum_nonce") ? node.get("ethereum_nonce").asLong() : null;
-      String evmAddress = node.get("evm_address").asString();
-      Instant expiryTimestamp = parseTimestamp(node.get("expiry_timestamp").asString());
-      Key key =
-          parseKey(node.get("key").get("_type").asString(), node.get("key").get("key").asString());
-      int maxAutomaticTokenAssociations = node.get("max_automatic_token_associations").asInt();
-      String memo = node.get("memo").asString();
-      boolean requiredReceiverSignature = node.get("receiver_sig_required").asBoolean();
-      AccountId stakedAccountId =
-          node.has("staked_account_id") && !node.get("staked_account_id").asString().isEmpty()
-              ? AccountId.fromString(node.get("staked_account_id").asString())
-              : null;
-      Long stakedNodeId =
-          node.has("staked_node_id") && !node.get("staked_node_id").asString().isEmpty()
-              ? node.get("staked_node_id").asLong()
-              : null;
-      Instant stakePeriodStart =
-          node.has("stake_period_start") && !node.get("stake_period_start").asString().isEmpty()
-              ? parseTimestamp(node.get("stake_period_start").asString())
-              : null;
-      long pendingReward = Long.parseLong(node.get("pending_reward").asString());
+      Instant createdTimestamp = JsonUtils.toInstant(node, "created_timestamp");
+      boolean declineReward = JsonUtils.toBoolean(node, "decline_reward");
+      boolean deleted = JsonUtils.toBoolean(node, "deleted");
+      Long ethereumNonce = JsonUtils.toNullableLong(node, "ethereum_nonce");
+      String evmAddress = JsonUtils.toNullableString(node, "evm_address");
+      Instant expiryTimestamp = JsonUtils.toInstant(node, "expiry_timestamp");
+      Key key = JsonUtils.toKey(node, "key");
+      int maxAutomaticTokenAssociations = JsonUtils.toInt(node, "max_automatic_token_associations");
+      String memo = JsonUtils.toNullableString(node, "memo");
+      boolean requiredReceiverSignature = JsonUtils.toBoolean(node, "receiver_sig_required");
+      AccountId stakedAccountId = JsonUtils.toEntityId(node, "staked_account_id", AccountId.class);
+      Long stakedNodeId = JsonUtils.toNullableLong(node, "staked_node_id");
+      Instant stakePeriodStart = JsonUtils.toInstant(node, "stake_period_start");
+
+      long pendingReward = JsonUtils.toLong(node, "pending_reward");
       List<Transaction> transactions = new ArrayList<>();
       if (node.has("transactions")) {
         transactions =
@@ -127,22 +120,11 @@ public class JsonParserImpl {
     }
 
     try {
-      Key batchKey =
-          node.has("batch_key") && !node.get("batch_key").asString().isEmpty()
-              ? parseKey(
-                  node.get("batch_key").get("_type").asString(),
-                  node.get("batch_key").get("key").asString())
-              : null;
-      byte[] bytes = node.has("bytes") ? node.get("bytes").asString().getBytes() : null;
-      long chargedTxFee = node.has("charged_tx_fee") ? node.get("charged_tx_fee").asLong() : 0;
-      Instant consensusTimestamp =
-          node.has("consensus_timestamp") && !node.get("consensus_timestamp").asString().isEmpty()
-              ? parseTimestamp(node.get("consensus_timestamp").asString())
-              : null;
-      AccountId entityId =
-          node.has("entity_id") && !node.get("entity_id").asString().isEmpty()
-              ? AccountId.fromString(node.get("entity_id").asString())
-              : null;
+      Key batchKey = JsonUtils.toKey(node, "batch_key");
+      byte[] bytes = JsonUtils.toBytes(node, "bytes");
+      long chargedTxFee = JsonUtils.toLong(node, "charged_tx_fee");
+      Instant consensusTimestamp = JsonUtils.toInstant(node, "consensus_timestamp");
+      AccountId entityId = JsonUtils.toEntityId(node, "entity_id", AccountId.class);
 
       List<CustomFee> maxCustomFees = new ArrayList<>();
       if (node.has("max_custom_fees")) {
@@ -153,22 +135,18 @@ public class JsonParserImpl {
                 .map(
                     fee -> {
                       return new CustomFee(
-                          fee.has("account_id")
-                              ? AccountId.fromString(fee.get("account_id").asString())
-                              : null,
-                          fee.has("amount") ? fee.get("amount").asLong() : 0,
-                          fee.has("denominating_token_id")
-                              ? TokenId.fromString(fee.get("denominating_token_id").asString())
-                              : null);
+                          JsonUtils.toEntityId(fee, "account_id", AccountId.class),
+                          JsonUtils.toLong(fee, "amount"),
+                          JsonUtils.toEntityId(fee, "denominating_token_id", TokenId.class)
+                      );
                     })
                 .collect(Collectors.toUnmodifiableList());
       }
 
-      String maxFee = node.has("max_fee") ? node.get("max_fee").asString() : null;
-      byte[] memoBytes =
-          node.has("memo_base64") ? node.get("memo_base64").asString().getBytes() : null;
-      TransactionType name =
-          node.has("name") ? TransactionType.fromValue(node.get("name").asString()) : null;
+      String maxFee = JsonUtils.toNullableString(node, "max_fee");
+      byte[] memoBytes = JsonUtils.toBytes(node, "memo_base64");
+
+      TransactionType name = JsonUtils.toEnum(node, "name", TransactionType.class);
 
       List<NftTransfer> nftTransfers = new ArrayList<>();
       if (node.has("nft_transfers")) {
@@ -179,36 +157,22 @@ public class JsonParserImpl {
                 .map(
                     transfer -> {
                       return new NftTransfer(
-                          transfer.has("is_approval")
-                              ? transfer.get("is_approval").asBoolean()
-                              : false,
-                          transfer.has("receiver_account_id")
-                              ? AccountId.fromString(transfer.get("receiver_account_id").asString())
-                              : null,
-                          transfer.has("sender_account_id")
-                              ? AccountId.fromString(transfer.get("sender_account_id").asString())
-                              : null,
-                          transfer.has("serial_number")
-                              ? transfer.get("serial_number").asLong()
-                              : 0,
-                          transfer.has("token_id")
-                              ? TokenId.fromString(transfer.get("token_id").asString())
-                              : null);
+                          JsonUtils.toBoolean(transfer, "is_approval"),
+                          JsonUtils.toEntityId(transfer, "receiver_account_id", AccountId.class),
+                          JsonUtils.toEntityId(transfer, "sender_account_id", AccountId.class),
+                          JsonUtils.toLong(transfer, "serial_number"),
+                          JsonUtils.toEntityId(transfer, "token_id", TokenId.class)
+                      );
                     })
                 .collect(Collectors.toUnmodifiableList());
       }
 
-      AccountId nodeAccountId =
-          node.has("node") ? AccountId.fromString(node.get("node").asString()) : null;
-      long nonce = node.has("nonce") ? node.get("nonce").asLong() : 0;
-      Instant parentConsensusTimestamp =
-          node.has("parent_consensus_timestamp")
-                  && !node.get("parent_consensus_timestamp").asString().isEmpty()
-              ? parseTimestamp(node.get("parent_consensus_timestamp").asString())
-              : null;
-      Status result =
-          node.has("result") ? Status.valueOf(node.get("result").asString().toUpperCase()) : null;
-      boolean scheduled = node.has("scheduled") ? node.get("scheduled").asBoolean() : false;
+      AccountId nodeAccountId = JsonUtils.toEntityId(node, "node", AccountId.class);
+      long nonce = JsonUtils.toLong(node, "nonce");
+      Instant parentConsensusTimestamp = JsonUtils.toInstant(node, "parent_consensus_timestamp");
+
+      Status result = JsonUtils.toEnum(node, "result",Status.class);
+      boolean scheduled = JsonUtils.toBoolean(node, "scheduled");
 
       List<StakingRewardTransfer> stakingRewardTransfers = new ArrayList<>();
       if (node.has("staking_reward_transfers")) {
@@ -219,10 +183,9 @@ public class JsonParserImpl {
                 .map(
                     transfer -> {
                       return new StakingRewardTransfer(
-                          transfer.has("account")
-                              ? AccountId.fromString(transfer.get("account").asString())
-                              : null,
-                          transfer.has("amount") ? transfer.get("amount").asLong() : 0);
+                          JsonUtils.toEntityId(transfer, "account", AccountId.class),
+                          JsonUtils.toLong(transfer, "amount")
+                      );
                     })
                 .collect(Collectors.toUnmodifiableList());
       }
@@ -236,24 +199,17 @@ public class JsonParserImpl {
                 .map(
                     transfer -> {
                       return new TokenTransfer(
-                          transfer.has("token_id")
-                              ? TokenId.fromString(transfer.get("token_id").asString())
-                              : null,
-                          transfer.has("account")
-                              ? AccountId.fromString(transfer.get("account").asString())
-                              : null,
-                          transfer.has("amount") ? transfer.get("amount").asLong() : 0,
-                          transfer.has("is_approval")
-                              ? transfer.get("is_approval").asBoolean()
-                              : false);
+                          JsonUtils.toEntityId(transfer, "token_id", TokenId.class),
+                          JsonUtils.toEntityId(transfer, "account", AccountId.class),
+                          JsonUtils.toLong(transfer, "amount"),
+                          JsonUtils.toBoolean(transfer, "is_approval")
+                      );
                     })
                 .collect(Collectors.toUnmodifiableList());
       }
 
-      byte[] transactionHash =
-          node.has("transaction_hash") ? node.get("transaction_hash").asString().getBytes() : null;
-      String transactionId =
-          node.has("transaction_id") ? node.get("transaction_id").asString() : null;
+      byte[] transactionHash = JsonUtils.toBytes(node, "transaction_hash");
+      String transactionId = JsonUtils.toNullableString(node, "transaction_id");
 
       List<Transfer> transfers = new ArrayList<>();
       if (node.has("transfers")) {
@@ -264,24 +220,16 @@ public class JsonParserImpl {
                 .map(
                     transfer -> {
                       return new Transfer(
-                          transfer.has("account")
-                              ? AccountId.fromString(transfer.get("account").asString())
-                              : null,
-                          transfer.has("amount") ? transfer.get("amount").asLong() : 0,
-                          transfer.has("is_approval")
-                              ? transfer.get("is_approval").asBoolean()
-                              : false);
+                          JsonUtils.toEntityId(transfer, "account", AccountId.class),
+                          JsonUtils.toLong(transfer, "amount"),
+                          JsonUtils.toBoolean(transfer, "is_approval")
+                      );
                     })
                 .collect(Collectors.toUnmodifiableList());
       }
 
-      String validDurationSecond =
-          node.has("valid_duration_seconds") ? node.get("valid_duration_seconds").asString() : null;
-      Instant validStartTimestamp =
-          node.has("valid_start_timestamp")
-                  && !node.get("valid_start_timestamp").asString().isEmpty()
-              ? parseTimestamp(node.get("valid_start_timestamp").asString())
-              : null;
+      String validDurationSecond = JsonUtils.toNullableString(node, "valid_duration_seconds");
+      Instant validStartTimestamp = JsonUtils.toInstant(node, "valid_start_timestamp");
 
       List<AssessedCustomFee> assessedCustomFees = new ArrayList<>();
       if (node.has("assessed_custom_fees")) {
@@ -292,24 +240,21 @@ public class JsonParserImpl {
                 .map(
                     fee -> {
                       return new AssessedCustomFee(
-                          fee.has("amount") ? fee.get("amount").asLong() : 0,
-                          fee.has("collector_account_id")
-                              ? AccountId.fromString(fee.get("collector_account_id").asString())
-                              : null,
+                          JsonUtils.toLong(fee, "amount"),
+                          JsonUtils.toEntityId(fee, "collector_account_id", AccountId.class),
                           fee.has("effective_payer_account_ids")
                               ? fee.get("effective_payer_account_ids")
                                   .asArray()
                                   .valueStream()
                                   .map(
                                       a ->
-                                          a.asString() != null
+                                          !a.asString().isEmpty()
                                               ? AccountId.fromString(a.asString())
                                               : null)
                                   .collect(Collectors.toUnmodifiableList())
                               : List.of(),
-                          fee.has("token_id")
-                              ? TokenId.fromString(fee.get("token_id").asString())
-                              : null);
+                          JsonUtils.toEntityId(fee, "token_id", TokenId.class)
+                      );
                     })
                 .collect(Collectors.toUnmodifiableList());
       }
@@ -359,7 +304,7 @@ public class JsonParserImpl {
           .map(allowance -> parseCryptoAllowance(allowance).get())
           .toList();
     } catch (Exception e) {
-      throw new RuntimeException("Unable to parse json");
+      throw new RuntimeException("Unable to parse json", e);
     }
   }
 
@@ -369,24 +314,16 @@ public class JsonParserImpl {
     }
 
     try {
-      long amount = node.has("amount") ? node.get("amount").asLong() : 0;
-      long amountGranted = node.has("amount_granted") ? node.get("amount_granted").asLong() : 0;
-      AccountId owner =
-          node.has("owner") ? AccountId.fromString(node.get("owner").asString()) : null;
-      AccountId spender =
-          node.has("spender") ? AccountId.fromString(node.get("spender").asString()) : null;
+      long amount = JsonUtils.toLong(node, "amount");
+      long amountGranted = JsonUtils.toLong(node, "amount_granted");
+      AccountId owner = JsonUtils.toEntityId(node, "owner", AccountId.class);
+      AccountId spender = JsonUtils.toEntityId(node, "spender", AccountId.class);
 
       TimestampRange timestampRange = null;
       if (node.has("timestamp")) {
         JsonNode timestamp = node.get("timestamp");
-        Instant from =
-            timestamp.has("from") && !timestamp.get("from").asString().isEmpty()
-                ? parseTimestamp(timestamp.get("from").asString())
-                : null;
-        Instant to =
-            timestamp.has("to") && !timestamp.get("to").asString().isEmpty()
-                ? parseTimestamp(timestamp.get("to").asString())
-                : null;
+        Instant from = JsonUtils.toInstant(timestamp, "from");
+        Instant to =  JsonUtils.toInstant(timestamp, "to");
 
         timestampRange = new TimestampRange(from, to);
       }
@@ -394,7 +331,7 @@ public class JsonParserImpl {
       return Optional.of(
           new CryptoAllowance(amount, amountGranted, owner, spender, timestampRange));
     } catch (Exception e) {
-      throw new RuntimeException("Unable to parse json");
+      throw new RuntimeException("Unable to parse json", e);
     }
   }
 
@@ -413,7 +350,7 @@ public class JsonParserImpl {
           .map(allowance -> parseTokenAllowance(allowance).get())
           .toList();
     } catch (Exception e) {
-      throw new RuntimeException("Unable to parse json");
+      throw new RuntimeException("Unable to parse json", e);
     }
   }
 
@@ -423,35 +360,26 @@ public class JsonParserImpl {
     }
 
     try {
-      long amount = node.has("amount") ? node.get("amount").asLong() : 0;
-      long amountGranted = node.has("amount_granted") ? node.get("amount_granted").asLong() : 0;
-      AccountId owner =
-          node.has("owner") ? AccountId.fromString(node.get("owner").asString()) : null;
-      AccountId spender =
-          node.has("spender") ? AccountId.fromString(node.get("spender").asString()) : null;
+      long amount = JsonUtils.toLong(node, "amount");
+      long amountGranted = JsonUtils.toLong(node, "amount_granted");
+      AccountId owner = JsonUtils.toEntityId(node, "owner", AccountId.class);
+      AccountId spender = JsonUtils.toEntityId(node, "spender", AccountId.class);
 
       TimestampRange timestampRange = null;
       if (node.has("timestamp")) {
         JsonNode timestamp = node.get("timestamp");
-        Instant from =
-            timestamp.has("from") && !timestamp.get("from").asString().isEmpty()
-                ? parseTimestamp(timestamp.get("from").asString())
-                : null;
-        Instant to =
-            timestamp.has("to") && !timestamp.get("to").asString().isEmpty()
-                ? parseTimestamp(timestamp.get("to").asString())
-                : null;
+        Instant from = JsonUtils.toInstant(timestamp, "from");
+        Instant to = JsonUtils.toInstant(timestamp, "to");
 
         timestampRange = new TimestampRange(from, to);
       }
 
-      TokenId tokenId =
-          node.has("token_id") ? TokenId.fromString(node.get("token_id").asString()) : null;
+      TokenId tokenId = JsonUtils.toEntityId(node, "token_id", TokenId.class);
 
       return Optional.of(
           new TokenAllowance(amount, amountGranted, owner, spender, timestampRange, tokenId));
     } catch (Exception e) {
-      throw new RuntimeException("Unable to parse json");
+      throw new RuntimeException("Unable to parse json", e);
     }
   }
 
@@ -467,7 +395,7 @@ public class JsonParserImpl {
       ArrayNode allowances = node.get("allowances").asArray();
       return allowances.valueStream().map(allowance -> parseNftAllowance(allowance).get()).toList();
     } catch (Exception e) {
-      throw new RuntimeException("Unable to parse json");
+      throw new RuntimeException("Unable to parse json", e);
     }
   }
 
@@ -477,47 +405,118 @@ public class JsonParserImpl {
     }
 
     try {
-      boolean approvedForAll =
-          node.has("approved_for_all") ? node.get("approved_for_all").asBoolean() : false;
-      AccountId owner =
-          node.has("owner") ? AccountId.fromString(node.get("owner").asString()) : null;
-      AccountId payerAccountId =
-          node.has("payer_account_id")
-              ? AccountId.fromString(node.get("payer_account_id").asString())
-              : null;
-      AccountId spender =
-          node.has("spender") ? AccountId.fromString(node.get("spender").asString()) : null;
+      boolean approvedForAll = JsonUtils.toBoolean(node, "approved_for_all");
+      AccountId owner = JsonUtils.toEntityId(node, "owner", AccountId.class);
+
+      AccountId payerAccountId = JsonUtils.toEntityId(node, "payer_account_id", AccountId.class);
+      AccountId spender = JsonUtils.toEntityId(node, "spender", AccountId.class);
 
       TimestampRange timestampRange = null;
       if (node.has("timestamp")) {
         JsonNode timestamp = node.get("timestamp");
-        Instant from =
-            timestamp.has("from") && !timestamp.get("from").asString().isEmpty()
-                ? parseTimestamp(timestamp.get("from").asString())
-                : null;
-        Instant to =
-            timestamp.has("to") && !timestamp.get("to").asString().isEmpty()
-                ? parseTimestamp(timestamp.get("to").asString())
-                : null;
+        Instant from = JsonUtils.toInstant(timestamp, "from");
+        Instant to = JsonUtils.toInstant(timestamp, "to");
 
         timestampRange = new TimestampRange(from, to);
       }
 
-      TokenId tokenId =
-          node.has("token_id") ? TokenId.fromString(node.get("token_id").asString()) : null;
+      TokenId tokenId = JsonUtils.toEntityId(node, "token_id", TokenId.class);
 
       return Optional.of(
           new NftAllowance(
               approvedForAll, owner, payerAccountId, spender, timestampRange, tokenId));
     } catch (Exception e) {
-      throw new RuntimeException("Unable to parse json");
+      throw new RuntimeException("Unable to parse json", e);
+    }
+  }
+
+  public static Optional<Token> parseToken(JsonNode node) {
+    if (node == null || node.isEmpty()) {
+      return Optional.empty();
+    }
+
+    try {
+      Key adminKey = JsonUtils.toKey(node, "admin_key");
+      AccountId autoRenewAccount = JsonUtils.toEntityId(node, "auto_renew_account", AccountId.class);
+      Long autoRenewPeriod = JsonUtils.toNullableLong(node, "auto_renew_period");
+      Instant createdTimestamp = JsonUtils.toInstant(node, "created_timestamp");
+
+      String decimals = JsonUtils.toNullableString(node, "decimals");
+      boolean deleted = JsonUtils.toBoolean(node, "deleted");
+      Long expiryTimestamp = JsonUtils.toNullableLong(node, "expiry_timestamp");
+
+      Key feeScheduleKey = JsonUtils.toKey(node, "fee_schedule_key");
+      boolean freezeDefault = JsonUtils.toBoolean(node, "freeze_default");
+
+      Key freezeKey = JsonUtils.toKey(node, "freeze_key");
+
+      String initialSupply = JsonUtils.toNullableString(node, "initial_supply");
+      Key kycKey = JsonUtils.toKey(node, "kyc_key");
+
+      String maxSupply = JsonUtils.toNullableString(node, "max_supply");
+      byte[] metadata = JsonUtils.toBytes(node, "metadata");
+      Key metadataKey = JsonUtils.toKey(node, "metadata_key");
+
+      Instant modifiedTimestamp= JsonUtils.toInstant(node, "modified_timestamp");
+
+      String name = JsonUtils.toNullableString(node, "name");
+      String memo = JsonUtils.toNullableString(node, "memo");
+      Key pasueKey = JsonUtils.toKey(node, "pause_key");
+      TokenPauseStatus pauseStatus = JsonUtils.toEnum(node, "pause_status", TokenPauseStatus.class);
+      Key supplyKey = JsonUtils.toKey(node, "supply_key");
+
+      TokenSupplyType supplyType = JsonUtils.toEnum(node, "supply_type", TokenSupplyType.class);
+
+      String symbol = JsonUtils.toNullableString(node, "symbol");
+      TokenId tokenId = JsonUtils.toEntityId(node, "token_id", TokenId.class);
+
+      String totalSupply = JsonUtils.toNullableString(node, "total_supply");
+      AccountId treasuryAccountId = JsonUtils.toEntityId(node, "treasury_account_id", AccountId.class);
+
+      TokenType tokenType = JsonUtils.toEnum(node, "type", TokenType.class);
+      Key wipeKey = JsonUtils.toKey(node, "wipe_key");
+
+      return Optional.of(
+        new Token(
+          adminKey,
+          autoRenewAccount,
+          autoRenewPeriod,
+          createdTimestamp,
+          decimals,
+          deleted,
+          expiryTimestamp,
+          feeScheduleKey,
+          freezeDefault,
+          freezeKey,
+          initialSupply,
+          kycKey,
+          maxSupply,
+          metadata,
+          metadataKey,
+          modifiedTimestamp,
+          name,
+          memo,
+          pasueKey,
+          pauseStatus,
+          supplyKey,
+          supplyType,
+          symbol,
+          tokenId,
+          totalSupply,
+          treasuryAccountId,
+          tokenType,
+          wipeKey
+        )
+      );
+    } catch (Exception e) {
+      throw new RuntimeException("Unable to parse json", e);
     }
   }
 
   private static AccountBalance parseAccountBalance(JsonNode node) {
-    Instant timestamp =
-        node.has("timestamp") ? parseTimestamp(node.get("timestamp").asString()) : null;
-    long balance = node.has("balance") ? node.get("balance").asLong() : 0;
+    Instant timestamp = JsonUtils.toInstant(node, "timestamp");
+    long balance = JsonUtils.toLong(node, "balance");
+
     Map<TokenId, Long> tokens = new HashMap<>();
     if (node.has("tokens")) {
       tokens =
@@ -526,53 +525,12 @@ public class JsonParserImpl {
               .valueStream()
               .collect(
                   Collectors.toUnmodifiableMap(
-                      t -> TokenId.fromString(t.get("token_id").asString()),
-                      t -> t.get("balance").asLong()));
+                      t -> JsonUtils.toEntityId(t, "token_id", TokenId.class),
+                      t -> JsonUtils.toLong(t, "balance")
+                  )
+              );
     }
 
     return new AccountBalance(timestamp, balance, tokens);
-  }
-
-  private static Instant parseTimestamp(String timestamp) {
-    String[] parts = timestamp.split("\\.");
-
-    long seconds = Long.parseLong(parts[0]);
-    long nanos = 0;
-
-    if (parts.length > 1) {
-      String nanoString = parts[1];
-      nanoString = String.format("%-9s", nanoString).replace(' ', '0');
-      nanos = Long.parseLong(nanoString);
-    }
-
-    return Instant.ofEpochSecond(seconds, nanos);
-  }
-
-  private static Key parseKey(String keyType, String keyHex) {
-    Key parsedKey;
-
-    switch (keyType) {
-      case "ED25519":
-        parsedKey = PublicKey.fromString(keyHex);
-        break;
-
-      case "ECDSA_SECP256K1":
-        parsedKey = PublicKey.fromStringECDSA(keyHex);
-        break;
-
-      case "ProtobufEncoded":
-        byte[] decodedBytes = HexFormat.of().parseHex(keyHex);
-        try {
-          parsedKey = Key.fromBytes(decodedBytes);
-        } catch (Exception e) {
-          throw new IllegalArgumentException("Invalid Protobuf encoding", e);
-        }
-        break;
-
-      default:
-        throw new UnsupportedOperationException("Unknown key type: " + keyType);
-    }
-
-    return parsedKey;
   }
 }
