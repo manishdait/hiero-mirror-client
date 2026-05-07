@@ -7,6 +7,8 @@ import com.hedera.hashgraph.sdk.Status;
 import com.hedera.hashgraph.sdk.TokenId;
 import com.hedera.hashgraph.sdk.TokenSupplyType;
 import com.hedera.hashgraph.sdk.TokenType;
+import io.github.manishdait.mirrornodeclientj.data.TokenFreezeStatus;
+import io.github.manishdait.mirrornodeclientj.data.TokenKycStatus;
 import io.github.manishdait.mirrornodeclientj.data.TokenPauseStatus;
 import java.time.Instant;
 import java.util.HexFormat;
@@ -153,6 +155,8 @@ public class JsonUtils {
       case "TokenPauseStatus" -> clazz.cast(TokenPauseStatus.fromString(enumStr));
       case "TokenType" -> clazz.cast(TokenType.valueOf(enumStr));
       case "TokenSupplyType" -> clazz.cast(TokenSupplyType.valueOf(enumStr));
+      case "TokenKycStatus" -> clazz.cast(TokenKycStatus.fromString(enumStr));
+      case "TokenFreezeStatus" -> clazz.cast(TokenFreezeStatus.fromString(enumStr));
       default -> throw new RuntimeException("Unsupported class");
     };
   }

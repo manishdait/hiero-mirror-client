@@ -1,16 +1,16 @@
 package io.github.manishdait.mirrornodeclientj;
 
 import com.hedera.hashgraph.sdk.TokenId;
-import io.github.manishdait.mirrornodeclientj.query.TokenListQuery;
-import io.github.manishdait.mirrornodeclientj.query.TokenQuery;
+import io.github.manishdait.mirrornodeclientj.query.GetTokenByIdQuery;
+import io.github.manishdait.mirrornodeclientj.query.GetTokenListQuery;
 import org.jspecify.annotations.NonNull;
 
 public interface TokenResource {
-  @NonNull TokenListQuery findAll();
+  @NonNull GetTokenListQuery findAll();
 
-  default @NonNull TokenQuery findById(String tokenId) {
+  default @NonNull GetTokenByIdQuery findById(String tokenId) {
     return findById(TokenId.fromString(tokenId));
   }
 
-  @NonNull TokenQuery findById(TokenId tokenId);
+  @NonNull GetTokenByIdQuery findById(TokenId tokenId);
 }

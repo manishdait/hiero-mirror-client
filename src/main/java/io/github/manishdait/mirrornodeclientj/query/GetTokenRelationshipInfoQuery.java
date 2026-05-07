@@ -1,33 +1,32 @@
 package io.github.manishdait.mirrornodeclientj.query;
 
 import com.hedera.hashgraph.sdk.AccountId;
+import com.hedera.hashgraph.sdk.TokenId;
 import io.github.manishdait.mirrornodeclientj.CriteriaParam;
 import io.github.manishdait.mirrornodeclientj.JsonParserImpl;
 import io.github.manishdait.mirrornodeclientj.MirrorNodeClient;
 import io.github.manishdait.mirrornodeclientj.Operator;
 import io.github.manishdait.mirrornodeclientj.Order;
 import io.github.manishdait.mirrornodeclientj.core.MirrorNodeRequest;
-import io.github.manishdait.mirrornodeclientj.data.StakingReward;
-import java.time.Instant;
-import java.util.ArrayList;
+import io.github.manishdait.mirrornodeclientj.data.TokenRelationShipInfo;
 import java.util.List;
 import java.util.Objects;
 import org.jspecify.annotations.NonNull;
 import tools.jackson.databind.JsonNode;
 
-public class GetStackingRewardQuery extends Query<List<StakingReward>> {
+public class GetTokenRelationshipInfoQuery extends Query<List<TokenRelationShipInfo>> {
   private final AccountId accountId;
 
   private Order order = Order.DESC;
   private int limit = 25;
-  private final List<CriteriaParam<Instant>> timestamps = new ArrayList<>();
+  private CriteriaParam<TokenId> tokenId;
 
-  public GetStackingRewardQuery(MirrorNodeClient client, AccountId accountId) {
+  public GetTokenRelationshipInfoQuery(MirrorNodeClient client, AccountId accountId) {
     super(client);
     this.accountId = accountId;
   }
 
-  public GetStackingRewardQuery limit(final int limit) {
+  public GetTokenRelationshipInfoQuery limit(final int limit) {
     if (limit <= 0) {
       throw new IllegalArgumentException("limit must be greater than 0");
     }
@@ -35,17 +34,25 @@ public class GetStackingRewardQuery extends Query<List<StakingReward>> {
     return this;
   }
 
-  public GetStackingRewardQuery order(final @NonNull Order order) {
+  public GetTokenRelationshipInfoQuery order(final @NonNull Order order) {
     Objects.requireNonNull(order, "order must not be null");
     this.order = order;
     return this;
   }
 
-  public GetStackingRewardQuery timestamp(
-      final @NonNull Operator operator, final @NonNull Instant timestamp) {
+  public GetTokenRelationshipInfoQuery tokenId(
+      final @NonNull Operator operator, final @NonNull String tokenId) {
     Objects.requireNonNull(operator, "operator must not be null");
-    Objects.requireNonNull(timestamp, "timestamp must not be null");
-    this.timestamps.add(new CriteriaParam<>(operator, timestamp));
+    Objects.requireNonNull(tokenId, "tokenId must not be null");
+    return tokenId(operator, TokenId.fromString(tokenId));
+  }
+
+  public GetTokenRelationshipInfoQuery tokenId(
+      final @NonNull Operator operator, final @NonNull TokenId tokenId) {
+    Objects.requireNonNull(operator, "operator must not be null");
+    Objects.requireNonNull(tokenId, "tokenId must not be null");
+
+    this.tokenId = new CriteriaParam<>(operator, tokenId);
     return this;
   }
 
@@ -53,26 +60,21 @@ public class GetStackingRewardQuery extends Query<List<StakingReward>> {
   MirrorNodeRequest buildRequest() {
     MirrorNodeRequest.Builder request =
         MirrorNodeRequest.newBuilder()
-            .url(this.client.getBaseUrl() + "/api/v1/accounts/" + accountId + "/rewards")
+            .url(this.client.getBaseUrl() + "/api/v1/accounts/" + accountId + "/tokens")
             .method("GET")
             .queryParam("limit", String.valueOf(limit))
             .queryParam("order", order.getValue());
 
-    for (CriteriaParam<Instant> timestamp : timestamps) {
+    if (tokenId != null) {
       request.queryParam(
-          "timestamp",
-          timestamp.getOperator().getValue()
-              + ":"
-              + timestamp.getValue().getEpochSecond()
-              + "."
-              + timestamp.getValue().getNano());
+          "token.id", tokenId.getOperator().getValue() + ":" + tokenId.getValue().toString());
     }
 
     return request.build();
   }
 
   @Override
-  List<StakingReward> mapResponse(JsonNode node) {
-    return JsonParserImpl.parseStakingRewards(node);
+  List<TokenRelationShipInfo> mapResponse(JsonNode node) {
+    return JsonParserImpl.parseTokenRelationships(node);
   }
 }

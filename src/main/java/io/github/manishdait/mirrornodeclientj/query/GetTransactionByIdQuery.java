@@ -8,23 +8,23 @@ import java.util.List;
 import java.util.Optional;
 import tools.jackson.databind.JsonNode;
 
-public class TransactionQuery extends Query<Optional<Transaction>> {
+public class GetTransactionByIdQuery extends Query<Optional<Transaction>> {
   private final String transactionId;
 
   Integer nonce;
   Boolean scheduled;
 
-  public TransactionQuery(MirrorNodeClient client, String transactionId) {
+  public GetTransactionByIdQuery(MirrorNodeClient client, String transactionId) {
     super(client);
     this.transactionId = transactionId;
   }
 
-  public TransactionQuery nonce(int nonce) {
+  public GetTransactionByIdQuery nonce(int nonce) {
     this.nonce = nonce;
     return this;
   }
 
-  public TransactionQuery scheduled(boolean scheduled) {
+  public GetTransactionByIdQuery scheduled(boolean scheduled) {
     this.scheduled = scheduled;
     return this;
   }

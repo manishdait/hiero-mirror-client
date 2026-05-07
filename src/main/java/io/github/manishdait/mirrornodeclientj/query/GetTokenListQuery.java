@@ -17,7 +17,7 @@ import java.util.Objects;
 import org.jspecify.annotations.NonNull;
 import tools.jackson.databind.JsonNode;
 
-public class TokenListQuery extends Query<List<TokenMetadata>> {
+public class GetTokenListQuery extends Query<List<TokenMetadata>> {
   private Order order = Order.DESC;
   private int limit = 25;
   private String name;
@@ -27,11 +27,11 @@ public class TokenListQuery extends Query<List<TokenMetadata>> {
   private CriteriaParam<AccountId> accountId;
   private CriteriaParam<TokenId> tokenId;
 
-  public TokenListQuery(MirrorNodeClient client) {
+  public GetTokenListQuery(MirrorNodeClient client) {
     super(client);
   }
 
-  public TokenListQuery limit(final int limit) {
+  public GetTokenListQuery limit(final int limit) {
     if (limit <= 0) {
       throw new IllegalArgumentException("limit must be greater than 0");
     }
@@ -39,37 +39,37 @@ public class TokenListQuery extends Query<List<TokenMetadata>> {
     return this;
   }
 
-  public TokenListQuery order(final @NonNull Order order) {
+  public GetTokenListQuery order(final @NonNull Order order) {
     Objects.requireNonNull(order, "order must not be null");
     this.order = order;
     return this;
   }
 
-  public TokenListQuery name(final @NonNull String name) {
+  public GetTokenListQuery name(final @NonNull String name) {
     Objects.requireNonNull(name, "name must not be null");
     this.name = name;
     return this;
   }
 
-  public TokenListQuery publicKey(final @NonNull String publicKey) {
+  public GetTokenListQuery publicKey(final @NonNull String publicKey) {
     Objects.requireNonNull(publicKey, "publicKey must not be null");
     return publicKey(PublicKey.fromString(publicKey));
   }
 
-  public TokenListQuery publicKey(final @NonNull PublicKey publicKey) {
+  public GetTokenListQuery publicKey(final @NonNull PublicKey publicKey) {
     Objects.requireNonNull(publicKey, "publicKey must not be null");
     this.publicKey = publicKey;
     return this;
   }
 
-  public TokenListQuery accountId(
+  public GetTokenListQuery accountId(
       final @NonNull Operator operator, final @NonNull String accountId) {
     Objects.requireNonNull(operator, "operator must not be null");
     Objects.requireNonNull(accountId, "accountId must not be null");
     return accountId(operator, AccountId.fromString(accountId));
   }
 
-  public TokenListQuery accountId(
+  public GetTokenListQuery accountId(
       final @NonNull Operator operator, final @NonNull AccountId accountId) {
     Objects.requireNonNull(operator, "operator must not be null");
     Objects.requireNonNull(accountId, "accountId must not be null");
@@ -78,13 +78,15 @@ public class TokenListQuery extends Query<List<TokenMetadata>> {
     return this;
   }
 
-  public TokenListQuery tokenId(final @NonNull Operator operator, final @NonNull String tokenId) {
+  public GetTokenListQuery tokenId(
+      final @NonNull Operator operator, final @NonNull String tokenId) {
     Objects.requireNonNull(operator, "operator must not be null");
     Objects.requireNonNull(tokenId, "tokenId must not be null");
     return tokenId(operator, TokenId.fromString(tokenId));
   }
 
-  public TokenListQuery tokenId(final @NonNull Operator operator, final @NonNull TokenId tokenId) {
+  public GetTokenListQuery tokenId(
+      final @NonNull Operator operator, final @NonNull TokenId tokenId) {
     Objects.requireNonNull(operator, "operator must not be null");
     Objects.requireNonNull(tokenId, "tokenId must not be null");
 
@@ -92,7 +94,7 @@ public class TokenListQuery extends Query<List<TokenMetadata>> {
     return this;
   }
 
-  public TokenListQuery type(final @NonNull TokenType tokenType) {
+  public GetTokenListQuery type(final @NonNull TokenType tokenType) {
     Objects.requireNonNull(tokenType, "tokenType must not be null");
     this.tokenTypes.add(tokenType);
     return this;

@@ -14,7 +14,7 @@ import java.util.Objects;
 import org.jspecify.annotations.NonNull;
 import tools.jackson.databind.JsonNode;
 
-public class NftAllowanceQuery extends Query<List<NftAllowance>> {
+public class GetNftAllowanceQuery extends Query<List<NftAllowance>> {
   private final AccountId accountId;
 
   private Order order = Order.DESC;
@@ -22,12 +22,12 @@ public class NftAllowanceQuery extends Query<List<NftAllowance>> {
   private boolean owner = true;
   private CriteriaParam<TokenId> tokenId;
 
-  public NftAllowanceQuery(MirrorNodeClient client, AccountId accountId) {
+  public GetNftAllowanceQuery(MirrorNodeClient client, AccountId accountId) {
     super(client);
     this.accountId = accountId;
   }
 
-  public NftAllowanceQuery limit(final int limit) {
+  public GetNftAllowanceQuery limit(final int limit) {
     if (limit <= 0) {
       throw new IllegalArgumentException("limit must be greater than 0");
     }
@@ -35,18 +35,18 @@ public class NftAllowanceQuery extends Query<List<NftAllowance>> {
     return this;
   }
 
-  public NftAllowanceQuery order(final @NonNull Order order) {
+  public GetNftAllowanceQuery order(final @NonNull Order order) {
     Objects.requireNonNull(order, "order must not be null");
     this.order = order;
     return this;
   }
 
-  public NftAllowanceQuery owner(final boolean owner) {
+  public GetNftAllowanceQuery owner(final boolean owner) {
     this.owner = owner;
     return this;
   }
 
-  public NftAllowanceQuery tokenId(
+  public GetNftAllowanceQuery tokenId(
       final @NonNull Operator operator, final @NonNull TokenId tokenId) {
     Objects.requireNonNull(operator, "operator must not be null");
     Objects.requireNonNull(tokenId, "tokenId must not be nul;");

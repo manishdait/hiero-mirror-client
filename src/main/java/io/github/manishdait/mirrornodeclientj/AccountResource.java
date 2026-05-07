@@ -1,16 +1,16 @@
 package io.github.manishdait.mirrornodeclientj;
 
 import com.hedera.hashgraph.sdk.AccountId;
-import io.github.manishdait.mirrornodeclientj.query.AccountListQuery;
-import io.github.manishdait.mirrornodeclientj.query.AccountQuery;
+import io.github.manishdait.mirrornodeclientj.query.GetAccountByIdQuery;
+import io.github.manishdait.mirrornodeclientj.query.GetAccountListQuery;
 import org.jspecify.annotations.NonNull;
 
 public interface AccountResource {
-  @NonNull AccountListQuery findAll();
+  @NonNull GetAccountListQuery findAll();
 
-  @NonNull AccountQuery findById(AccountId accountId);
+  @NonNull GetAccountByIdQuery findById(AccountId accountId);
 
-  default @NonNull AccountQuery findById(String accountId) {
+  default @NonNull GetAccountByIdQuery findById(String accountId) {
     return findById(AccountId.fromString(accountId));
   }
 }

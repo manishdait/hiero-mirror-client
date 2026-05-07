@@ -3,8 +3,8 @@ package io.github.manishdait.mirrornodeclientj.resource;
 import com.hedera.hashgraph.sdk.TokenId;
 import io.github.manishdait.mirrornodeclientj.MirrorNodeClient;
 import io.github.manishdait.mirrornodeclientj.TokenResource;
-import io.github.manishdait.mirrornodeclientj.query.TokenListQuery;
-import io.github.manishdait.mirrornodeclientj.query.TokenQuery;
+import io.github.manishdait.mirrornodeclientj.query.GetTokenByIdQuery;
+import io.github.manishdait.mirrornodeclientj.query.GetTokenListQuery;
 import org.jspecify.annotations.NonNull;
 
 public class TokenResourceImpl implements TokenResource {
@@ -15,12 +15,12 @@ public class TokenResourceImpl implements TokenResource {
   }
 
   @Override
-  public @NonNull TokenListQuery findAll() {
-    return new TokenListQuery(client);
+  public @NonNull GetTokenListQuery findAll() {
+    return new GetTokenListQuery(client);
   }
 
   @Override
-  public @NonNull TokenQuery findById(TokenId tokenId) {
-    return new TokenQuery(client, tokenId);
+  public @NonNull GetTokenByIdQuery findById(TokenId tokenId) {
+    return new GetTokenByIdQuery(client, tokenId);
   }
 }

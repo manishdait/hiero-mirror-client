@@ -7,10 +7,7 @@ public class MirrorNodeClientTest {
   @Test
   void shouldCallEndpoint() throws IOException, InterruptedException {
     MirrorNodeClient client = new MirrorNodeClient(NetworkType.TESTNET);
-    var list = client.accounts()
-      .findById("0.0.3")
-      .pastStakingRewards()
-      .execute();
+    var list = client.accounts().findById("0.0.6105114").tokenRelationshipInfo().execute();
 
     System.out.println(list);
   }

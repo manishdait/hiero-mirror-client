@@ -2,8 +2,8 @@ package io.github.manishdait.mirrornodeclientj.resource;
 
 import io.github.manishdait.mirrornodeclientj.MirrorNodeClient;
 import io.github.manishdait.mirrornodeclientj.TransactionResource;
-import io.github.manishdait.mirrornodeclientj.query.TransactionListQuery;
-import io.github.manishdait.mirrornodeclientj.query.TransactionQuery;
+import io.github.manishdait.mirrornodeclientj.query.GetTransactionByIdQuery;
+import io.github.manishdait.mirrornodeclientj.query.GetTransactionListQuery;
 import org.jspecify.annotations.NonNull;
 
 public class TransactionResourceImpl implements TransactionResource {
@@ -14,12 +14,12 @@ public class TransactionResourceImpl implements TransactionResource {
   }
 
   @Override
-  public @NonNull TransactionListQuery findAll() {
-    return new TransactionListQuery(client);
+  public @NonNull GetTransactionListQuery findAll() {
+    return new GetTransactionListQuery(client);
   }
 
   @Override
-  public @NonNull TransactionQuery findById(String transactionId) {
-    return new TransactionQuery(client, transactionId);
+  public @NonNull GetTransactionByIdQuery findById(String transactionId) {
+    return new GetTransactionByIdQuery(client, transactionId);
   }
 }
