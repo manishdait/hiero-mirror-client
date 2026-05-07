@@ -17,6 +17,7 @@ import io.github.manishdait.mirrornodeclientj.data.StakingRewardTransfer;
 import io.github.manishdait.mirrornodeclientj.data.TimestampRange;
 import io.github.manishdait.mirrornodeclientj.data.Token;
 import io.github.manishdait.mirrornodeclientj.data.TokenAllowance;
+import io.github.manishdait.mirrornodeclientj.data.TokenMetadata;
 import io.github.manishdait.mirrornodeclientj.data.TokenPauseStatus;
 import io.github.manishdait.mirrornodeclientj.data.TokenTransfer;
 import io.github.manishdait.mirrornodeclientj.data.Transaction;
@@ -506,6 +507,52 @@ public class JsonParserImpl {
           treasuryAccountId,
           tokenType,
           wipeKey
+        )
+      );
+    } catch (Exception e) {
+      throw new RuntimeException("Unable to parse json", e);
+    }
+  }
+
+  public static List<TokenMetadata> parseTokenMetas(JsonNode node) {
+    if (node == null
+      || node.isEmpty()
+      || node.get("tokens").isEmpty()
+      || !node.get("tokens").isArray()) {
+      return List.of();
+    }
+
+    try {
+      ArrayNode tokens = node.get("tokens").asArray();
+      return tokens.valueStream().map(token -> parseTokenMeta(token).get()).toList();
+    } catch (Exception e) {
+      throw new RuntimeException("Unable to parse json", e);
+    }
+  }
+
+  public static Optional<TokenMetadata> parseTokenMeta(JsonNode node) {
+    if (node == null || node.isEmpty()) {
+      return Optional.empty();
+    }
+
+    try {
+      Key adminKey = JsonUtils.toKey(node, "admin_key");
+      long decimals = JsonUtils.toLong(node, "decimals");
+      String name = JsonUtils.toNullableString(node, "name");
+      String symbol = JsonUtils.toNullableString(node, "symbol");
+      TokenId tokenId = JsonUtils.toEntityId(node, "token_id", TokenId.class);
+      TokenType tokenType = JsonUtils.toEnum(node, "type", TokenType.class);
+      byte[] metadata = JsonUtils.toBytes(node, "metadata");
+
+      return Optional.of(
+        new TokenMetadata(
+          adminKey,
+          decimals,
+          name,
+          symbol,
+          tokenId,
+          tokenType,
+          metadata
         )
       );
     } catch (Exception e) {

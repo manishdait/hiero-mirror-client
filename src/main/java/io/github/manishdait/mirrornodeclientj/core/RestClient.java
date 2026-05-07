@@ -20,10 +20,12 @@ public class RestClient {
     HttpRequest httpRequest =
         HttpRequest.newBuilder().uri(URI.create(parseUrl(request))).GET().build();
 
+    System.out.println(parseUrl(request));
+
     HttpResponse<String> httpResponse =
         client.send(httpRequest, HttpResponse.BodyHandlers.ofString());
 
-    System.out.println(parseUrl(request));
+
 
     return new MirrorNodeResponse(httpResponse.statusCode(), httpResponse.body());
   }
