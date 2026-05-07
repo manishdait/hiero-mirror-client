@@ -13,6 +13,7 @@ import io.github.manishdait.mirrornodeclientj.data.CryptoAllowance;
 import io.github.manishdait.mirrornodeclientj.data.CustomFee;
 import io.github.manishdait.mirrornodeclientj.data.NftAllowance;
 import io.github.manishdait.mirrornodeclientj.data.NftTransfer;
+import io.github.manishdait.mirrornodeclientj.data.StakingReward;
 import io.github.manishdait.mirrornodeclientj.data.StakingRewardTransfer;
 import io.github.manishdait.mirrornodeclientj.data.TimestampRange;
 import io.github.manishdait.mirrornodeclientj.data.Token;
@@ -562,6 +563,44 @@ public class JsonParserImpl {
     } catch (Exception e) {
       throw new RuntimeException("Unable to parse json", e);
     }
+  }
+
+  public static List<StakingReward> parseStakingRewards(JsonNode node) {
+    if (node == null
+      || node.isEmpty()
+      || node.get("rewards").isEmpty()
+      || !node.get("rewards").isArray()) {
+      return List.of();
+    }
+
+    try {
+      ArrayNode rewards = node.get("rewards").asArray();
+      return rewards.valueStream().map(reward -> parseStakingReward(reward).get()).toList();
+    } catch (Exception e) {
+      throw new RuntimeException("Unable to parse json", e);
+    }
+  }
+
+  public static Optional<StakingReward> parseStakingReward(JsonNode node) {
+    if (node == null || node.isEmpty()) {
+      return Optional.empty();
+    }
+    try {
+      AccountId accountId = JsonUtils.toEntityId(node, "account_id", AccountId.class);
+      long amount = JsonUtils.toLong(node, "amount");
+      Instant timestamp = JsonUtils.toInstant(node, "timestamp");
+
+      return Optional.of(
+        new StakingReward(
+          accountId,
+          amount,
+          timestamp
+        )
+      );
+    } catch (Exception e) {
+      throw new RuntimeException("Unable to parse json", e);
+    }
+
   }
 
   private static AccountBalance parseAccountBalance(JsonNode node) {

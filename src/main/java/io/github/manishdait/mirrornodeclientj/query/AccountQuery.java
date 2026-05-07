@@ -76,6 +76,10 @@ public class AccountQuery extends Query<Optional<Account>> {
     return new NftAllowanceQuery(client, accountId);
   }
 
+  public @NonNull GetStackingRewardQuery pastStakingRewards() {
+    return new GetStackingRewardQuery(client, accountId);
+  };
+
   @Override
   MirrorNodeRequest buildRequest() {
     MirrorNodeRequest.Builder request =

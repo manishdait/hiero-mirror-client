@@ -8,8 +8,8 @@ public class MirrorNodeClientTest {
   void shouldCallEndpoint() throws IOException, InterruptedException {
     MirrorNodeClient client = new MirrorNodeClient(NetworkType.TESTNET);
     var list = client.accounts()
-      .findById("0.0.6105114")
-      .tokenAllowance()
+      .findById("0.0.3")
+      .pastStakingRewards()
       .execute();
 
     System.out.println(list);
