@@ -1,7 +1,6 @@
 package io.github.manishdait.mirrornodeclientj;
 
 import io.github.manishdait.mirrornodeclientj.resource.AccountResourceImpl;
-import io.github.manishdait.mirrornodeclientj.resource.AllowanceResourceImpl;
 import io.github.manishdait.mirrornodeclientj.resource.TokenResourceImpl;
 import io.github.manishdait.mirrornodeclientj.resource.TransactionResourceImpl;
 
@@ -22,10 +21,6 @@ public class MirrorNodeClient {
 
   public AccountResource accounts() {
     return new AccountResourceImpl(this);
-  }
-
-  public AllowanceResource allowance() {
-    return new AllowanceResourceImpl(this);
   }
 
   public TokenResource tokens() {

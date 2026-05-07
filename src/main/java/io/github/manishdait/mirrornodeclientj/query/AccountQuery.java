@@ -64,6 +64,18 @@ public class AccountQuery extends Query<Optional<Account>> {
     return this;
   }
 
+  public @NonNull CryptoAllowanceQuery cryptoAllowance() {
+    return new CryptoAllowanceQuery(client, accountId);
+  }
+
+  public @NonNull TokenAllowanceQuery tokenAllowance() {
+    return new TokenAllowanceQuery(client, accountId);
+  }
+
+  public @NonNull NftAllowanceQuery nftAllowance() {
+    return new NftAllowanceQuery(client, accountId);
+  }
+
   @Override
   MirrorNodeRequest buildRequest() {
     MirrorNodeRequest.Builder request =
