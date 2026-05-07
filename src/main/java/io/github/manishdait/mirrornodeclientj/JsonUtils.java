@@ -8,19 +8,18 @@ import com.hedera.hashgraph.sdk.TokenId;
 import com.hedera.hashgraph.sdk.TokenSupplyType;
 import com.hedera.hashgraph.sdk.TokenType;
 import io.github.manishdait.mirrornodeclientj.data.TokenPauseStatus;
-import org.jspecify.annotations.NonNull;
-import tools.jackson.databind.JsonNode;
-
 import java.time.Instant;
 import java.util.HexFormat;
 import java.util.Objects;
+import org.jspecify.annotations.NonNull;
+import tools.jackson.databind.JsonNode;
 
 public class JsonUtils {
   public static Key toKey(final @NonNull JsonNode node, final @NonNull String label) {
     Objects.requireNonNull(node, "node must not be null");
     Objects.requireNonNull(label, "label must not be null");
 
-    if(!node.has(label) || node.get(label).isNull()) {
+    if (!node.has(label) || node.get(label).isNull()) {
       return null;
     }
 
@@ -51,7 +50,7 @@ public class JsonUtils {
     Objects.requireNonNull(node, "node must not be null");
     Objects.requireNonNull(label, "label must not be null");
 
-    if(!node.has(label) || node.get(label).isNull()) {
+    if (!node.has(label) || node.get(label).isNull()) {
       return null;
     }
 
@@ -84,7 +83,7 @@ public class JsonUtils {
 
   public static byte[] toBytes(final @NonNull JsonNode node, final @NonNull String label) {
     String str = toNullableString(node, label);
-    return str == null? null : str.getBytes();
+    return str == null ? null : str.getBytes();
   }
 
   public static boolean toBoolean(final @NonNull JsonNode node, final @NonNull String label) {
@@ -103,7 +102,7 @@ public class JsonUtils {
 
   public static long toLong(final @NonNull JsonNode node, final @NonNull String label) {
     Long result = toNullableLong(node, label);
-    return result == null? 0 : result;
+    return result == null ? 0 : result;
   }
 
   public static int toInt(final @NonNull JsonNode node, final @NonNull String label) {
@@ -113,11 +112,12 @@ public class JsonUtils {
     return node.has(label) && !node.get(label).isNull() ? node.get(label).asInt() : 0;
   }
 
-  public static <T> T toEntityId(final @NonNull JsonNode node, final @NonNull String label, final @NonNull Class<T> clazz) {
+  public static <T> T toEntityId(
+      final @NonNull JsonNode node, final @NonNull String label, final @NonNull Class<T> clazz) {
     Objects.requireNonNull(node, "node must not be null");
     Objects.requireNonNull(label, "label must not be null");
 
-    if(!node.has(label) || node.get(label).isNull()) {
+    if (!node.has(label) || node.get(label).isNull()) {
       return null;
     }
 
@@ -133,7 +133,8 @@ public class JsonUtils {
     };
   }
 
-  public static <T> T toEnum(final @NonNull JsonNode node, final @NonNull String label, final @NonNull Class<T> clazz) {
+  public static <T> T toEnum(
+      final @NonNull JsonNode node, final @NonNull String label, final @NonNull Class<T> clazz) {
     Objects.requireNonNull(node, "node must not be null");
     Objects.requireNonNull(label, "label must not be null");
 

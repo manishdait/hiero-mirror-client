@@ -1,12 +1,12 @@
 package io.github.manishdait.mirrornodeclientj;
 
-public enum TransactionResult {
-  SUCCESS("success"),
-  FAIL("fail");
+public enum BalanceModifier {
+  CREDIT("credit"),
+  DEBIT("debit");
 
   private final String value;
 
-  TransactionResult(String value) {
+  BalanceModifier(String value) {
     this.value = value;
   }
 

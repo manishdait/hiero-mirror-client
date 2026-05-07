@@ -10,7 +10,7 @@ public enum TokenPauseStatus {
       case "NOT_APPLICABLE" -> TokenPauseStatus.NOT_APPLICABLE;
       case "PAUSED" -> TokenPauseStatus.PAUSED;
       case "UNPAUSED" -> TokenPauseStatus.UNPAUSED;
-      default -> throw  new RuntimeException("Invalid pause status " + value);
+      default -> throw new RuntimeException("Invalid pause status " + value);
     };
   }
 }

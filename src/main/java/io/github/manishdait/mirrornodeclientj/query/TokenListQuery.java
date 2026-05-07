@@ -11,14 +11,13 @@ import io.github.manishdait.mirrornodeclientj.Operator;
 import io.github.manishdait.mirrornodeclientj.Order;
 import io.github.manishdait.mirrornodeclientj.core.MirrorNodeRequest;
 import io.github.manishdait.mirrornodeclientj.data.TokenMetadata;
-import org.jspecify.annotations.NonNull;
-import tools.jackson.databind.JsonNode;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import org.jspecify.annotations.NonNull;
+import tools.jackson.databind.JsonNode;
 
-public class TokenListQuery extends Query<List<TokenMetadata>>{
+public class TokenListQuery extends Query<List<TokenMetadata>> {
   private Order order = Order.DESC;
   private int limit = 25;
   private String name;
@@ -63,13 +62,15 @@ public class TokenListQuery extends Query<List<TokenMetadata>>{
     return this;
   }
 
-  public TokenListQuery accountId(final @NonNull Operator operator, final @NonNull String accountId) {
+  public TokenListQuery accountId(
+      final @NonNull Operator operator, final @NonNull String accountId) {
     Objects.requireNonNull(operator, "operator must not be null");
     Objects.requireNonNull(accountId, "accountId must not be null");
     return accountId(operator, AccountId.fromString(accountId));
   }
 
-  public TokenListQuery accountId(final @NonNull Operator operator, final @NonNull AccountId accountId) {
+  public TokenListQuery accountId(
+      final @NonNull Operator operator, final @NonNull AccountId accountId) {
     Objects.requireNonNull(operator, "operator must not be null");
     Objects.requireNonNull(accountId, "accountId must not be null");
 
@@ -100,11 +101,11 @@ public class TokenListQuery extends Query<List<TokenMetadata>>{
   @Override
   MirrorNodeRequest buildRequest() {
     MirrorNodeRequest.Builder request =
-      MirrorNodeRequest.newBuilder()
-        .url(this.client.getBaseUrl() + "/api/v1/tokens")
-        .method("GET")
-        .queryParam("limit", String.valueOf(limit))
-        .queryParam("order", order.getValue());
+        MirrorNodeRequest.newBuilder()
+            .url(this.client.getBaseUrl() + "/api/v1/tokens")
+            .method("GET")
+            .queryParam("limit", String.valueOf(limit))
+            .queryParam("order", order.getValue());
 
     if (publicKey != null) {
       request.queryParam("publickey", publicKey.toStringDER());
@@ -115,11 +116,13 @@ public class TokenListQuery extends Query<List<TokenMetadata>>{
     }
 
     if (accountId != null) {
-      request.queryParam("account.id", accountId.getOperator().getValue() + ":" + accountId.getValue().toString());
+      request.queryParam(
+          "account.id", accountId.getOperator().getValue() + ":" + accountId.getValue().toString());
     }
 
     if (tokenId != null) {
-      request.queryParam("token.id", tokenId.getOperator().getValue() + ":" + tokenId.getValue().toString());
+      request.queryParam(
+          "token.id", tokenId.getOperator().getValue() + ":" + tokenId.getValue().toString());
     }
 
     for (TokenType tokenType : tokenTypes) {

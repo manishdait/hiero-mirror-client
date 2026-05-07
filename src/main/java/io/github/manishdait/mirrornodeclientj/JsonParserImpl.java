@@ -115,6 +115,25 @@ public class JsonParserImpl {
     }
   }
 
+  public static List<Transaction> parseTransactions(JsonNode node) {
+    if (node == null
+        || node.isEmpty()
+        || node.get("transactions").isEmpty()
+        || !node.get("transactions").isArray()) {
+      return List.of();
+    }
+
+    try {
+      ArrayNode transactions = node.get("transactions").asArray();
+      return transactions
+          .valueStream()
+          .map(transaction -> parseTransaction(transaction).get())
+          .toList();
+    } catch (Exception e) {
+      throw new RuntimeException("Unable to parse json", e);
+    }
+  }
+
   public static Optional<Transaction> parseTransaction(JsonNode node) {
     if (node == null || node.isEmpty()) {
       return Optional.empty();
@@ -138,8 +157,7 @@ public class JsonParserImpl {
                       return new CustomFee(
                           JsonUtils.toEntityId(fee, "account_id", AccountId.class),
                           JsonUtils.toLong(fee, "amount"),
-                          JsonUtils.toEntityId(fee, "denominating_token_id", TokenId.class)
-                      );
+                          JsonUtils.toEntityId(fee, "denominating_token_id", TokenId.class));
                     })
                 .collect(Collectors.toUnmodifiableList());
       }
@@ -162,8 +180,7 @@ public class JsonParserImpl {
                           JsonUtils.toEntityId(transfer, "receiver_account_id", AccountId.class),
                           JsonUtils.toEntityId(transfer, "sender_account_id", AccountId.class),
                           JsonUtils.toLong(transfer, "serial_number"),
-                          JsonUtils.toEntityId(transfer, "token_id", TokenId.class)
-                      );
+                          JsonUtils.toEntityId(transfer, "token_id", TokenId.class));
                     })
                 .collect(Collectors.toUnmodifiableList());
       }
@@ -172,7 +189,7 @@ public class JsonParserImpl {
       long nonce = JsonUtils.toLong(node, "nonce");
       Instant parentConsensusTimestamp = JsonUtils.toInstant(node, "parent_consensus_timestamp");
 
-      Status result = JsonUtils.toEnum(node, "result",Status.class);
+      Status result = JsonUtils.toEnum(node, "result", Status.class);
       boolean scheduled = JsonUtils.toBoolean(node, "scheduled");
 
       List<StakingRewardTransfer> stakingRewardTransfers = new ArrayList<>();
@@ -185,8 +202,7 @@ public class JsonParserImpl {
                     transfer -> {
                       return new StakingRewardTransfer(
                           JsonUtils.toEntityId(transfer, "account", AccountId.class),
-                          JsonUtils.toLong(transfer, "amount")
-                      );
+                          JsonUtils.toLong(transfer, "amount"));
                     })
                 .collect(Collectors.toUnmodifiableList());
       }
@@ -203,8 +219,7 @@ public class JsonParserImpl {
                           JsonUtils.toEntityId(transfer, "token_id", TokenId.class),
                           JsonUtils.toEntityId(transfer, "account", AccountId.class),
                           JsonUtils.toLong(transfer, "amount"),
-                          JsonUtils.toBoolean(transfer, "is_approval")
-                      );
+                          JsonUtils.toBoolean(transfer, "is_approval"));
                     })
                 .collect(Collectors.toUnmodifiableList());
       }
@@ -223,8 +238,7 @@ public class JsonParserImpl {
                       return new Transfer(
                           JsonUtils.toEntityId(transfer, "account", AccountId.class),
                           JsonUtils.toLong(transfer, "amount"),
-                          JsonUtils.toBoolean(transfer, "is_approval")
-                      );
+                          JsonUtils.toBoolean(transfer, "is_approval"));
                     })
                 .collect(Collectors.toUnmodifiableList());
       }
@@ -254,8 +268,7 @@ public class JsonParserImpl {
                                               : null)
                                   .collect(Collectors.toUnmodifiableList())
                               : List.of(),
-                          JsonUtils.toEntityId(fee, "token_id", TokenId.class)
-                      );
+                          JsonUtils.toEntityId(fee, "token_id", TokenId.class));
                     })
                 .collect(Collectors.toUnmodifiableList());
       }
@@ -324,7 +337,7 @@ public class JsonParserImpl {
       if (node.has("timestamp")) {
         JsonNode timestamp = node.get("timestamp");
         Instant from = JsonUtils.toInstant(timestamp, "from");
-        Instant to =  JsonUtils.toInstant(timestamp, "to");
+        Instant to = JsonUtils.toInstant(timestamp, "to");
 
         timestampRange = new TimestampRange(from, to);
       }
@@ -438,7 +451,8 @@ public class JsonParserImpl {
 
     try {
       Key adminKey = JsonUtils.toKey(node, "admin_key");
-      AccountId autoRenewAccount = JsonUtils.toEntityId(node, "auto_renew_account", AccountId.class);
+      AccountId autoRenewAccount =
+          JsonUtils.toEntityId(node, "auto_renew_account", AccountId.class);
       Long autoRenewPeriod = JsonUtils.toNullableLong(node, "auto_renew_period");
       Instant createdTimestamp = JsonUtils.toInstant(node, "created_timestamp");
 
@@ -458,7 +472,7 @@ public class JsonParserImpl {
       byte[] metadata = JsonUtils.toBytes(node, "metadata");
       Key metadataKey = JsonUtils.toKey(node, "metadata_key");
 
-      Instant modifiedTimestamp= JsonUtils.toInstant(node, "modified_timestamp");
+      Instant modifiedTimestamp = JsonUtils.toInstant(node, "modified_timestamp");
 
       String name = JsonUtils.toNullableString(node, "name");
       String memo = JsonUtils.toNullableString(node, "memo");
@@ -472,43 +486,42 @@ public class JsonParserImpl {
       TokenId tokenId = JsonUtils.toEntityId(node, "token_id", TokenId.class);
 
       String totalSupply = JsonUtils.toNullableString(node, "total_supply");
-      AccountId treasuryAccountId = JsonUtils.toEntityId(node, "treasury_account_id", AccountId.class);
+      AccountId treasuryAccountId =
+          JsonUtils.toEntityId(node, "treasury_account_id", AccountId.class);
 
       TokenType tokenType = JsonUtils.toEnum(node, "type", TokenType.class);
       Key wipeKey = JsonUtils.toKey(node, "wipe_key");
 
       return Optional.of(
-        new Token(
-          adminKey,
-          autoRenewAccount,
-          autoRenewPeriod,
-          createdTimestamp,
-          decimals,
-          deleted,
-          expiryTimestamp,
-          feeScheduleKey,
-          freezeDefault,
-          freezeKey,
-          initialSupply,
-          kycKey,
-          maxSupply,
-          metadata,
-          metadataKey,
-          modifiedTimestamp,
-          name,
-          memo,
-          pasueKey,
-          pauseStatus,
-          supplyKey,
-          supplyType,
-          symbol,
-          tokenId,
-          totalSupply,
-          treasuryAccountId,
-          tokenType,
-          wipeKey
-        )
-      );
+          new Token(
+              adminKey,
+              autoRenewAccount,
+              autoRenewPeriod,
+              createdTimestamp,
+              decimals,
+              deleted,
+              expiryTimestamp,
+              feeScheduleKey,
+              freezeDefault,
+              freezeKey,
+              initialSupply,
+              kycKey,
+              maxSupply,
+              metadata,
+              metadataKey,
+              modifiedTimestamp,
+              name,
+              memo,
+              pasueKey,
+              pauseStatus,
+              supplyKey,
+              supplyType,
+              symbol,
+              tokenId,
+              totalSupply,
+              treasuryAccountId,
+              tokenType,
+              wipeKey));
     } catch (Exception e) {
       throw new RuntimeException("Unable to parse json", e);
     }
@@ -516,9 +529,9 @@ public class JsonParserImpl {
 
   public static List<TokenMetadata> parseTokenMetas(JsonNode node) {
     if (node == null
-      || node.isEmpty()
-      || node.get("tokens").isEmpty()
-      || !node.get("tokens").isArray()) {
+        || node.isEmpty()
+        || node.get("tokens").isEmpty()
+        || !node.get("tokens").isArray()) {
       return List.of();
     }
 
@@ -545,16 +558,7 @@ public class JsonParserImpl {
       byte[] metadata = JsonUtils.toBytes(node, "metadata");
 
       return Optional.of(
-        new TokenMetadata(
-          adminKey,
-          decimals,
-          name,
-          symbol,
-          tokenId,
-          tokenType,
-          metadata
-        )
-      );
+          new TokenMetadata(adminKey, decimals, name, symbol, tokenId, tokenType, metadata));
     } catch (Exception e) {
       throw new RuntimeException("Unable to parse json", e);
     }
@@ -573,9 +577,7 @@ public class JsonParserImpl {
               .collect(
                   Collectors.toUnmodifiableMap(
                       t -> JsonUtils.toEntityId(t, "token_id", TokenId.class),
-                      t -> JsonUtils.toLong(t, "balance")
-                  )
-              );
+                      t -> JsonUtils.toLong(t, "balance")));
     }
 
     return new AccountBalance(timestamp, balance, tokens);

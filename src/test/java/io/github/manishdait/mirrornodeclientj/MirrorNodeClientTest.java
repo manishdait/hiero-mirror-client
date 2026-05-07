@@ -7,13 +7,13 @@ public class MirrorNodeClientTest {
   @Test
   void shouldCallEndpoint() throws IOException, InterruptedException {
     MirrorNodeClient client = new MirrorNodeClient(NetworkType.TESTNET);
-    var list = client.account().findById("0.0.6105114").includeTransaction(false).execute();
-    System.out.println(list);
-    list.get().transactions().stream().forEach(t -> System.out.println(t.name()));
+    //    var list = client.account().findById("0.0.6105114").includeTransaction(false).execute();
+    //    System.out.println(list);
+    //    list.get().transactions().stream().forEach(t -> System.out.println(t.name()));
+    //
+    //    var l2 = client.allowance().getNftAllowance("0.0.6105114").execute();
+    //    System.out.println(l2);
 
-    var l2 = client.allowance().getNftAllowance("0.0.6105114").execute();
-    System.out.println(l2);
-
-    System.out.println(client.token().findAll().execute());
+    System.out.println(client.transactions().findAll().execute());
   }
 }

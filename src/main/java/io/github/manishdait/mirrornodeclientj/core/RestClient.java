@@ -25,8 +25,6 @@ public class RestClient {
     HttpResponse<String> httpResponse =
         client.send(httpRequest, HttpResponse.BodyHandlers.ofString());
 
-
-
     return new MirrorNodeResponse(httpResponse.statusCode(), httpResponse.body());
   }
 

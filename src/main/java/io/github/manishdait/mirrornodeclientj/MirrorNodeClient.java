@@ -3,6 +3,7 @@ package io.github.manishdait.mirrornodeclientj;
 import io.github.manishdait.mirrornodeclientj.resource.AccountResourceImpl;
 import io.github.manishdait.mirrornodeclientj.resource.AllowanceResourceImpl;
 import io.github.manishdait.mirrornodeclientj.resource.TokenResourceImpl;
+import io.github.manishdait.mirrornodeclientj.resource.TransactionResourceImpl;
 
 public class MirrorNodeClient {
   private final String baseUrl;
@@ -19,7 +20,7 @@ public class MirrorNodeClient {
     return this.baseUrl;
   }
 
-  public AccountResource account() {
+  public AccountResource accounts() {
     return new AccountResourceImpl(this);
   }
 
@@ -27,7 +28,11 @@ public class MirrorNodeClient {
     return new AllowanceResourceImpl(this);
   }
 
-  public TokenResource token() {
+  public TokenResource tokens() {
     return new TokenResourceImpl(this);
+  }
+
+  public TransactionResource transactions() {
+    return new TransactionResourceImpl(this);
   }
 }

@@ -7,10 +7,9 @@ import io.github.manishdait.mirrornodeclientj.MirrorNodeClient;
 import io.github.manishdait.mirrornodeclientj.Operator;
 import io.github.manishdait.mirrornodeclientj.core.MirrorNodeRequest;
 import io.github.manishdait.mirrornodeclientj.data.Token;
-import tools.jackson.databind.JsonNode;
-
 import java.time.Instant;
 import java.util.Optional;
+import tools.jackson.databind.JsonNode;
 
 public class TokenQuery extends Query<Optional<Token>> {
   private final TokenId tokenId;
@@ -30,12 +29,18 @@ public class TokenQuery extends Query<Optional<Token>> {
   @Override
   MirrorNodeRequest buildRequest() {
     MirrorNodeRequest.Builder request =
-      MirrorNodeRequest.newBuilder()
-        .url(this.client.getBaseUrl() + "/api/v1/tokens/" + tokenId)
-        .method("GET");
+        MirrorNodeRequest.newBuilder()
+            .url(this.client.getBaseUrl() + "/api/v1/tokens/" + tokenId)
+            .method("GET");
 
     if (timestamp != null) {
-      request.queryParam("timestamp", timestamp.getOperator().getValue() + ":" + timestamp.getValue().getEpochSecond() + "." + timestamp.getValue().getNano());
+      request.queryParam(
+          "timestamp",
+          timestamp.getOperator().getValue()
+              + ":"
+              + timestamp.getValue().getEpochSecond()
+              + "."
+              + timestamp.getValue().getNano());
     }
 
     return request.build();
