@@ -4,18 +4,18 @@ import com.hedera.hashgraph.sdk.AccountId;
 import com.hedera.hashgraph.sdk.Hbar;
 import com.hedera.hashgraph.sdk.PublicKey;
 import io.github.manishdait.mirrornodeclientj.CriteriaParam;
-import io.github.manishdait.mirrornodeclientj.JsonParserImpl;
+import io.github.manishdait.mirrornodeclientj.internal.parser.JsonParserImpl;
 import io.github.manishdait.mirrornodeclientj.MirrorNodeClient;
 import io.github.manishdait.mirrornodeclientj.Operator;
 import io.github.manishdait.mirrornodeclientj.Order;
-import io.github.manishdait.mirrornodeclientj.core.MirrorNodeRequest;
-import io.github.manishdait.mirrornodeclientj.data.Account;
+import io.github.manishdait.mirrornodeclientj.internal.core.MirrorNodeRequest;
+import io.github.manishdait.mirrornodeclientj.data.AccountInfo;
 import java.util.List;
 import java.util.Objects;
 import org.jspecify.annotations.NonNull;
 import tools.jackson.databind.JsonNode;
 
-public class GetAccountListQuery extends Query<List<Account>> {
+public class GetAccountListQuery extends Query<List<AccountInfo>> {
   private boolean balance = false;
   private Order order = Order.ASC;
   private int limit = 25;
@@ -123,7 +123,7 @@ public class GetAccountListQuery extends Query<List<Account>> {
   }
 
   @Override
-  List<Account> mapResponse(JsonNode node) {
-    return JsonParserImpl.parseAccounts(node);
+  List<AccountInfo> mapResponse(JsonNode node) {
+    return JsonParserImpl.parseAccountInfos(node);
   }
 }

@@ -3,18 +3,18 @@ package io.github.manishdait.mirrornodeclientj.query;
 import com.hedera.hashgraph.sdk.AccountId;
 import com.hedera.hashgraph.sdk.TokenId;
 import io.github.manishdait.mirrornodeclientj.CriteriaParam;
-import io.github.manishdait.mirrornodeclientj.JsonParserImpl;
+import io.github.manishdait.mirrornodeclientj.internal.parser.JsonParserImpl;
 import io.github.manishdait.mirrornodeclientj.MirrorNodeClient;
 import io.github.manishdait.mirrornodeclientj.Operator;
 import io.github.manishdait.mirrornodeclientj.Order;
-import io.github.manishdait.mirrornodeclientj.core.MirrorNodeRequest;
-import io.github.manishdait.mirrornodeclientj.data.TokenRelationShipInfo;
+import io.github.manishdait.mirrornodeclientj.internal.core.MirrorNodeRequest;
+import io.github.manishdait.mirrornodeclientj.data.TokenRelationShip;
 import java.util.List;
 import java.util.Objects;
 import org.jspecify.annotations.NonNull;
 import tools.jackson.databind.JsonNode;
 
-public class GetTokenRelationshipInfoQuery extends Query<List<TokenRelationShipInfo>> {
+public class GetTokenRelationshipInfoQuery extends Query<List<TokenRelationShip>> {
   private final AccountId accountId;
 
   private Order order = Order.DESC;
@@ -74,7 +74,7 @@ public class GetTokenRelationshipInfoQuery extends Query<List<TokenRelationShipI
   }
 
   @Override
-  List<TokenRelationShipInfo> mapResponse(JsonNode node) {
+  List<TokenRelationShip> mapResponse(JsonNode node) {
     return JsonParserImpl.parseTokenRelationships(node);
   }
 }

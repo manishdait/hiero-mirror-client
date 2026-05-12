@@ -2,16 +2,16 @@ package io.github.manishdait.mirrornodeclientj.query;
 
 import com.hedera.hashgraph.sdk.TokenId;
 import io.github.manishdait.mirrornodeclientj.CriteriaParam;
-import io.github.manishdait.mirrornodeclientj.JsonParserImpl;
+import io.github.manishdait.mirrornodeclientj.internal.parser.JsonParserImpl;
 import io.github.manishdait.mirrornodeclientj.MirrorNodeClient;
 import io.github.manishdait.mirrornodeclientj.Operator;
-import io.github.manishdait.mirrornodeclientj.core.MirrorNodeRequest;
-import io.github.manishdait.mirrornodeclientj.data.Token;
+import io.github.manishdait.mirrornodeclientj.internal.core.MirrorNodeRequest;
+import io.github.manishdait.mirrornodeclientj.data.TokenInfo;
 import java.time.Instant;
 import java.util.Optional;
 import tools.jackson.databind.JsonNode;
 
-public class GetTokenByIdQuery extends Query<Optional<Token>> {
+public class GetTokenByIdQuery extends Query<Optional<TokenInfo>> {
   private final TokenId tokenId;
 
   private CriteriaParam<Instant> timestamp;
@@ -47,7 +47,7 @@ public class GetTokenByIdQuery extends Query<Optional<Token>> {
   }
 
   @Override
-  Optional<Token> mapResponse(JsonNode node) {
-    return JsonParserImpl.parseToken(node);
+  Optional<TokenInfo> mapResponse(JsonNode node) {
+    return JsonParserImpl.parseTokenInfo(node);
   }
 }

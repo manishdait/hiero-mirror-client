@@ -1,4 +1,4 @@
-package io.github.manishdait.mirrornodeclientj.resource;
+package io.github.manishdait.mirrornodeclientj.internal.resource;
 
 import io.github.manishdait.mirrornodeclientj.MirrorNodeClient;
 import io.github.manishdait.mirrornodeclientj.TransactionResource;

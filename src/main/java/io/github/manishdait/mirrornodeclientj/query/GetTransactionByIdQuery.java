@@ -1,8 +1,8 @@
 package io.github.manishdait.mirrornodeclientj.query;
 
-import io.github.manishdait.mirrornodeclientj.JsonParserImpl;
+import io.github.manishdait.mirrornodeclientj.internal.parser.JsonParserImpl;
 import io.github.manishdait.mirrornodeclientj.MirrorNodeClient;
-import io.github.manishdait.mirrornodeclientj.core.MirrorNodeRequest;
+import io.github.manishdait.mirrornodeclientj.internal.core.MirrorNodeRequest;
 import io.github.manishdait.mirrornodeclientj.data.Transaction;
 import java.util.List;
 import java.util.Optional;

@@ -1,4 +1,4 @@
-package io.github.manishdait.mirrornodeclientj;
+package io.github.manishdait.mirrornodeclientj.internal.parser;
 
 import com.hedera.hashgraph.sdk.AccountId;
 import com.hedera.hashgraph.sdk.Key;
@@ -6,7 +6,8 @@ import com.hedera.hashgraph.sdk.Status;
 import com.hedera.hashgraph.sdk.TokenId;
 import com.hedera.hashgraph.sdk.TokenSupplyType;
 import com.hedera.hashgraph.sdk.TokenType;
-import io.github.manishdait.mirrornodeclientj.data.Account;
+import io.github.manishdait.mirrornodeclientj.TransactionType;
+import io.github.manishdait.mirrornodeclientj.data.AccountInfo;
 import io.github.manishdait.mirrornodeclientj.data.AccountBalance;
 import io.github.manishdait.mirrornodeclientj.data.AssessedCustomFee;
 import io.github.manishdait.mirrornodeclientj.data.CryptoAllowance;
@@ -16,14 +17,15 @@ import io.github.manishdait.mirrornodeclientj.data.NftTransfer;
 import io.github.manishdait.mirrornodeclientj.data.StakingReward;
 import io.github.manishdait.mirrornodeclientj.data.StakingRewardTransfer;
 import io.github.manishdait.mirrornodeclientj.data.TimestampRange;
-import io.github.manishdait.mirrornodeclientj.data.Token;
+import io.github.manishdait.mirrornodeclientj.data.TokenInfo;
 import io.github.manishdait.mirrornodeclientj.data.TokenAllowance;
 import io.github.manishdait.mirrornodeclientj.data.TokenFreezeStatus;
 import io.github.manishdait.mirrornodeclientj.data.TokenKycStatus;
-import io.github.manishdait.mirrornodeclientj.data.TokenMetadata;
+import io.github.manishdait.mirrornodeclientj.data.Token;
 import io.github.manishdait.mirrornodeclientj.data.TokenPauseStatus;
-import io.github.manishdait.mirrornodeclientj.data.TokenRelationShipInfo;
+import io.github.manishdait.mirrornodeclientj.data.TokenRelationShip;
 import io.github.manishdait.mirrornodeclientj.data.TokenTransfer;
+import io.github.manishdait.mirrornodeclientj.data.Topic;
 import io.github.manishdait.mirrornodeclientj.data.Transaction;
 import io.github.manishdait.mirrornodeclientj.data.Transfer;
 import java.time.Instant;
@@ -33,11 +35,12 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
+
 import tools.jackson.databind.JsonNode;
 import tools.jackson.databind.node.ArrayNode;
 
 public class JsonParserImpl {
-  public static List<Account> parseAccounts(JsonNode node) {
+  public static List<AccountInfo> parseAccountInfos(JsonNode node) {
     if (node == null
         || node.isEmpty()
         || node.get("accounts").isEmpty()
@@ -47,13 +50,13 @@ public class JsonParserImpl {
 
     try {
       ArrayNode accounts = node.get("accounts").asArray();
-      return accounts.valueStream().map(account -> parseAccount(account).get()).toList();
+      return accounts.valueStream().map(account -> parseAccountInfo(account).get()).toList();
     } catch (Exception e) {
       throw new RuntimeException("Unable to parse json", e);
     }
   }
 
-  public static Optional<Account> parseAccount(JsonNode node) {
+  public static Optional<AccountInfo> parseAccountInfo(JsonNode node) {
     if (node == null || node.isEmpty()) {
       return Optional.empty();
     }
@@ -94,7 +97,7 @@ public class JsonParserImpl {
       }
 
       return Optional.of(
-          new Account(
+          new AccountInfo(
               accountId,
               alias,
               autoRenewPeriod,
@@ -448,7 +451,7 @@ public class JsonParserImpl {
     }
   }
 
-  public static Optional<Token> parseToken(JsonNode node) {
+  public static Optional<TokenInfo> parseTokenInfo(JsonNode node) {
     if (node == null || node.isEmpty()) {
       return Optional.empty();
     }
@@ -497,7 +500,7 @@ public class JsonParserImpl {
       Key wipeKey = JsonUtils.toKey(node, "wipe_key");
 
       return Optional.of(
-          new Token(
+          new TokenInfo(
               adminKey,
               autoRenewAccount,
               autoRenewPeriod,
@@ -531,7 +534,7 @@ public class JsonParserImpl {
     }
   }
 
-  public static List<TokenMetadata> parseTokenMetas(JsonNode node) {
+  public static List<Token> parseTokens(JsonNode node) {
     if (node == null
         || node.isEmpty()
         || node.get("tokens").isEmpty()
@@ -541,13 +544,13 @@ public class JsonParserImpl {
 
     try {
       ArrayNode tokens = node.get("tokens").asArray();
-      return tokens.valueStream().map(token -> parseTokenMeta(token).get()).toList();
+      return tokens.valueStream().map(token -> parseToken(token).get()).toList();
     } catch (Exception e) {
       throw new RuntimeException("Unable to parse json", e);
     }
   }
 
-  public static Optional<TokenMetadata> parseTokenMeta(JsonNode node) {
+  public static Optional<Token> parseToken(JsonNode node) {
     if (node == null || node.isEmpty()) {
       return Optional.empty();
     }
@@ -562,7 +565,7 @@ public class JsonParserImpl {
       byte[] metadata = JsonUtils.toBytes(node, "metadata");
 
       return Optional.of(
-          new TokenMetadata(adminKey, decimals, name, symbol, tokenId, tokenType, metadata));
+          new Token(adminKey, decimals, name, symbol, tokenId, tokenType, metadata));
     } catch (Exception e) {
       throw new RuntimeException("Unable to parse json", e);
     }
@@ -599,7 +602,7 @@ public class JsonParserImpl {
     }
   }
 
-  public static List<TokenRelationShipInfo> parseTokenRelationships(JsonNode node) {
+  public static List<TokenRelationShip> parseTokenRelationships(JsonNode node) {
     if (node == null
         || node.isEmpty()
         || node.get("tokens").isEmpty()
@@ -615,7 +618,7 @@ public class JsonParserImpl {
     }
   }
 
-  public static Optional<TokenRelationShipInfo> parseTokenRelationship(JsonNode node) {
+  public static Optional<TokenRelationShip> parseTokenRelationship(JsonNode node) {
     if (node == null || node.isEmpty()) {
       return Optional.empty();
     }
@@ -630,7 +633,7 @@ public class JsonParserImpl {
       TokenId tokenId = JsonUtils.toEntityId(node, "token_id", TokenId.class);
 
       return Optional.of(
-          new TokenRelationShipInfo(
+          new TokenRelationShip(
               automaticAssociation,
               balance,
               createdTimestamp,
@@ -638,6 +641,39 @@ public class JsonParserImpl {
               freezeStatus,
               kycStatus,
               tokenId));
+    } catch (Exception e) {
+      throw new RuntimeException("Unable to parse json", e);
+    }
+  }
+
+  public static Optional<Topic> parseTopic(JsonNode node) {
+    if (node == null || node.isEmpty()) {
+      return Optional.empty();
+    }
+    try {
+      Key adminKey = JsonUtils.toKey(node, "");
+      Long autoRenewPeriod = JsonUtils.toNullableLong(node, "");
+      AccountId autoRenewAccount = JsonUtils.toEntityId(node, "", AccountId.class);
+      Instant createdTimestamp = JsonUtils.toInstant(node, "");
+      boolean delete = JsonUtils.toBoolean(node, "");
+      List<Key> feeExemptKeyList = null;
+      Key feeScheduleKey = JsonUtils.toKey(node, "");
+
+      return Optional.of(
+        new Topic(
+          null,
+          null,
+          null,
+          null,
+          false,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        )
+      );
     } catch (Exception e) {
       throw new RuntimeException("Unable to parse json", e);
     }

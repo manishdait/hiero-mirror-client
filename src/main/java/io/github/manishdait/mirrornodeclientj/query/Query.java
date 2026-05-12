@@ -1,9 +1,9 @@
 package io.github.manishdait.mirrornodeclientj.query;
 
 import io.github.manishdait.mirrornodeclientj.MirrorNodeClient;
-import io.github.manishdait.mirrornodeclientj.core.MirrorNodeRequest;
-import io.github.manishdait.mirrornodeclientj.core.MirrorNodeResponse;
-import io.github.manishdait.mirrornodeclientj.core.RestClient;
+import io.github.manishdait.mirrornodeclientj.internal.core.MirrorNodeRequest;
+import io.github.manishdait.mirrornodeclientj.internal.core.MirrorNodeResponse;
+import io.github.manishdait.mirrornodeclientj.internal.core.RestClient;
 import java.io.IOException;
 import tools.jackson.databind.JsonNode;
 import tools.jackson.databind.ObjectMapper;

@@ -5,19 +5,19 @@ import com.hedera.hashgraph.sdk.PublicKey;
 import com.hedera.hashgraph.sdk.TokenId;
 import com.hedera.hashgraph.sdk.TokenType;
 import io.github.manishdait.mirrornodeclientj.CriteriaParam;
-import io.github.manishdait.mirrornodeclientj.JsonParserImpl;
+import io.github.manishdait.mirrornodeclientj.internal.parser.JsonParserImpl;
 import io.github.manishdait.mirrornodeclientj.MirrorNodeClient;
 import io.github.manishdait.mirrornodeclientj.Operator;
 import io.github.manishdait.mirrornodeclientj.Order;
-import io.github.manishdait.mirrornodeclientj.core.MirrorNodeRequest;
-import io.github.manishdait.mirrornodeclientj.data.TokenMetadata;
+import io.github.manishdait.mirrornodeclientj.internal.core.MirrorNodeRequest;
+import io.github.manishdait.mirrornodeclientj.data.Token;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import org.jspecify.annotations.NonNull;
 import tools.jackson.databind.JsonNode;
 
-public class GetTokenListQuery extends Query<List<TokenMetadata>> {
+public class GetTokenListQuery extends Query<List<Token>> {
   private Order order = Order.DESC;
   private int limit = 25;
   private String name;
@@ -135,7 +135,7 @@ public class GetTokenListQuery extends Query<List<TokenMetadata>> {
   }
 
   @Override
-  List<TokenMetadata> mapResponse(JsonNode node) {
-    return JsonParserImpl.parseTokenMetas(node);
+  List<Token> mapResponse(JsonNode node) {
+    return JsonParserImpl.parseTokens(node);
   }
 }

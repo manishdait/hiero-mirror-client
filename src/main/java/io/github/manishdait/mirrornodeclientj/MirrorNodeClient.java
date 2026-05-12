@@ -1,8 +1,8 @@
 package io.github.manishdait.mirrornodeclientj;
 
-import io.github.manishdait.mirrornodeclientj.resource.AccountResourceImpl;
-import io.github.manishdait.mirrornodeclientj.resource.TokenResourceImpl;
-import io.github.manishdait.mirrornodeclientj.resource.TransactionResourceImpl;
+import io.github.manishdait.mirrornodeclientj.internal.resource.AccountResourceImpl;
+import io.github.manishdait.mirrornodeclientj.internal.resource.TokenResourceImpl;
+import io.github.manishdait.mirrornodeclientj.internal.resource.TransactionResourceImpl;
 
 public class MirrorNodeClient {
   private final String baseUrl;

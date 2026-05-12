@@ -5,7 +5,7 @@ import com.hedera.hashgraph.sdk.Key;
 import java.time.Instant;
 import java.util.List;
 
-public record Account(
+public record AccountInfo(
     AccountId accountId,
     String alias,
     Long autoRenewPeriod,

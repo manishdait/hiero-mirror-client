@@ -1,4 +1,4 @@
-package io.github.manishdait.mirrornodeclientj;
+package io.github.manishdait.mirrornodeclientj.internal.parser;
 
 import com.hedera.hashgraph.sdk.AccountId;
 import com.hedera.hashgraph.sdk.Key;
@@ -7,6 +7,7 @@ import com.hedera.hashgraph.sdk.Status;
 import com.hedera.hashgraph.sdk.TokenId;
 import com.hedera.hashgraph.sdk.TokenSupplyType;
 import com.hedera.hashgraph.sdk.TokenType;
+import io.github.manishdait.mirrornodeclientj.TransactionType;
 import io.github.manishdait.mirrornodeclientj.data.TokenFreezeStatus;
 import io.github.manishdait.mirrornodeclientj.data.TokenKycStatus;
 import io.github.manishdait.mirrornodeclientj.data.TokenPauseStatus;

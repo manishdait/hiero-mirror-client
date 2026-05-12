@@ -1,4 +1,4 @@
-package io.github.manishdait.mirrornodeclientj.resource;
+package io.github.manishdait.mirrornodeclientj.internal.resource;
 
 import com.hedera.hashgraph.sdk.TokenId;
 import io.github.manishdait.mirrornodeclientj.MirrorNodeClient;

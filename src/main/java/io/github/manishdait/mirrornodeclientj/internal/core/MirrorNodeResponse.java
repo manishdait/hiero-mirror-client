@@ -1,4 +1,4 @@
-package io.github.manishdait.mirrornodeclientj.core;
+package io.github.manishdait.mirrornodeclientj.internal.core;
 
 import org.jspecify.annotations.Nullable;
 

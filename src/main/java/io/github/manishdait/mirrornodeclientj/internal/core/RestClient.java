@@ -1,4 +1,4 @@
-package io.github.manishdait.mirrornodeclientj.core;
+package io.github.manishdait.mirrornodeclientj.internal.core;
 
 import java.io.IOException;
 import java.net.URI;
