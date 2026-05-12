@@ -7,8 +7,8 @@ import com.hedera.hashgraph.sdk.TokenId;
 import com.hedera.hashgraph.sdk.TokenSupplyType;
 import com.hedera.hashgraph.sdk.TokenType;
 import io.github.manishdait.mirrornodeclientj.TransactionType;
-import io.github.manishdait.mirrornodeclientj.data.AccountInfo;
 import io.github.manishdait.mirrornodeclientj.data.AccountBalance;
+import io.github.manishdait.mirrornodeclientj.data.AccountInfo;
 import io.github.manishdait.mirrornodeclientj.data.AssessedCustomFee;
 import io.github.manishdait.mirrornodeclientj.data.CryptoAllowance;
 import io.github.manishdait.mirrornodeclientj.data.CustomFee;
@@ -17,11 +17,11 @@ import io.github.manishdait.mirrornodeclientj.data.NftTransfer;
 import io.github.manishdait.mirrornodeclientj.data.StakingReward;
 import io.github.manishdait.mirrornodeclientj.data.StakingRewardTransfer;
 import io.github.manishdait.mirrornodeclientj.data.TimestampRange;
-import io.github.manishdait.mirrornodeclientj.data.TokenInfo;
+import io.github.manishdait.mirrornodeclientj.data.Token;
 import io.github.manishdait.mirrornodeclientj.data.TokenAllowance;
 import io.github.manishdait.mirrornodeclientj.data.TokenFreezeStatus;
+import io.github.manishdait.mirrornodeclientj.data.TokenInfo;
 import io.github.manishdait.mirrornodeclientj.data.TokenKycStatus;
-import io.github.manishdait.mirrornodeclientj.data.Token;
 import io.github.manishdait.mirrornodeclientj.data.TokenPauseStatus;
 import io.github.manishdait.mirrornodeclientj.data.TokenRelationShip;
 import io.github.manishdait.mirrornodeclientj.data.TokenTransfer;
@@ -35,7 +35,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
-
 import tools.jackson.databind.JsonNode;
 import tools.jackson.databind.node.ArrayNode;
 
@@ -564,8 +563,7 @@ public class JsonParserImpl {
       TokenType tokenType = JsonUtils.toEnum(node, "type", TokenType.class);
       byte[] metadata = JsonUtils.toBytes(node, "metadata");
 
-      return Optional.of(
-          new Token(adminKey, decimals, name, symbol, tokenId, tokenType, metadata));
+      return Optional.of(new Token(adminKey, decimals, name, symbol, tokenId, tokenType, metadata));
     } catch (Exception e) {
       throw new RuntimeException("Unable to parse json", e);
     }
@@ -660,20 +658,7 @@ public class JsonParserImpl {
       Key feeScheduleKey = JsonUtils.toKey(node, "");
 
       return Optional.of(
-        new Topic(
-          null,
-          null,
-          null,
-          null,
-          false,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null
-        )
-      );
+          new Topic(null, null, null, null, false, null, null, null, null, null, null));
     } catch (Exception e) {
       throw new RuntimeException("Unable to parse json", e);
     }

@@ -1,4 +1,3 @@
 package io.github.manishdait.mirrornodeclientj;
 
-public interface TopicResource {
-}
+public interface TopicResource {}

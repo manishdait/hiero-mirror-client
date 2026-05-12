@@ -2,11 +2,11 @@ package io.github.manishdait.mirrornodeclientj.query;
 
 import com.hedera.hashgraph.sdk.TokenId;
 import io.github.manishdait.mirrornodeclientj.CriteriaParam;
-import io.github.manishdait.mirrornodeclientj.internal.parser.JsonParserImpl;
 import io.github.manishdait.mirrornodeclientj.MirrorNodeClient;
 import io.github.manishdait.mirrornodeclientj.Operator;
-import io.github.manishdait.mirrornodeclientj.internal.core.MirrorNodeRequest;
 import io.github.manishdait.mirrornodeclientj.data.TokenInfo;
+import io.github.manishdait.mirrornodeclientj.internal.core.MirrorNodeRequest;
+import io.github.manishdait.mirrornodeclientj.internal.parser.JsonParserImpl;
 import java.time.Instant;
 import java.util.Optional;
 import tools.jackson.databind.JsonNode;
