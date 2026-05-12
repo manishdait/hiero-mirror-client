@@ -17,10 +17,9 @@ public class RestClient {
   public static MirrorNodeResponse send(@NonNull final MirrorNodeRequest request)
       throws IOException, InterruptedException {
     Objects.requireNonNull(request, "request must not be null");
+
     HttpRequest httpRequest =
         HttpRequest.newBuilder().uri(URI.create(parseUrl(request))).GET().build();
-
-    System.out.println(parseUrl(request));
 
     HttpResponse<String> httpResponse =
         client.send(httpRequest, HttpResponse.BodyHandlers.ofString());

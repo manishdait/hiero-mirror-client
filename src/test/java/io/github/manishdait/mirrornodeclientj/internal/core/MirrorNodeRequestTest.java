@@ -1,8 +1,7 @@
-package io.github.manishdait.mirrornodeclientj.core;
+package io.github.manishdait.mirrornodeclientj.internal.core;
 
 import java.util.List;
 
-import io.github.manishdait.mirrornodeclientj.internal.core.MirrorNodeRequest;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 
