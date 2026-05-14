@@ -27,6 +27,7 @@ import io.github.manishdait.mirrornodeclientj.data.TokenPauseStatus;
 import io.github.manishdait.mirrornodeclientj.data.TokenRelationShip;
 import io.github.manishdait.mirrornodeclientj.data.TokenTransfer;
 import io.github.manishdait.mirrornodeclientj.data.Topic;
+import io.github.manishdait.mirrornodeclientj.data.TopicMessage;
 import io.github.manishdait.mirrornodeclientj.data.Transaction;
 import io.github.manishdait.mirrornodeclientj.data.Transfer;
 import java.time.Instant;
@@ -652,14 +653,18 @@ public class JsonParserImpl {
     try {
       Key adminKey = JsonUtils.toKey(node, "admin_key");
       Long autoRenewPeriod = JsonUtils.toNullableLong(node, "auto_renew_period");
-      AccountId autoRenewAccount = JsonUtils.toEntityId(node, "auto_renew_account", AccountId.class);
+      AccountId autoRenewAccount =
+          JsonUtils.toEntityId(node, "auto_renew_account", AccountId.class);
       Instant createdTimestamp = JsonUtils.toInstant(node, "created_timestamp");
       boolean delete = JsonUtils.toBoolean(node, "deleted");
       List<Key> feeExemptKeyList = null;
       if (node.has("fee_exempt_key_list") && node.get("fee_exempt_key_list").isNull()) {
-        feeExemptKeyList = node.get("fee_exempt_key_list").asArray().valueStream()
-          .map(fee -> JsonUtils.toKey(fee))
-          .collect(Collectors.toUnmodifiableList());
+        feeExemptKeyList =
+            node.get("fee_exempt_key_list")
+                .asArray()
+                .valueStream()
+                .map(fee -> JsonUtils.toKey(fee))
+                .collect(Collectors.toUnmodifiableList());
       }
 
       Key feeScheduleKey = JsonUtils.toKey(node, "fee_schedule_key");
@@ -679,17 +684,60 @@ public class JsonParserImpl {
 
       return Optional.of(
           new Topic(
-            adminKey,
-            autoRenewAccount,
-            autoRenewPeriod,
-            createdTimestamp,
-            delete,
-            feeExemptKeyList,
-            feeScheduleKey,
-            memo,
-            submitKey,
-            timestampRange,
-            topicId));
+              adminKey,
+              autoRenewAccount,
+              autoRenewPeriod,
+              createdTimestamp,
+              delete,
+              feeExemptKeyList,
+              feeScheduleKey,
+              memo,
+              submitKey,
+              timestampRange,
+              topicId));
+    } catch (Exception e) {
+      throw new RuntimeException("Unable to parse json", e);
+    }
+  }
+
+  public static Optional<TopicMessage> parseTopicMessage(JsonNode node) {
+    if (node == null || node.isEmpty()) {
+      return Optional.empty();
+    }
+    try {
+      Instant consensusTimestamp = JsonUtils.toInstant(node, "consensus_timestamp");
+      String message = JsonUtils.toNullableString(node, "message");
+      AccountId payerAccountId = JsonUtils.toEntityId(node, "payer_account_id", AccountId.class);
+      byte[] runningHash = JsonUtils.toBytes(node, "running_hash");
+      int runningHashVersion = JsonUtils.toInt(node, "running_hash_version");
+      long sequenceNumber = JsonUtils.toLong(node, "sequence_number");
+      TopicId topicId = JsonUtils.toEntityId(node, "topic_id", TopicId.class);
+
+      return Optional.of(
+          new TopicMessage(
+              consensusTimestamp,
+              message,
+              payerAccountId,
+              runningHash,
+              runningHashVersion,
+              sequenceNumber,
+              topicId));
+    } catch (Exception e) {
+      throw new RuntimeException("Unable to parse json", e);
+    }
+  }
+
+  public static List<TopicMessage> parseTopicMessages(JsonNode node) {
+    if (node == null
+        || node.isEmpty()
+        || node.get("messages").isEmpty()
+        || !node.get("messages").isArray()) {
+      return List.of();
+    }
+
+    try {
+      ArrayNode messages = node.get("messages").asArray();
+      return messages.valueStream().map(message -> parseTopicMessage(message).get()).toList();
     } catch (Exception e) {
       throw new RuntimeException("Unable to parse json", e);
     }
