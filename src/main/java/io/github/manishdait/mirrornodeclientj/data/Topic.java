@@ -11,6 +11,7 @@ public record Topic(
     AccountId autoRenewAccount,
     Long autoRenewPeriod,
     Instant createdTimestamp,
+    // TODO: Custom Fee
     boolean deleted,
     List<Key> feeExemptKeyList,
     Key feeScheduleKey,

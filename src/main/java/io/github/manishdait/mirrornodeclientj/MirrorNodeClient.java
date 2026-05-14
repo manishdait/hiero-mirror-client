@@ -2,6 +2,7 @@ package io.github.manishdait.mirrornodeclientj;
 
 import io.github.manishdait.mirrornodeclientj.internal.resource.AccountResourceImpl;
 import io.github.manishdait.mirrornodeclientj.internal.resource.TokenResourceImpl;
+import io.github.manishdait.mirrornodeclientj.internal.resource.TopicResourceImpl;
 import io.github.manishdait.mirrornodeclientj.internal.resource.TransactionResourceImpl;
 
 public class MirrorNodeClient {
@@ -29,5 +30,9 @@ public class MirrorNodeClient {
 
   public TransactionResource transactions() {
     return new TransactionResourceImpl(this);
+  }
+
+  public TopicResource topicResource() {
+    return new TopicResourceImpl(this);
   }
 }

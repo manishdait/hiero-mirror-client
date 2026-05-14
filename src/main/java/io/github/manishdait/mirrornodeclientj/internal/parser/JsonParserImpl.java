@@ -6,6 +6,7 @@ import com.hedera.hashgraph.sdk.Status;
 import com.hedera.hashgraph.sdk.TokenId;
 import com.hedera.hashgraph.sdk.TokenSupplyType;
 import com.hedera.hashgraph.sdk.TokenType;
+import com.hedera.hashgraph.sdk.TopicId;
 import io.github.manishdait.mirrornodeclientj.TransactionType;
 import io.github.manishdait.mirrornodeclientj.data.AccountBalance;
 import io.github.manishdait.mirrornodeclientj.data.AccountInfo;
@@ -649,16 +650,46 @@ public class JsonParserImpl {
       return Optional.empty();
     }
     try {
-      Key adminKey = JsonUtils.toKey(node, "");
-      Long autoRenewPeriod = JsonUtils.toNullableLong(node, "");
-      AccountId autoRenewAccount = JsonUtils.toEntityId(node, "", AccountId.class);
-      Instant createdTimestamp = JsonUtils.toInstant(node, "");
-      boolean delete = JsonUtils.toBoolean(node, "");
+      Key adminKey = JsonUtils.toKey(node, "admin_key");
+      Long autoRenewPeriod = JsonUtils.toNullableLong(node, "auto_renew_period");
+      AccountId autoRenewAccount = JsonUtils.toEntityId(node, "auto_renew_account", AccountId.class);
+      Instant createdTimestamp = JsonUtils.toInstant(node, "created_timestamp");
+      boolean delete = JsonUtils.toBoolean(node, "deleted");
       List<Key> feeExemptKeyList = null;
-      Key feeScheduleKey = JsonUtils.toKey(node, "");
+      if (node.has("fee_exempt_key_list") && node.get("fee_exempt_key_list").isNull()) {
+        feeExemptKeyList = node.get("fee_exempt_key_list").asArray().valueStream()
+          .map(fee -> JsonUtils.toKey(fee))
+          .collect(Collectors.toUnmodifiableList());
+      }
+
+      Key feeScheduleKey = JsonUtils.toKey(node, "fee_schedule_key");
+      String memo = JsonUtils.toNullableString(node, "memo");
+      Key submitKey = JsonUtils.toKey(node, "submit_key");
+
+      TimestampRange timestampRange = null;
+      if (node.has("timestamp")) {
+        JsonNode timestamp = node.get("timestamp");
+        Instant from = JsonUtils.toInstant(timestamp, "from");
+        Instant to = JsonUtils.toInstant(timestamp, "to");
+
+        timestampRange = new TimestampRange(from, to);
+      }
+
+      TopicId topicId = JsonUtils.toEntityId(node, "topic_id", TopicId.class);
 
       return Optional.of(
-          new Topic(null, null, null, null, false, null, null, null, null, null, null));
+          new Topic(
+            adminKey,
+            autoRenewAccount,
+            autoRenewPeriod,
+            createdTimestamp,
+            delete,
+            feeExemptKeyList,
+            feeScheduleKey,
+            memo,
+            submitKey,
+            timestampRange,
+            topicId));
     } catch (Exception e) {
       throw new RuntimeException("Unable to parse json", e);
     }

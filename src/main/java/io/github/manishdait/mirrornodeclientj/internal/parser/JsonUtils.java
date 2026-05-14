@@ -7,6 +7,7 @@ import com.hedera.hashgraph.sdk.Status;
 import com.hedera.hashgraph.sdk.TokenId;
 import com.hedera.hashgraph.sdk.TokenSupplyType;
 import com.hedera.hashgraph.sdk.TokenType;
+import com.hedera.hashgraph.sdk.TopicId;
 import io.github.manishdait.mirrornodeclientj.TransactionType;
 import io.github.manishdait.mirrornodeclientj.data.TokenFreezeStatus;
 import io.github.manishdait.mirrornodeclientj.data.TokenKycStatus;
@@ -27,7 +28,10 @@ public class JsonUtils {
     }
 
     JsonNode keyNode = node.get(label);
+    return toKey(keyNode);
+  }
 
+  public static Key toKey(JsonNode keyNode) {
     String keyType = keyNode.get("_type").asString();
     String keyHex = keyNode.get("key").asString();
 
@@ -132,6 +136,7 @@ public class JsonUtils {
     return switch (clazz.getSimpleName()) {
       case "AccountId" -> clazz.cast(AccountId.fromString(entityId));
       case "TokenId" -> clazz.cast(TokenId.fromString(entityId));
+      case "TopicId" -> clazz.cast(TopicId.fromString(entityId));
       default -> throw new RuntimeException("Unsupported class");
     };
   }
