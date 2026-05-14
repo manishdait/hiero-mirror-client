@@ -7,7 +7,7 @@ import com.hedera.hashgraph.sdk.TokenId;
 import com.hedera.hashgraph.sdk.TokenSupplyType;
 import com.hedera.hashgraph.sdk.TokenType;
 import com.hedera.hashgraph.sdk.TopicId;
-import io.github.manishdait.mirrornodeclientj.TransactionType;
+import io.github.manishdait.mirrornodeclientj.data.TransactionType;
 import io.github.manishdait.mirrornodeclientj.data.AccountBalance;
 import io.github.manishdait.mirrornodeclientj.data.AccountInfo;
 import io.github.manishdait.mirrornodeclientj.data.AssessedCustomFee;

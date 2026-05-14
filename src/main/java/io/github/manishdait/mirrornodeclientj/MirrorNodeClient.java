@@ -1,5 +1,6 @@
 package io.github.manishdait.mirrornodeclientj;
 
+import io.github.manishdait.mirrornodeclientj.data.NetworkType;
 import io.github.manishdait.mirrornodeclientj.internal.resource.AccountResourceImpl;
 import io.github.manishdait.mirrornodeclientj.internal.resource.TokenResourceImpl;
 import io.github.manishdait.mirrornodeclientj.internal.resource.TopicResourceImpl;

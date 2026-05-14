@@ -1,19 +1,15 @@
-package io.github.manishdait.mirrornodeclientj;
+package io.github.manishdait.mirrornodeclientj.data;
 
 import java.util.Objects;
 import org.jspecify.annotations.NonNull;
 
-public enum Operator {
-  EQ("eq"),
-  GT("gt"),
-  GTE("gte"),
-  LT("lt"),
-  LTE("lte"),
-  NE("ne");
+public enum Order {
+  ASC("asc"),
+  DESC("desc");
 
   private final String value;
 
-  Operator(String value) {
+  Order(String value) {
     this.value = Objects.requireNonNull(value, "value must not be null");
     ;
   }

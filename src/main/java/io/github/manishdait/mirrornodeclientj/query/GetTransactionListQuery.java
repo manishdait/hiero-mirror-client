@@ -1,13 +1,13 @@
 package io.github.manishdait.mirrornodeclientj.query;
 
 import com.hedera.hashgraph.sdk.AccountId;
-import io.github.manishdait.mirrornodeclientj.BalanceModifier;
-import io.github.manishdait.mirrornodeclientj.CriteriaParam;
+import io.github.manishdait.mirrornodeclientj.data.BalanceModifier;
+import io.github.manishdait.mirrornodeclientj.data.CriteriaParam;
 import io.github.manishdait.mirrornodeclientj.MirrorNodeClient;
-import io.github.manishdait.mirrornodeclientj.Operator;
-import io.github.manishdait.mirrornodeclientj.Order;
-import io.github.manishdait.mirrornodeclientj.TransactionResult;
-import io.github.manishdait.mirrornodeclientj.TransactionType;
+import io.github.manishdait.mirrornodeclientj.data.Operator;
+import io.github.manishdait.mirrornodeclientj.data.Order;
+import io.github.manishdait.mirrornodeclientj.data.TransactionResult;
+import io.github.manishdait.mirrornodeclientj.data.TransactionType;
 import io.github.manishdait.mirrornodeclientj.data.Transaction;
 import io.github.manishdait.mirrornodeclientj.internal.core.MirrorNodeRequest;
 import io.github.manishdait.mirrornodeclientj.internal.parser.JsonParserImpl;

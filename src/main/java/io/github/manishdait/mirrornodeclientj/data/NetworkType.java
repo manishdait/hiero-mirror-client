@@ -1,4 +1,4 @@
-package io.github.manishdait.mirrornodeclientj;
+package io.github.manishdait.mirrornodeclientj.data;
 
 import java.util.Objects;
 import org.jspecify.annotations.NonNull;

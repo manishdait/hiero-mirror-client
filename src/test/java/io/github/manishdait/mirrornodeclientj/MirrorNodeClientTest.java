@@ -1,6 +1,8 @@
 package io.github.manishdait.mirrornodeclientj;
 
 import java.io.IOException;
+
+import io.github.manishdait.mirrornodeclientj.data.NetworkType;
 import org.junit.jupiter.api.Test;
 
 public class MirrorNodeClientTest {
