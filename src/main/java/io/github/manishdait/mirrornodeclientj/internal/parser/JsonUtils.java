@@ -8,10 +8,10 @@ import com.hedera.hashgraph.sdk.TokenId;
 import com.hedera.hashgraph.sdk.TokenSupplyType;
 import com.hedera.hashgraph.sdk.TokenType;
 import com.hedera.hashgraph.sdk.TopicId;
-import io.github.manishdait.mirrornodeclientj.data.TransactionType;
 import io.github.manishdait.mirrornodeclientj.data.TokenFreezeStatus;
 import io.github.manishdait.mirrornodeclientj.data.TokenKycStatus;
 import io.github.manishdait.mirrornodeclientj.data.TokenPauseStatus;
+import io.github.manishdait.mirrornodeclientj.data.TransactionType;
 import java.time.Instant;
 import java.util.HexFormat;
 import java.util.Objects;
@@ -117,6 +117,13 @@ public class JsonUtils {
     Objects.requireNonNull(label, "label must not be null");
 
     return node.has(label) && !node.get(label).isNull() ? node.get(label).asInt() : 0;
+  }
+
+  public static float toFloat(final @NonNull JsonNode node, final @NonNull String label) {
+    Objects.requireNonNull(node, "node must not be null");
+    Objects.requireNonNull(label, "label must not be null");
+
+    return node.has(label) && !node.get(label).isNull() ? node.get(label).asFloat() : 0.0f;
   }
 
   public static <T> T toEntityId(

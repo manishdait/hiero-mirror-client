@@ -2,6 +2,7 @@ package io.github.manishdait.mirrornodeclientj;
 
 import io.github.manishdait.mirrornodeclientj.data.NetworkType;
 import io.github.manishdait.mirrornodeclientj.internal.resource.AccountResourceImpl;
+import io.github.manishdait.mirrornodeclientj.internal.resource.NetworkResourceImpl;
 import io.github.manishdait.mirrornodeclientj.internal.resource.TokenResourceImpl;
 import io.github.manishdait.mirrornodeclientj.internal.resource.TopicResourceImpl;
 import io.github.manishdait.mirrornodeclientj.internal.resource.TransactionResourceImpl;
@@ -33,7 +34,11 @@ public class MirrorNodeClient {
     return new TransactionResourceImpl(this);
   }
 
-  public TopicResource topicResource() {
+  public TopicResource topics() {
     return new TopicResourceImpl(this);
+  }
+
+  public NetworkResource network() {
+    return new NetworkResourceImpl(this);
   }
 }

@@ -1,50 +1,31 @@
 package io.github.manishdait.mirrornodeclientj.query;
 
-import com.hedera.hashgraph.sdk.AccountId;
 import io.github.manishdait.mirrornodeclientj.MirrorNodeClient;
 import io.github.manishdait.mirrornodeclientj.data.CriteriaParam;
+import io.github.manishdait.mirrornodeclientj.data.ExchangeRate;
 import io.github.manishdait.mirrornodeclientj.data.Operator;
-import io.github.manishdait.mirrornodeclientj.data.Order;
-import io.github.manishdait.mirrornodeclientj.data.StakingReward;
 import io.github.manishdait.mirrornodeclientj.internal.core.MirrorNodeRequest;
 import io.github.manishdait.mirrornodeclientj.internal.parser.JsonParserImpl;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 import org.jspecify.annotations.NonNull;
 import tools.jackson.databind.JsonNode;
 
-public class GetStackingRewardQuery extends Query<List<StakingReward>> {
-  private final AccountId accountId;
-
-  private Order order = Order.DESC;
-  private int limit = 25;
+public class NetworkExchangeRateQuery extends Query<Optional<ExchangeRate>> {
   private final List<CriteriaParam<Instant>> timestamps = new ArrayList<>();
 
-  public GetStackingRewardQuery(MirrorNodeClient client, AccountId accountId) {
+  public NetworkExchangeRateQuery(MirrorNodeClient client) {
     super(client);
-    this.accountId = accountId;
   }
 
-  public GetStackingRewardQuery limit(final int limit) {
-    if (limit <= 0) {
-      throw new IllegalArgumentException("limit must be greater than 0");
-    }
-    this.limit = limit;
-    return this;
-  }
-
-  public GetStackingRewardQuery order(final @NonNull Order order) {
-    Objects.requireNonNull(order, "order must not be null");
-    this.order = order;
-    return this;
-  }
-
-  public GetStackingRewardQuery timestamp(
+  public NetworkExchangeRateQuery timestamp(
       final @NonNull Operator operator, final @NonNull Instant timestamp) {
     Objects.requireNonNull(operator, "operator must not be null");
     Objects.requireNonNull(timestamp, "timestamp must not be null");
+
     this.timestamps.add(new CriteriaParam<>(operator, timestamp));
     return this;
   }
@@ -52,11 +33,7 @@ public class GetStackingRewardQuery extends Query<List<StakingReward>> {
   @Override
   MirrorNodeRequest buildRequest() {
     MirrorNodeRequest.Builder request =
-        MirrorNodeRequest.newBuilder()
-            .url(this.client.getBaseUrl() + "/api/v1/accounts/" + accountId + "/rewards")
-            .method("GET")
-            .queryParam("limit", String.valueOf(limit))
-            .queryParam("order", order.getValue());
+        MirrorNodeRequest.newBuilder().url(client.getBaseUrl() + "/api/v1/network/exchangerate");
 
     for (CriteriaParam<Instant> timestamp : timestamps) {
       request.queryParam(
@@ -72,7 +49,7 @@ public class GetStackingRewardQuery extends Query<List<StakingReward>> {
   }
 
   @Override
-  List<StakingReward> mapResponse(JsonNode node) {
-    return JsonParserImpl.parseStakingRewards(node);
+  Optional<ExchangeRate> mapResponse(JsonNode node) {
+    return JsonParserImpl.parseExchangeRate(node);
   }
 }

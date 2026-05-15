@@ -1,8 +1,8 @@
 package io.github.manishdait.mirrornodeclientj.query;
 
 import com.hedera.hashgraph.sdk.TokenId;
-import io.github.manishdait.mirrornodeclientj.data.CriteriaParam;
 import io.github.manishdait.mirrornodeclientj.MirrorNodeClient;
+import io.github.manishdait.mirrornodeclientj.data.CriteriaParam;
 import io.github.manishdait.mirrornodeclientj.data.Operator;
 import io.github.manishdait.mirrornodeclientj.data.TokenInfo;
 import io.github.manishdait.mirrornodeclientj.internal.core.MirrorNodeRequest;

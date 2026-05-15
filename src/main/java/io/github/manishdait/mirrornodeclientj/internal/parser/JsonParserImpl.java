@@ -7,14 +7,17 @@ import com.hedera.hashgraph.sdk.TokenId;
 import com.hedera.hashgraph.sdk.TokenSupplyType;
 import com.hedera.hashgraph.sdk.TokenType;
 import com.hedera.hashgraph.sdk.TopicId;
-import io.github.manishdait.mirrornodeclientj.data.TransactionType;
 import io.github.manishdait.mirrornodeclientj.data.AccountBalance;
 import io.github.manishdait.mirrornodeclientj.data.AccountInfo;
 import io.github.manishdait.mirrornodeclientj.data.AssessedCustomFee;
 import io.github.manishdait.mirrornodeclientj.data.CryptoAllowance;
 import io.github.manishdait.mirrornodeclientj.data.CustomFee;
+import io.github.manishdait.mirrornodeclientj.data.ExchangeRate;
+import io.github.manishdait.mirrornodeclientj.data.NetworkFee;
+import io.github.manishdait.mirrornodeclientj.data.NetworkSupply;
 import io.github.manishdait.mirrornodeclientj.data.NftAllowance;
 import io.github.manishdait.mirrornodeclientj.data.NftTransfer;
+import io.github.manishdait.mirrornodeclientj.data.StakeInfo;
 import io.github.manishdait.mirrornodeclientj.data.StakingReward;
 import io.github.manishdait.mirrornodeclientj.data.StakingRewardTransfer;
 import io.github.manishdait.mirrornodeclientj.data.TimestampRange;
@@ -29,6 +32,7 @@ import io.github.manishdait.mirrornodeclientj.data.TokenTransfer;
 import io.github.manishdait.mirrornodeclientj.data.Topic;
 import io.github.manishdait.mirrornodeclientj.data.TopicMessage;
 import io.github.manishdait.mirrornodeclientj.data.Transaction;
+import io.github.manishdait.mirrornodeclientj.data.TransactionType;
 import io.github.manishdait.mirrornodeclientj.data.Transfer;
 import java.time.Instant;
 import java.util.ArrayList;
@@ -658,7 +662,7 @@ public class JsonParserImpl {
       Instant createdTimestamp = JsonUtils.toInstant(node, "created_timestamp");
       boolean delete = JsonUtils.toBoolean(node, "deleted");
       List<Key> feeExemptKeyList = null;
-      if (node.has("fee_exempt_key_list") && node.get("fee_exempt_key_list").isNull()) {
+      if (node.has("fee_exempt_key_list") && !node.get("fee_exempt_key_list").isNull()) {
         feeExemptKeyList =
             node.get("fee_exempt_key_list")
                 .asArray()
@@ -738,6 +742,136 @@ public class JsonParserImpl {
     try {
       ArrayNode messages = node.get("messages").asArray();
       return messages.valueStream().map(message -> parseTopicMessage(message).get()).toList();
+    } catch (Exception e) {
+      throw new RuntimeException("Unable to parse json", e);
+    }
+  }
+
+  public static Optional<NetworkFee> parseNetworkFee(JsonNode node) {
+    if (node == null || node.isEmpty()) {
+      return Optional.empty();
+    }
+
+    try {
+      List<NetworkFee.Fee> fees = null;
+      if (node.has("fees") && !node.get("fees").isNull()) {
+        fees =
+            node.get("fees")
+                .asArray()
+                .valueStream()
+                .map(
+                    fee ->
+                        new NetworkFee.Fee(
+                            JsonUtils.toLong(fee, "gas"),
+                            JsonUtils.toNullableString(fee, "transaction_type")))
+                .collect(Collectors.toUnmodifiableList());
+      }
+
+      Instant timestamp = JsonUtils.toInstant(node, "timestamp");
+
+      return Optional.of(new NetworkFee(fees, timestamp));
+    } catch (Exception e) {
+      throw new RuntimeException("Unable to parse json", e);
+    }
+  }
+
+  public static Optional<NetworkSupply> parseNetworkSupply(JsonNode node) {
+    if (node == null || node.isEmpty()) {
+      return Optional.empty();
+    }
+
+    try {
+      String releaseSupply = JsonUtils.toNullableString(node, "released_supply");
+      String totalSupply = JsonUtils.toNullableString(node, "total_supply");
+      Instant timestamp = JsonUtils.toInstant(node, "timestamp");
+
+      return Optional.of(new NetworkSupply(releaseSupply, timestamp, totalSupply));
+    } catch (Exception e) {
+      throw new RuntimeException("Unable to parse json", e);
+    }
+  }
+
+  public static Optional<ExchangeRate> parseExchangeRate(JsonNode node) {
+    if (node == null || node.isEmpty()) {
+      return Optional.empty();
+    }
+
+    try {
+      ExchangeRate.Rate currentRate = null;
+      if (node.has("current_rate") && !node.get("current_rate").isNull()) {
+        JsonNode rate = node.get("current_rate");
+        currentRate =
+            new ExchangeRate.Rate(
+                JsonUtils.toInt(rate, "cent_equivalent"),
+                JsonUtils.toLong(rate, "expiration_time"),
+                JsonUtils.toInt(rate, "hbar_equivalent"));
+      }
+
+      ExchangeRate.Rate nextRate = null;
+      if (node.has("next_rate") && !node.get("next_rate").isNull()) {
+        JsonNode rate = node.get("next_rate");
+        nextRate =
+            new ExchangeRate.Rate(
+                JsonUtils.toInt(rate, "cent_equivalent"),
+                JsonUtils.toLong(rate, "expiration_time"),
+                JsonUtils.toInt(rate, "hbar_equivalent"));
+      }
+
+      Instant timestamp = JsonUtils.toInstant(node, "timestamp");
+
+      return Optional.of(new ExchangeRate(currentRate, nextRate, timestamp));
+    } catch (Exception e) {
+      throw new RuntimeException("Unable to parse json", e);
+    }
+  }
+
+  public static Optional<StakeInfo> parseStakeInfo(JsonNode node) {
+    if (node == null || node.isEmpty()) {
+      return Optional.empty();
+    }
+
+    try {
+      long maxStakeRewarded = JsonUtils.toLong(node, "max_stake_rewarded");
+      long maxStakingRewardRatePerHbar = JsonUtils.toLong(node, "max_staking_reward_rate_per_hbar");
+      long maxTotalReward = JsonUtils.toLong(node, "max_total_reward");
+      float nodeRewardFeeFraction = JsonUtils.toFloat(node, "node_reward_fee_fraction");
+      long reservedStakingRewards = JsonUtils.toLong(node, "reserved_staking_rewards");
+      long rewardBalanceThreshold = JsonUtils.toLong(node, "reward_balance_threshold");
+      long stakeTotal = JsonUtils.toLong(node, "stake_total");
+
+      TimestampRange stakingPeriod = null;
+      if (node.has("staking_period")) {
+        JsonNode timestamp = node.get("staking_period");
+        Instant from = JsonUtils.toInstant(timestamp, "from");
+        Instant to = JsonUtils.toInstant(timestamp, "to");
+
+        stakingPeriod = new TimestampRange(from, to);
+      }
+
+      long stakingPeriodDuration = JsonUtils.toLong(node, "staking_period_duration");
+      long stakingPeriodsStored = JsonUtils.toLong(node, "staking_periods_stored");
+      float stakingRewardFeeFraction = JsonUtils.toFloat(node, "staking_reward_fee_fraction");
+      long stakingRewardRate = JsonUtils.toLong(node, "staking_reward_rate");
+      long stakingStartThreshold = JsonUtils.toLong(node, "staking_start_threshold");
+      long unreservedStakingRewardBalance =
+          JsonUtils.toLong(node, "unreserved_staking_reward_balance");
+
+      return Optional.of(
+          new StakeInfo(
+              maxStakeRewarded,
+              maxStakingRewardRatePerHbar,
+              maxTotalReward,
+              nodeRewardFeeFraction,
+              reservedStakingRewards,
+              rewardBalanceThreshold,
+              stakeTotal,
+              stakingPeriod,
+              stakingPeriodDuration,
+              stakingPeriodsStored,
+              stakingRewardFeeFraction,
+              stakingRewardRate,
+              stakingStartThreshold,
+              unreservedStakingRewardBalance));
     } catch (Exception e) {
       throw new RuntimeException("Unable to parse json", e);
     }
