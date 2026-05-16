@@ -2,6 +2,7 @@ package io.github.manishdait.mirrornodeclientj;
 
 import io.github.manishdait.mirrornodeclientj.data.NetworkType;
 import io.github.manishdait.mirrornodeclientj.internal.resource.AccountResourceImpl;
+import io.github.manishdait.mirrornodeclientj.internal.resource.BlockResourceImpl;
 import io.github.manishdait.mirrornodeclientj.internal.resource.NetworkResourceImpl;
 import io.github.manishdait.mirrornodeclientj.internal.resource.TokenResourceImpl;
 import io.github.manishdait.mirrornodeclientj.internal.resource.TopicResourceImpl;
@@ -40,5 +41,9 @@ public class MirrorNodeClient {
 
   public NetworkResource network() {
     return new NetworkResourceImpl(this);
+  }
+
+  public BlockResource blocks() {
+    return new BlockResourceImpl(this);
   }
 }

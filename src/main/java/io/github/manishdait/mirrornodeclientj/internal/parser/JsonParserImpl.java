@@ -12,6 +12,7 @@ import com.hedera.hashgraph.sdk.TopicId;
 import io.github.manishdait.mirrornodeclientj.data.AccountBalance;
 import io.github.manishdait.mirrornodeclientj.data.AccountInfo;
 import io.github.manishdait.mirrornodeclientj.data.AssessedCustomFee;
+import io.github.manishdait.mirrornodeclientj.data.Block;
 import io.github.manishdait.mirrornodeclientj.data.BlockNodeEndpoint;
 import io.github.manishdait.mirrornodeclientj.data.CryptoAllowance;
 import io.github.manishdait.mirrornodeclientj.data.CustomFee;
@@ -1069,6 +1070,65 @@ public class JsonParserImpl {
               description,
               registeredNodeId,
               serviceEndpoint,
+              timestamp));
+    } catch (Exception e) {
+      throw new RuntimeException("Unable to parse json", e);
+    }
+  }
+
+  public static Page<Block> parseBlocks(JsonNode node) {
+    if (node == null
+        || node.isEmpty()
+        || node.get("blocks").isEmpty()
+        || !node.get("blocks").isArray()) {
+      return new Page<>(List.of(), null);
+    }
+
+    try {
+      ArrayNode blocks = node.get("blocks").asArray();
+      List<Block> blockList = blocks.valueStream().map(block -> parseBlock(block).get()).toList();
+      return new Page<>(blockList, JsonUtils.toNullableString(node.get("links"), "next"));
+    } catch (Exception e) {
+      throw new RuntimeException("Unable to parse json", e);
+    }
+  }
+
+  public static Optional<Block> parseBlock(JsonNode node) {
+    if (node == null || node.isEmpty()) {
+      return Optional.empty();
+    }
+
+    try {
+      Long count = JsonUtils.toNullableLong(node, "count");
+      Long gasUsed = JsonUtils.toNullableLong(node, "gas_used");
+      String hapiVersion = JsonUtils.toNullableString(node, "hapi_version");
+      String hash = JsonUtils.toNullableString(node, "hash");
+      String logsBloom = JsonUtils.toNullableString(node, "logs_bloom");
+      String name = JsonUtils.toNullableString(node, "name");
+      Long number = JsonUtils.toNullableLong(node, "number");
+      String previousHash = JsonUtils.toNullableString(node, "previous_hash");
+      Long size = JsonUtils.toNullableLong(node, "size");
+
+      TimestampRange timestamp = null;
+      if (node.has("timestamp")) {
+        JsonNode timestampNode = node.get("timestamp");
+        Instant from = JsonUtils.toInstant(timestampNode, "from");
+        Instant to = JsonUtils.toInstant(timestampNode, "to");
+
+        timestamp = new TimestampRange(from, to);
+      }
+
+      return Optional.of(
+          new Block(
+              count,
+              gasUsed,
+              hapiVersion,
+              hash,
+              logsBloom,
+              name,
+              number,
+              previousHash,
+              size,
               timestamp));
     } catch (Exception e) {
       throw new RuntimeException("Unable to parse json", e);
