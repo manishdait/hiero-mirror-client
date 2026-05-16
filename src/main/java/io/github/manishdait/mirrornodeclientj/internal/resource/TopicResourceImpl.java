@@ -3,7 +3,7 @@ package io.github.manishdait.mirrornodeclientj.internal.resource;
 import com.hedera.hashgraph.sdk.TopicId;
 import io.github.manishdait.mirrornodeclientj.MirrorNodeClient;
 import io.github.manishdait.mirrornodeclientj.TopicResource;
-import io.github.manishdait.mirrornodeclientj.query.GetTopicByIdQuery;
+import io.github.manishdait.mirrornodeclientj.query.TopicByIdQuery;
 import org.jspecify.annotations.NonNull;
 
 public class TopicResourceImpl implements TopicResource {
@@ -14,7 +14,7 @@ public class TopicResourceImpl implements TopicResource {
   }
 
   @Override
-  public @NonNull GetTopicByIdQuery findById(TopicId topicId) {
-    return new GetTopicByIdQuery(client, topicId);
+  public @NonNull TopicByIdQuery findById(TopicId topicId) {
+    return new TopicByIdQuery(client, topicId);
   }
 }

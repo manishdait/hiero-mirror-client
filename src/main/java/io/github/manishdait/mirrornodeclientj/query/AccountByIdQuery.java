@@ -17,7 +17,7 @@ import java.util.Optional;
 import org.jspecify.annotations.NonNull;
 import tools.jackson.databind.JsonNode;
 
-public class GetAccountByIdQuery extends Query<Optional<AccountInfo>> {
+public class AccountByIdQuery extends Query<Optional<AccountInfo>> {
   private final AccountId accountId;
 
   private Order order = Order.DESC;
@@ -26,12 +26,12 @@ public class GetAccountByIdQuery extends Query<Optional<AccountInfo>> {
   private TransactionType transactionType;
   private final List<CriteriaParam<Instant>> timestamps = new ArrayList<>();
 
-  public GetAccountByIdQuery(MirrorNodeClient client, AccountId accountId) {
+  public AccountByIdQuery(MirrorNodeClient client, AccountId accountId) {
     super(client);
     this.accountId = accountId;
   }
 
-  public GetAccountByIdQuery limit(final int limit) {
+  public AccountByIdQuery limit(final int limit) {
     if (limit <= 0) {
       throw new IllegalArgumentException("limit must be greater than 0");
     }
@@ -39,24 +39,24 @@ public class GetAccountByIdQuery extends Query<Optional<AccountInfo>> {
     return this;
   }
 
-  public GetAccountByIdQuery order(final @NonNull Order order) {
+  public AccountByIdQuery order(final @NonNull Order order) {
     Objects.requireNonNull(order, "order must not be null");
     this.order = order;
     return this;
   }
 
-  public GetAccountByIdQuery includeTransaction(final boolean includeTransaction) {
+  public AccountByIdQuery includeTransaction(final boolean includeTransaction) {
     this.includeTransaction = includeTransaction;
     return this;
   }
 
-  public GetAccountByIdQuery transactionType(final @NonNull TransactionType transactionType) {
+  public AccountByIdQuery transactionType(final @NonNull TransactionType transactionType) {
     Objects.requireNonNull(transactionType, "transactionType must not be null");
     this.transactionType = transactionType;
     return this;
   }
 
-  public GetAccountByIdQuery timestamp(
+  public AccountByIdQuery timestamp(
       final @NonNull Operator operator, final @NonNull Instant timestamp) {
     Objects.requireNonNull(operator, "operator must not be null");
     Objects.requireNonNull(timestamp, "timestamp must not be null");
@@ -64,25 +64,25 @@ public class GetAccountByIdQuery extends Query<Optional<AccountInfo>> {
     return this;
   }
 
-  public @NonNull GetCryptoAllowanceQuery cryptoAllowance() {
-    return new GetCryptoAllowanceQuery(client, accountId);
+  public @NonNull CryptoAllowanceQuery cryptoAllowance() {
+    return new CryptoAllowanceQuery(client, accountId);
   }
 
-  public @NonNull GetTokenAllowanceQuery tokenAllowance() {
-    return new GetTokenAllowanceQuery(client, accountId);
+  public @NonNull TokenAllowanceQuery tokenAllowance() {
+    return new TokenAllowanceQuery(client, accountId);
   }
 
-  public @NonNull GetNftAllowanceQuery nftAllowance() {
-    return new GetNftAllowanceQuery(client, accountId);
+  public @NonNull NftAllowanceQuery nftAllowance() {
+    return new NftAllowanceQuery(client, accountId);
   }
 
-  public @NonNull GetStackingRewardQuery pastStakingRewards() {
-    return new GetStackingRewardQuery(client, accountId);
+  public @NonNull StackingRewardQuery pastStakingRewards() {
+    return new StackingRewardQuery(client, accountId);
   }
   ;
 
-  public @NonNull GetTokenRelationshipInfoQuery tokenRelationshipInfo() {
-    return new GetTokenRelationshipInfoQuery(client, accountId);
+  public @NonNull TokenRelationshipInfoQuery tokenRelationshipInfo() {
+    return new TokenRelationshipInfoQuery(client, accountId);
   }
   ;
 

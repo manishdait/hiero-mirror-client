@@ -6,26 +6,26 @@ import io.github.manishdait.mirrornodeclientj.data.CriteriaParam;
 import io.github.manishdait.mirrornodeclientj.data.CryptoAllowance;
 import io.github.manishdait.mirrornodeclientj.data.Operator;
 import io.github.manishdait.mirrornodeclientj.data.Order;
+import io.github.manishdait.mirrornodeclientj.data.Page;
 import io.github.manishdait.mirrornodeclientj.internal.core.MirrorNodeRequest;
 import io.github.manishdait.mirrornodeclientj.internal.parser.JsonParserImpl;
-import java.util.List;
 import java.util.Objects;
 import org.jspecify.annotations.NonNull;
 import tools.jackson.databind.JsonNode;
 
-public class GetCryptoAllowanceQuery extends Query<List<CryptoAllowance>> {
+public class CryptoAllowanceQuery extends Query<Page<CryptoAllowance>> {
   private final AccountId accountId;
 
   private Order order = Order.DESC;
   private int limit = 25;
   private CriteriaParam<AccountId> spenderId;
 
-  public GetCryptoAllowanceQuery(MirrorNodeClient client, AccountId accountId) {
+  public CryptoAllowanceQuery(MirrorNodeClient client, AccountId accountId) {
     super(client);
     this.accountId = accountId;
   }
 
-  public GetCryptoAllowanceQuery limit(final int limit) {
+  public CryptoAllowanceQuery limit(final int limit) {
     if (limit <= 0) {
       throw new IllegalArgumentException("limit must be greater than 0");
     }
@@ -33,13 +33,13 @@ public class GetCryptoAllowanceQuery extends Query<List<CryptoAllowance>> {
     return this;
   }
 
-  public GetCryptoAllowanceQuery order(final @NonNull Order order) {
+  public CryptoAllowanceQuery order(final @NonNull Order order) {
     Objects.requireNonNull(order, "order must not be null");
     this.order = order;
     return this;
   }
 
-  public GetCryptoAllowanceQuery spenderId(
+  public CryptoAllowanceQuery spenderId(
       final @NonNull Operator operator, final @NonNull AccountId spenderId) {
     Objects.requireNonNull(operator, "operator must not be null");
     Objects.requireNonNull(spenderId, "spenderId must not be nul;");
@@ -66,7 +66,7 @@ public class GetCryptoAllowanceQuery extends Query<List<CryptoAllowance>> {
   }
 
   @Override
-  List<CryptoAllowance> mapResponse(JsonNode node) {
+  Page<CryptoAllowance> mapResponse(JsonNode node) {
     return JsonParserImpl.parseCryptoAllowances(node);
   }
 }

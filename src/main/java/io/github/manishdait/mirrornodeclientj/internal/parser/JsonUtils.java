@@ -1,6 +1,7 @@
 package io.github.manishdait.mirrornodeclientj.internal.parser;
 
 import com.hedera.hashgraph.sdk.AccountId;
+import com.hedera.hashgraph.sdk.FileId;
 import com.hedera.hashgraph.sdk.Key;
 import com.hedera.hashgraph.sdk.PublicKey;
 import com.hedera.hashgraph.sdk.Status;
@@ -8,6 +9,7 @@ import com.hedera.hashgraph.sdk.TokenId;
 import com.hedera.hashgraph.sdk.TokenSupplyType;
 import com.hedera.hashgraph.sdk.TokenType;
 import com.hedera.hashgraph.sdk.TopicId;
+import io.github.manishdait.mirrornodeclientj.data.RegisteredServiceType;
 import io.github.manishdait.mirrornodeclientj.data.TokenFreezeStatus;
 import io.github.manishdait.mirrornodeclientj.data.TokenKycStatus;
 import io.github.manishdait.mirrornodeclientj.data.TokenPauseStatus;
@@ -144,6 +146,7 @@ public class JsonUtils {
       case "AccountId" -> clazz.cast(AccountId.fromString(entityId));
       case "TokenId" -> clazz.cast(TokenId.fromString(entityId));
       case "TopicId" -> clazz.cast(TopicId.fromString(entityId));
+      case "FileId" -> clazz.cast(FileId.fromString(entityId));
       default -> throw new RuntimeException("Unsupported class");
     };
   }
@@ -170,6 +173,7 @@ public class JsonUtils {
       case "TokenSupplyType" -> clazz.cast(TokenSupplyType.valueOf(enumStr));
       case "TokenKycStatus" -> clazz.cast(TokenKycStatus.fromString(enumStr));
       case "TokenFreezeStatus" -> clazz.cast(TokenFreezeStatus.fromString(enumStr));
+      case "RegisteredServiceType" -> clazz.cast(RegisteredServiceType.formString(enumStr));
       default -> throw new RuntimeException("Unsupported class");
     };
   }

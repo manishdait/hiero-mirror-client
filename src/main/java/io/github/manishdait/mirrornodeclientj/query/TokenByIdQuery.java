@@ -11,17 +11,17 @@ import java.time.Instant;
 import java.util.Optional;
 import tools.jackson.databind.JsonNode;
 
-public class GetTokenByIdQuery extends Query<Optional<TokenInfo>> {
+public class TokenByIdQuery extends Query<Optional<TokenInfo>> {
   private final TokenId tokenId;
 
   private CriteriaParam<Instant> timestamp;
 
-  public GetTokenByIdQuery(MirrorNodeClient client, TokenId tokenId) {
+  public TokenByIdQuery(MirrorNodeClient client, TokenId tokenId) {
     super(client);
     this.tokenId = tokenId;
   }
 
-  public GetTokenByIdQuery timestamp(Operator operator, Instant timestamp) {
+  public TokenByIdQuery timestamp(Operator operator, Instant timestamp) {
     this.timestamp = new CriteriaParam<>(operator, timestamp);
     return this;
   }

@@ -8,11 +8,11 @@ import io.github.manishdait.mirrornodeclientj.internal.parser.JsonParserImpl;
 import java.util.Optional;
 import tools.jackson.databind.JsonNode;
 
-public class GetTopicMessageBySequenceQuery extends Query<Optional<TopicMessage>> {
+public class TopicMessageBySequenceQuery extends Query<Optional<TopicMessage>> {
   private final TopicId topicId;
   private final Long sequenceNumber;
 
-  public GetTopicMessageBySequenceQuery(
+  public TopicMessageBySequenceQuery(
       MirrorNodeClient client, TopicId topicId, long sequenceNumber) {
     super(client);
     this.topicId = topicId;

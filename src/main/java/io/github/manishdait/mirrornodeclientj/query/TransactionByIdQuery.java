@@ -8,23 +8,23 @@ import java.util.List;
 import java.util.Optional;
 import tools.jackson.databind.JsonNode;
 
-public class GetTransactionByIdQuery extends Query<Optional<Transaction>> {
+public class TransactionByIdQuery extends Query<Optional<Transaction>> {
   private final String transactionId;
 
   Integer nonce;
   Boolean scheduled;
 
-  public GetTransactionByIdQuery(MirrorNodeClient client, String transactionId) {
+  public TransactionByIdQuery(MirrorNodeClient client, String transactionId) {
     super(client);
     this.transactionId = transactionId;
   }
 
-  public GetTransactionByIdQuery nonce(int nonce) {
+  public TransactionByIdQuery nonce(int nonce) {
     this.nonce = nonce;
     return this;
   }
 
-  public GetTransactionByIdQuery scheduled(boolean scheduled) {
+  public TransactionByIdQuery scheduled(boolean scheduled) {
     this.scheduled = scheduled;
     return this;
   }
@@ -49,7 +49,7 @@ public class GetTransactionByIdQuery extends Query<Optional<Transaction>> {
 
   @Override
   Optional<Transaction> mapResponse(JsonNode node) {
-    List<Transaction> transactions = JsonParserImpl.parseTransactions(node);
+    List<Transaction> transactions = JsonParserImpl.parseTransactions(node).data();
     return transactions.isEmpty() ? Optional.empty() : Optional.of(transactions.getFirst());
   }
 }

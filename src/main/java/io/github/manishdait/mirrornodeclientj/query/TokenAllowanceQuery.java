@@ -6,15 +6,15 @@ import io.github.manishdait.mirrornodeclientj.MirrorNodeClient;
 import io.github.manishdait.mirrornodeclientj.data.CriteriaParam;
 import io.github.manishdait.mirrornodeclientj.data.Operator;
 import io.github.manishdait.mirrornodeclientj.data.Order;
+import io.github.manishdait.mirrornodeclientj.data.Page;
 import io.github.manishdait.mirrornodeclientj.data.TokenAllowance;
 import io.github.manishdait.mirrornodeclientj.internal.core.MirrorNodeRequest;
 import io.github.manishdait.mirrornodeclientj.internal.parser.JsonParserImpl;
-import java.util.List;
 import java.util.Objects;
 import org.jspecify.annotations.NonNull;
 import tools.jackson.databind.JsonNode;
 
-public class GetTokenAllowanceQuery extends Query<List<TokenAllowance>> {
+public class TokenAllowanceQuery extends Query<Page<TokenAllowance>> {
   private final AccountId accountId;
 
   private Order order = Order.DESC;
@@ -22,12 +22,12 @@ public class GetTokenAllowanceQuery extends Query<List<TokenAllowance>> {
   private CriteriaParam<AccountId> spenderId;
   private CriteriaParam<TokenId> tokenId;
 
-  public GetTokenAllowanceQuery(MirrorNodeClient client, AccountId accountId) {
+  public TokenAllowanceQuery(MirrorNodeClient client, AccountId accountId) {
     super(client);
     this.accountId = accountId;
   }
 
-  public GetTokenAllowanceQuery limit(final int limit) {
+  public TokenAllowanceQuery limit(final int limit) {
     if (limit <= 0) {
       throw new IllegalArgumentException("limit must be greater than 0");
     }
@@ -35,13 +35,13 @@ public class GetTokenAllowanceQuery extends Query<List<TokenAllowance>> {
     return this;
   }
 
-  public GetTokenAllowanceQuery order(final @NonNull Order order) {
+  public TokenAllowanceQuery order(final @NonNull Order order) {
     Objects.requireNonNull(order, "order must not be null");
     this.order = order;
     return this;
   }
 
-  public GetTokenAllowanceQuery spenderId(
+  public TokenAllowanceQuery spenderId(
       final @NonNull Operator operator, final @NonNull AccountId spenderId) {
     Objects.requireNonNull(operator, "operator must not be null");
     Objects.requireNonNull(spenderId, "spenderId must not be nul;");
@@ -50,7 +50,7 @@ public class GetTokenAllowanceQuery extends Query<List<TokenAllowance>> {
     return this;
   }
 
-  public GetTokenAllowanceQuery tokenId(
+  public TokenAllowanceQuery tokenId(
       final @NonNull Operator operator, final @NonNull TokenId tokenId) {
     Objects.requireNonNull(operator, "operator must not be null");
     Objects.requireNonNull(tokenId, "tokenId must not be nul;");
@@ -82,7 +82,7 @@ public class GetTokenAllowanceQuery extends Query<List<TokenAllowance>> {
   }
 
   @Override
-  List<TokenAllowance> mapResponse(JsonNode node) {
+  Page<TokenAllowance> mapResponse(JsonNode node) {
     return JsonParserImpl.parseTokenAllowances(node);
   }
 }

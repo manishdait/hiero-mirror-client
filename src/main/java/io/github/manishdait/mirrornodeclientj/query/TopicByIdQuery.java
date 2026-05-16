@@ -8,24 +8,24 @@ import io.github.manishdait.mirrornodeclientj.internal.parser.JsonParserImpl;
 import java.util.Optional;
 import tools.jackson.databind.JsonNode;
 
-public class GetTopicByIdQuery extends Query<Optional<Topic>> {
+public class TopicByIdQuery extends Query<Optional<Topic>> {
   private final TopicId topicId;
 
-  public GetTopicByIdQuery(MirrorNodeClient client, TopicId topicId) {
+  public TopicByIdQuery(MirrorNodeClient client, TopicId topicId) {
     super(client);
     this.topicId = topicId;
   }
 
-  public GetTopicMessageBySequenceQuery messageBySequenceNumber(long sequenceNumber) {
-    return new GetTopicMessageBySequenceQuery(client, topicId, sequenceNumber);
+  public TopicMessageBySequenceQuery messageBySequenceNumber(long sequenceNumber) {
+    return new TopicMessageBySequenceQuery(client, topicId, sequenceNumber);
   }
 
-  public GetTopicMessageByTimestampQuery messageByConsensusTimestamp(String timestamp) {
-    return new GetTopicMessageByTimestampQuery(client, topicId, timestamp);
+  public TopicMessageByTimestampQuery messageByConsensusTimestamp(String timestamp) {
+    return new TopicMessageByTimestampQuery(client, topicId, timestamp);
   }
 
-  public GetTopicMessageListQuery messages() {
-    return new GetTopicMessageListQuery(client, topicId);
+  public TopicMessageListQuery messages() {
+    return new TopicMessageListQuery(client, topicId);
   }
 
   @Override

@@ -6,6 +6,7 @@ import io.github.manishdait.mirrornodeclientj.data.BalanceModifier;
 import io.github.manishdait.mirrornodeclientj.data.CriteriaParam;
 import io.github.manishdait.mirrornodeclientj.data.Operator;
 import io.github.manishdait.mirrornodeclientj.data.Order;
+import io.github.manishdait.mirrornodeclientj.data.Page;
 import io.github.manishdait.mirrornodeclientj.data.Transaction;
 import io.github.manishdait.mirrornodeclientj.data.TransactionResult;
 import io.github.manishdait.mirrornodeclientj.data.TransactionType;
@@ -18,7 +19,7 @@ import java.util.Objects;
 import org.jspecify.annotations.NonNull;
 import tools.jackson.databind.JsonNode;
 
-public class GetTransactionListQuery extends Query<List<Transaction>> {
+public class TransactionListQuery extends Query<Page<Transaction>> {
   private Order order = Order.DESC;
   private int limit = 25;
   private TransactionType transactionType;
@@ -28,7 +29,7 @@ public class GetTransactionListQuery extends Query<List<Transaction>> {
   private CriteriaParam<AccountId> accountId;
   private final List<CriteriaParam<Instant>> timestamps = new ArrayList<>();
 
-  public GetTransactionListQuery limit(final int limit) {
+  public TransactionListQuery limit(final int limit) {
     if (limit <= 0) {
       throw new IllegalArgumentException("limit must be greater than 0");
     }
@@ -36,38 +37,38 @@ public class GetTransactionListQuery extends Query<List<Transaction>> {
     return this;
   }
 
-  public GetTransactionListQuery order(final @NonNull Order order) {
+  public TransactionListQuery order(final @NonNull Order order) {
     Objects.requireNonNull(order, "order must not be null");
     this.order = order;
     return this;
   }
 
-  public GetTransactionListQuery transactionType(final @NonNull TransactionType type) {
+  public TransactionListQuery transactionType(final @NonNull TransactionType type) {
     Objects.requireNonNull(type, "type must not be null");
     this.transactionType = type;
     return this;
   }
 
-  public GetTransactionListQuery result(final @NonNull TransactionResult result) {
+  public TransactionListQuery result(final @NonNull TransactionResult result) {
     Objects.requireNonNull(result, "result must not be null");
     this.transactionResult = result;
     return this;
   }
 
-  public GetTransactionListQuery type(final @NonNull BalanceModifier balanceModifier) {
+  public TransactionListQuery type(final @NonNull BalanceModifier balanceModifier) {
     Objects.requireNonNull(balanceModifier, "balanceModifier must not be null");
     this.balanceModifier = balanceModifier;
     return this;
   }
 
-  public GetTransactionListQuery accountId(
+  public TransactionListQuery accountId(
       final @NonNull Operator operator, final @NonNull String accountId) {
     Objects.requireNonNull(operator, "operator must not be null");
     Objects.requireNonNull(accountId, "accountId must not be null");
     return accountId(operator, AccountId.fromString(accountId));
   }
 
-  public GetTransactionListQuery accountId(
+  public TransactionListQuery accountId(
       final @NonNull Operator operator, final @NonNull AccountId accountId) {
     Objects.requireNonNull(operator, "operator must not be null");
     Objects.requireNonNull(accountId, "accountId must not be null");
@@ -76,7 +77,7 @@ public class GetTransactionListQuery extends Query<List<Transaction>> {
     return this;
   }
 
-  public GetTransactionListQuery timestamp(
+  public TransactionListQuery timestamp(
       final @NonNull Operator operator, final @NonNull Instant timestamp) {
     Objects.requireNonNull(operator, "operator must not be null");
     Objects.requireNonNull(timestamp, "timestamp must not be null");
@@ -84,7 +85,7 @@ public class GetTransactionListQuery extends Query<List<Transaction>> {
     return this;
   }
 
-  public GetTransactionListQuery(MirrorNodeClient client) {
+  public TransactionListQuery(MirrorNodeClient client) {
     super(client);
   }
 
@@ -128,7 +129,7 @@ public class GetTransactionListQuery extends Query<List<Transaction>> {
   }
 
   @Override
-  List<Transaction> mapResponse(JsonNode node) {
+  Page<Transaction> mapResponse(JsonNode node) {
     return JsonParserImpl.parseTransactions(node);
   }
 }

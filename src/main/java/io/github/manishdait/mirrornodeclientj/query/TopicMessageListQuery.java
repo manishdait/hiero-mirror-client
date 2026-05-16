@@ -2,16 +2,16 @@ package io.github.manishdait.mirrornodeclientj.query;
 
 import com.hedera.hashgraph.sdk.TopicId;
 import io.github.manishdait.mirrornodeclientj.MirrorNodeClient;
+import io.github.manishdait.mirrornodeclientj.data.Page;
 import io.github.manishdait.mirrornodeclientj.data.TopicMessage;
 import io.github.manishdait.mirrornodeclientj.internal.core.MirrorNodeRequest;
 import io.github.manishdait.mirrornodeclientj.internal.parser.JsonParserImpl;
-import java.util.List;
 import tools.jackson.databind.JsonNode;
 
-public class GetTopicMessageListQuery extends Query<List<TopicMessage>> {
+public class TopicMessageListQuery extends Query<Page<TopicMessage>> {
   final TopicId topicId;
 
-  public GetTopicMessageListQuery(MirrorNodeClient client, TopicId topicId) {
+  public TopicMessageListQuery(MirrorNodeClient client, TopicId topicId) {
     super(client);
     this.topicId = topicId;
   }
@@ -27,7 +27,7 @@ public class GetTopicMessageListQuery extends Query<List<TopicMessage>> {
   }
 
   @Override
-  List<TopicMessage> mapResponse(JsonNode node) {
+  Page<TopicMessage> mapResponse(JsonNode node) {
     return JsonParserImpl.parseTopicMessages(node);
   }
 }

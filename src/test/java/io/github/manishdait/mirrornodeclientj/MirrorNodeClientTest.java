@@ -8,7 +8,7 @@ public class MirrorNodeClientTest {
   @Test
   void shouldCallEndpoint() throws IOException, InterruptedException {
     MirrorNodeClient client = new MirrorNodeClient(NetworkType.TESTNET);
-    var list = client.network().stakes().execute();
+    var list = client.network().registeredAddressBook().execute();
 
     System.out.println(list);
   }

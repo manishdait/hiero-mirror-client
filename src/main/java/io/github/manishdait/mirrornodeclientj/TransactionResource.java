@@ -1,11 +1,11 @@
 package io.github.manishdait.mirrornodeclientj;
 
-import io.github.manishdait.mirrornodeclientj.query.GetTransactionByIdQuery;
-import io.github.manishdait.mirrornodeclientj.query.GetTransactionListQuery;
+import io.github.manishdait.mirrornodeclientj.query.TransactionByIdQuery;
+import io.github.manishdait.mirrornodeclientj.query.TransactionListQuery;
 import org.jspecify.annotations.NonNull;
 
 public interface TransactionResource {
-  @NonNull GetTransactionListQuery findAll();
+  @NonNull TransactionListQuery findAll();
 
-  @NonNull GetTransactionByIdQuery findById(String transactionId);
+  @NonNull TransactionByIdQuery findById(String transactionId);
 }

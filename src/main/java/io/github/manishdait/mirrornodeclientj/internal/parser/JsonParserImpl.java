@@ -1,6 +1,8 @@
 package io.github.manishdait.mirrornodeclientj.internal.parser;
 
 import com.hedera.hashgraph.sdk.AccountId;
+import com.hedera.hashgraph.sdk.BlockNodeApi;
+import com.hedera.hashgraph.sdk.FileId;
 import com.hedera.hashgraph.sdk.Key;
 import com.hedera.hashgraph.sdk.Status;
 import com.hedera.hashgraph.sdk.TokenId;
@@ -10,13 +12,21 @@ import com.hedera.hashgraph.sdk.TopicId;
 import io.github.manishdait.mirrornodeclientj.data.AccountBalance;
 import io.github.manishdait.mirrornodeclientj.data.AccountInfo;
 import io.github.manishdait.mirrornodeclientj.data.AssessedCustomFee;
+import io.github.manishdait.mirrornodeclientj.data.BlockNodeEndpoint;
 import io.github.manishdait.mirrornodeclientj.data.CryptoAllowance;
 import io.github.manishdait.mirrornodeclientj.data.CustomFee;
 import io.github.manishdait.mirrornodeclientj.data.ExchangeRate;
+import io.github.manishdait.mirrornodeclientj.data.GeneralServiceEndpoint;
+import io.github.manishdait.mirrornodeclientj.data.MirrorNodeEndpoint;
 import io.github.manishdait.mirrornodeclientj.data.NetworkFee;
 import io.github.manishdait.mirrornodeclientj.data.NetworkSupply;
 import io.github.manishdait.mirrornodeclientj.data.NftAllowance;
 import io.github.manishdait.mirrornodeclientj.data.NftTransfer;
+import io.github.manishdait.mirrornodeclientj.data.Node;
+import io.github.manishdait.mirrornodeclientj.data.Page;
+import io.github.manishdait.mirrornodeclientj.data.RegisteredNode;
+import io.github.manishdait.mirrornodeclientj.data.RegisteredServiceType;
+import io.github.manishdait.mirrornodeclientj.data.RpcRelayEndpoint;
 import io.github.manishdait.mirrornodeclientj.data.StakeInfo;
 import io.github.manishdait.mirrornodeclientj.data.StakingReward;
 import io.github.manishdait.mirrornodeclientj.data.StakingRewardTransfer;
@@ -45,17 +55,19 @@ import tools.jackson.databind.JsonNode;
 import tools.jackson.databind.node.ArrayNode;
 
 public class JsonParserImpl {
-  public static List<AccountInfo> parseAccountInfos(JsonNode node) {
+  public static Page<AccountInfo> parseAccountInfos(JsonNode node) {
     if (node == null
         || node.isEmpty()
         || node.get("accounts").isEmpty()
         || !node.get("accounts").isArray()) {
-      return List.of();
+      return new Page<>(List.of(), null);
     }
 
     try {
       ArrayNode accounts = node.get("accounts").asArray();
-      return accounts.valueStream().map(account -> parseAccountInfo(account).get()).toList();
+      List<AccountInfo> accountInfos =
+          accounts.valueStream().map(account -> parseAccountInfo(account).get()).toList();
+      return new Page<>(accountInfos, JsonUtils.toNullableString(node.get("links"), "next"));
     } catch (Exception e) {
       throw new RuntimeException("Unable to parse json", e);
     }
@@ -127,20 +139,23 @@ public class JsonParserImpl {
     }
   }
 
-  public static List<Transaction> parseTransactions(JsonNode node) {
+  public static Page<Transaction> parseTransactions(JsonNode node) {
     if (node == null
         || node.isEmpty()
         || node.get("transactions").isEmpty()
         || !node.get("transactions").isArray()) {
-      return List.of();
+      return new Page<>(List.of(), null);
     }
 
     try {
       ArrayNode transactions = node.get("transactions").asArray();
-      return transactions
-          .valueStream()
-          .map(transaction -> parseTransaction(transaction).get())
-          .toList();
+      List<Transaction> transactionsList =
+          transactions
+              .valueStream()
+              .map(transaction -> parseTransaction(transaction).get())
+              .toList();
+
+      return new Page<>(transactionsList, JsonUtils.toNullableString(node.get("links"), "next"));
     } catch (Exception e) {
       throw new RuntimeException("Unable to parse json", e);
     }
@@ -315,20 +330,20 @@ public class JsonParserImpl {
     }
   }
 
-  public static List<CryptoAllowance> parseCryptoAllowances(JsonNode node) {
+  public static Page<CryptoAllowance> parseCryptoAllowances(JsonNode node) {
     if (node == null
         || node.isEmpty()
         || node.get("allowances").isEmpty()
         || !node.get("allowances").isArray()) {
-      return List.of();
+      return new Page<>(List.of(), null);
     }
 
     try {
       ArrayNode allowances = node.get("allowances").asArray();
-      return allowances
-          .valueStream()
-          .map(allowance -> parseCryptoAllowance(allowance).get())
-          .toList();
+      List<CryptoAllowance> cryptoAllowances =
+          allowances.valueStream().map(allowance -> parseCryptoAllowance(allowance).get()).toList();
+
+      return new Page<>(cryptoAllowances, JsonUtils.toNullableString(node.get("links"), "next"));
     } catch (Exception e) {
       throw new RuntimeException("Unable to parse json", e);
     }
@@ -361,20 +376,20 @@ public class JsonParserImpl {
     }
   }
 
-  public static List<TokenAllowance> parseTokenAllowances(JsonNode node) {
+  public static Page<TokenAllowance> parseTokenAllowances(JsonNode node) {
     if (node == null
         || node.isEmpty()
         || node.get("allowances").isEmpty()
         || !node.get("allowances").isArray()) {
-      return List.of();
+      return new Page<>(List.of(), null);
     }
 
     try {
       ArrayNode allowances = node.get("allowances").asArray();
-      return allowances
-          .valueStream()
-          .map(allowance -> parseTokenAllowance(allowance).get())
-          .toList();
+      List<TokenAllowance> tokenAllowances =
+          allowances.valueStream().map(allowance -> parseTokenAllowance(allowance).get()).toList();
+
+      return new Page<>(tokenAllowances, JsonUtils.toNullableString(node.get("links"), "next"));
     } catch (Exception e) {
       throw new RuntimeException("Unable to parse json", e);
     }
@@ -409,17 +424,19 @@ public class JsonParserImpl {
     }
   }
 
-  public static List<NftAllowance> parseNftAllowances(JsonNode node) {
+  public static Page<NftAllowance> parseNftAllowances(JsonNode node) {
     if (node == null
         || node.isEmpty()
         || node.get("allowances").isEmpty()
         || !node.get("allowances").isArray()) {
-      return List.of();
+      return new Page<>(List.of(), null);
     }
 
     try {
       ArrayNode allowances = node.get("allowances").asArray();
-      return allowances.valueStream().map(allowance -> parseNftAllowance(allowance).get()).toList();
+      List<NftAllowance> nftAllowances =
+          allowances.valueStream().map(allowance -> parseNftAllowance(allowance).get()).toList();
+      return new Page<>(nftAllowances, JsonUtils.toNullableString(node.get("links"), "next"));
     } catch (Exception e) {
       throw new RuntimeException("Unable to parse json", e);
     }
@@ -539,17 +556,18 @@ public class JsonParserImpl {
     }
   }
 
-  public static List<Token> parseTokens(JsonNode node) {
+  public static Page<Token> parseTokens(JsonNode node) {
     if (node == null
         || node.isEmpty()
         || node.get("tokens").isEmpty()
         || !node.get("tokens").isArray()) {
-      return List.of();
+      return new Page<>(List.of(), null);
     }
 
     try {
       ArrayNode tokens = node.get("tokens").asArray();
-      return tokens.valueStream().map(token -> parseToken(token).get()).toList();
+      List<Token> tokenList = tokens.valueStream().map(token -> parseToken(token).get()).toList();
+      return new Page<>(tokenList, JsonUtils.toNullableString(node.get("links"), "next"));
     } catch (Exception e) {
       throw new RuntimeException("Unable to parse json", e);
     }
@@ -575,17 +593,19 @@ public class JsonParserImpl {
     }
   }
 
-  public static List<StakingReward> parseStakingRewards(JsonNode node) {
+  public static Page<StakingReward> parseStakingRewards(JsonNode node) {
     if (node == null
         || node.isEmpty()
         || node.get("rewards").isEmpty()
         || !node.get("rewards").isArray()) {
-      return List.of();
+      return new Page<>(List.of(), null);
     }
 
     try {
       ArrayNode rewards = node.get("rewards").asArray();
-      return rewards.valueStream().map(reward -> parseStakingReward(reward).get()).toList();
+      List<StakingReward> stakingRewards =
+          rewards.valueStream().map(reward -> parseStakingReward(reward).get()).toList();
+      return new Page<>(stakingRewards, JsonUtils.toNullableString(node.get("links"), "next"));
     } catch (Exception e) {
       throw new RuntimeException("Unable to parse json", e);
     }
@@ -606,17 +626,19 @@ public class JsonParserImpl {
     }
   }
 
-  public static List<TokenRelationShip> parseTokenRelationships(JsonNode node) {
+  public static Page<TokenRelationShip> parseTokenRelationships(JsonNode node) {
     if (node == null
         || node.isEmpty()
         || node.get("tokens").isEmpty()
         || !node.get("tokens").isArray()) {
-      return List.of();
+      return new Page<>(List.of(), null);
     }
 
     try {
       ArrayNode tokens = node.get("tokens").asArray();
-      return tokens.valueStream().map(token -> parseTokenRelationship(token).get()).toList();
+      List<TokenRelationShip> tokenRelationShips =
+          tokens.valueStream().map(token -> parseTokenRelationship(token).get()).toList();
+      return new Page<>(tokenRelationShips, JsonUtils.toNullableString(node.get("links"), "next"));
     } catch (Exception e) {
       throw new RuntimeException("Unable to parse json", e);
     }
@@ -731,17 +753,19 @@ public class JsonParserImpl {
     }
   }
 
-  public static List<TopicMessage> parseTopicMessages(JsonNode node) {
+  public static Page<TopicMessage> parseTopicMessages(JsonNode node) {
     if (node == null
         || node.isEmpty()
         || node.get("messages").isEmpty()
         || !node.get("messages").isArray()) {
-      return List.of();
+      return new Page<>(List.of(), null);
     }
 
     try {
       ArrayNode messages = node.get("messages").asArray();
-      return messages.valueStream().map(message -> parseTopicMessage(message).get()).toList();
+      List<TopicMessage> topicMessages =
+          messages.valueStream().map(message -> parseTopicMessage(message).get()).toList();
+      return new Page<>(topicMessages, JsonUtils.toNullableString(node.get("links"), "next"));
     } catch (Exception e) {
       throw new RuntimeException("Unable to parse json", e);
     }
@@ -875,6 +899,241 @@ public class JsonParserImpl {
     } catch (Exception e) {
       throw new RuntimeException("Unable to parse json", e);
     }
+  }
+
+  public static Page<Node> parseNodes(JsonNode node) {
+    if (node == null
+        || node.isEmpty()
+        || node.get("nodes").isEmpty()
+        || !node.get("nodes").isArray()) {
+      return new Page<>(List.of(), null);
+    }
+
+    try {
+      ArrayNode nodes = node.get("nodes").asArray();
+      List<Node> nodesList = nodes.valueStream().map(n -> parseNode(n).get()).toList();
+      return new Page<>(nodesList, JsonUtils.toNullableString(node.get("links"), "next"));
+    } catch (Exception e) {
+      throw new RuntimeException("Unable to parse json", e);
+    }
+  }
+
+  public static Optional<Node> parseNode(JsonNode node) {
+    if (node == null || node.isEmpty()) {
+      return Optional.empty();
+    }
+
+    try {
+      Key adminKey = JsonUtils.toKey(node, "admin_key");
+
+      List<Long> associatedRegisteredNodes = new ArrayList<>();
+      if (node.has("associated_registered_nodes")
+          && !node.get("associated_registered_nodes").isNull()) {
+        associatedRegisteredNodes =
+            node.get("associated_registered_nodes")
+                .asArray()
+                .valueStream()
+                .map(n -> n.asLong())
+                .collect(Collectors.toUnmodifiableList());
+      }
+
+      boolean declineReward = JsonUtils.toBoolean(node, "decline_reward");
+      String description = JsonUtils.toNullableString(node, "description");
+      FileId fileId = JsonUtils.toEntityId(node, "file_id", FileId.class);
+
+      Node.ServiceEndpoint grpcProxyEndpoint = null;
+      if (node.has("grpc_proxy_endpoint") && !node.get("grpc_proxy_endpoint").isNull()) {
+        grpcProxyEndpoint = parseServiceEndpoint(node.get("grpc_proxy_endpoint"));
+      }
+
+      Long maxStake = JsonUtils.toNullableLong(node, "max_stake");
+      String memo = JsonUtils.toNullableString(node, "memo");
+      Long minStake = JsonUtils.toNullableLong(node, "min_stake");
+      AccountId nodeAccountId = JsonUtils.toEntityId(node, "node_account_id", AccountId.class);
+      Long nodeId = JsonUtils.toNullableLong(node, "node_id");
+      String nodeCertHash = JsonUtils.toNullableString(node, "node_cert_hash");
+      String publicKey = JsonUtils.toNullableString(node, "public_key");
+      Long rewardRateStart = JsonUtils.toNullableLong(node, "reward_rate_start");
+
+      List<Node.ServiceEndpoint> serviceEndpoints = new ArrayList<>();
+      if (node.has("service_endpoints") && !node.get("service_endpoints").isNull()) {
+        serviceEndpoints =
+            node.get("service_endpoints")
+                .asArray()
+                .valueStream()
+                .map(endpoint -> parseServiceEndpoint(endpoint))
+                .collect(Collectors.toUnmodifiableList());
+      }
+
+      Long stake = JsonUtils.toNullableLong(node, "stake");
+      Long stakeNotRewarded = JsonUtils.toNullableLong(node, "stake_not_rewarded");
+      Long stakeRewarded = JsonUtils.toNullableLong(node, "stake_rewarded");
+
+      TimestampRange stakingPeriod = null;
+      if (node.has("staking_period")) {
+        JsonNode timestamp = node.get("staking_period");
+        Instant from = JsonUtils.toInstant(timestamp, "from");
+        Instant to = JsonUtils.toInstant(timestamp, "to");
+
+        stakingPeriod = new TimestampRange(from, to);
+      }
+
+      TimestampRange timestamp = null;
+      if (node.has("timestamp")) {
+        JsonNode timestampNode = node.get("timestamp");
+        Instant from = JsonUtils.toInstant(timestampNode, "from");
+        Instant to = JsonUtils.toInstant(timestampNode, "to");
+
+        timestamp = new TimestampRange(from, to);
+      }
+
+      return Optional.of(
+          new Node(
+              adminKey,
+              associatedRegisteredNodes,
+              declineReward,
+              description,
+              fileId,
+              grpcProxyEndpoint,
+              maxStake,
+              memo,
+              minStake,
+              nodeAccountId,
+              nodeId,
+              nodeCertHash,
+              publicKey,
+              rewardRateStart,
+              serviceEndpoints,
+              stake,
+              stakeNotRewarded,
+              stakeRewarded,
+              stakingPeriod,
+              timestamp));
+    } catch (Exception e) {
+      throw new RuntimeException("Unable to parse json", e);
+    }
+  }
+
+  public static Page<RegisteredNode> parseRegisteredNodes(JsonNode node) {
+    if (node == null
+        || node.isEmpty()
+        || node.get("registered_nodes").isEmpty()
+        || !node.get("registered_nodes").isArray()) {
+      return new Page<>(List.of(), null);
+    }
+
+    try {
+      ArrayNode nodes = node.get("registered_nodes").asArray();
+      List<RegisteredNode> nodesList =
+          nodes.valueStream().map(n -> parseRegisteredNode(n).get()).toList();
+      return new Page<>(nodesList, JsonUtils.toNullableString(node.get("links"), "next"));
+    } catch (Exception e) {
+      throw new RuntimeException("Unable to parse json", e);
+    }
+  }
+
+  public static Optional<RegisteredNode> parseRegisteredNode(JsonNode node) {
+    if (node == null || node.isEmpty()) {
+      return Optional.empty();
+    }
+
+    try {
+      Key adminKey = JsonUtils.toKey(node, "admin_key");
+      Instant createdTimestamp = JsonUtils.toInstant(node, "created_timestamp");
+      String description = JsonUtils.toNullableString(node, "description");
+      long registeredNodeId = JsonUtils.toLong(node, "registered_node_id");
+
+      List<RegisteredNode.ServiceEndpoint> serviceEndpoint = new ArrayList<>();
+      if (node.has("service_endpoints") && !node.get("service_endpoints").isNull()) {
+        serviceEndpoint =
+            node.get("service_endpoints")
+                .asArray()
+                .valueStream()
+                .map(endpoint -> parseRegisteredServiceEndpoint(endpoint))
+                .collect(Collectors.toUnmodifiableList());
+      }
+
+      TimestampRange timestamp = null;
+      if (node.has("timestamp")) {
+        JsonNode timestampNode = node.get("timestamp");
+        Instant from = JsonUtils.toInstant(timestampNode, "from");
+        Instant to = JsonUtils.toInstant(timestampNode, "to");
+
+        timestamp = new TimestampRange(from, to);
+      }
+
+      return Optional.of(
+          new RegisteredNode(
+              adminKey,
+              createdTimestamp,
+              description,
+              registeredNodeId,
+              serviceEndpoint,
+              timestamp));
+    } catch (Exception e) {
+      throw new RuntimeException("Unable to parse json", e);
+    }
+  }
+
+  private static RegisteredNode.ServiceEndpoint parseRegisteredServiceEndpoint(JsonNode node) {
+    String domainName = JsonUtils.toNullableString(node, "domain_name");
+    String ipAddress = JsonUtils.toNullableString(node, "ip_address");
+    int port = JsonUtils.toInt(node, "port");
+    boolean requireTls = JsonUtils.toBoolean(node, "requires_tls");
+    RegisteredServiceType type = JsonUtils.toEnum(node, "type", RegisteredServiceType.class);
+
+    BlockNodeEndpoint blockNode = null;
+    if (node.has("block_node") && !node.get("block_node").isNull()) {
+      List<BlockNodeApi> blockNodeApis = new ArrayList<>();
+
+      if (node.get("block_node").has("endpoint_apis")
+          && !node.get("block_node").get("endpoint_apis").isNull()) {
+        blockNodeApis =
+            node.get("block_node")
+                .get("endpoint_apis")
+                .asArray()
+                .valueStream()
+                .map(blockApi -> BlockNodeApi.valueOf(blockApi.asString()))
+                .collect(Collectors.toUnmodifiableList());
+      }
+
+      blockNode = new BlockNodeEndpoint(blockNodeApis);
+    }
+
+    GeneralServiceEndpoint generalService = null;
+    if (node.has("general_service") && !node.get("general_service").isNull()) {
+      String description = JsonUtils.toNullableString(node.get("general_service"), "description");
+      generalService = new GeneralServiceEndpoint(description);
+    }
+
+    MirrorNodeEndpoint mirrorNode = null;
+    if (node.has("mirror_node") && !node.get("mirror_node").isNull()) {
+      mirrorNode = new MirrorNodeEndpoint();
+    }
+
+    RpcRelayEndpoint rpcRelay = null;
+    if (node.has("rpc_relay") && !node.get("rpc_relay").isNull()) {
+      rpcRelay = new RpcRelayEndpoint();
+    }
+
+    return new RegisteredNode.ServiceEndpoint(
+        domainName,
+        ipAddress,
+        port,
+        requireTls,
+        type,
+        blockNode,
+        generalService,
+        mirrorNode,
+        rpcRelay);
+  }
+
+  private static Node.ServiceEndpoint parseServiceEndpoint(JsonNode node) {
+    String domainName = JsonUtils.toNullableString(node, "domain_name");
+    String ipAddress = JsonUtils.toNullableString(node, "ip_address_v4");
+    int port = JsonUtils.toInt(node, "port");
+
+    return new Node.ServiceEndpoint(domainName, ipAddress, port);
   }
 
   private static AccountBalance parseAccountBalance(JsonNode node) {

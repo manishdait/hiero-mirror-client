@@ -8,12 +8,11 @@ import io.github.manishdait.mirrornodeclientj.internal.parser.JsonParserImpl;
 import java.util.Optional;
 import tools.jackson.databind.JsonNode;
 
-public class GetTopicMessageByTimestampQuery extends Query<Optional<TopicMessage>> {
+public class TopicMessageByTimestampQuery extends Query<Optional<TopicMessage>> {
   private final TopicId topicId;
   private final String timestamp;
 
-  public GetTopicMessageByTimestampQuery(
-      MirrorNodeClient client, TopicId topicId, String timestamp) {
+  public TopicMessageByTimestampQuery(MirrorNodeClient client, TopicId topicId, String timestamp) {
     super(client);
     this.topicId = topicId;
     this.timestamp = timestamp;
