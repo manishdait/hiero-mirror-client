@@ -7,7 +7,7 @@
     <version>0.0.1-SNAPSHOT</version>
   </parent>
 
-  <artifactId>mirrornode-clientj-examples</artifactId>
+  <artifactId>mirrornode-clientj-example</artifactId>
   <packaging>jar</packaging>
 
   <name>mirrornode-clientj-examples</name>
@@ -18,5 +18,10 @@
   </properties>
 
   <dependencies>
+    <dependency>
+      <groupId>io.github.manishdait</groupId>
+      <artifactId>mirrornode-clientj-core</artifactId>
+      <version>0.0.1-SNAPSHOT</version>
+    </dependency>
   </dependencies>
 </project>
