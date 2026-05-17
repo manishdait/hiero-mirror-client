@@ -1,0 +1,116 @@
+package io.github.manishdait.mirrornodeclientj.core.query;
+
+import com.hedera.hashgraph.sdk.AccountId;
+import com.hedera.hashgraph.sdk.TokenId;
+import io.github.manishdait.mirrornodeclientj.core.MirrorNodeClient;
+import io.github.manishdait.mirrornodeclientj.core.data.CriteriaParam;
+import io.github.manishdait.mirrornodeclientj.core.data.Nft;
+import io.github.manishdait.mirrornodeclientj.core.data.Operator;
+import io.github.manishdait.mirrornodeclientj.core.data.Order;
+import io.github.manishdait.mirrornodeclientj.core.data.Page;
+import io.github.manishdait.mirrornodeclientj.core.internal.core.MirrorNodeRequest;
+import io.github.manishdait.mirrornodeclientj.core.internal.parser.JsonParserImpl;
+import java.util.Objects;
+import org.jspecify.annotations.NonNull;
+import tools.jackson.databind.JsonNode;
+
+public class NftListByAccountIdQuery extends Query<Page<Nft>> {
+  private final AccountId accountId;
+
+  private Order order = Order.ASC;
+  private int limit = 25;
+
+  private CriteriaParam<AccountId> spenderId;
+  private CriteriaParam<TokenId> tokenId;
+  private CriteriaParam<Long> serialNumber;
+
+  public NftListByAccountIdQuery(MirrorNodeClient client, AccountId accountId) {
+    super(client);
+    this.accountId = accountId;
+  }
+
+  public NftListByAccountIdQuery limit(final int limit) {
+    if (limit <= 0) {
+      throw new IllegalArgumentException("limit must be greater than 0");
+    }
+    this.limit = limit;
+    return this;
+  }
+
+  public NftListByAccountIdQuery order(final @NonNull Order order) {
+    Objects.requireNonNull(order, "order must not be null");
+    this.order = order;
+    return this;
+  }
+
+  public NftListByAccountIdQuery spenderId(
+      final @NonNull Operator operator, final @NonNull String spenderId) {
+    Objects.requireNonNull(operator, "operator must not be null");
+    Objects.requireNonNull(spenderId, "spenderId must not be null");
+    return spenderId(operator, AccountId.fromString(spenderId));
+  }
+
+  public NftListByAccountIdQuery spenderId(
+      final @NonNull Operator operator, final @NonNull AccountId spenderId) {
+    Objects.requireNonNull(operator, "operator must not be null");
+    Objects.requireNonNull(spenderId, "spenderId must not be null");
+
+    this.spenderId = new CriteriaParam<>(operator, spenderId);
+    return this;
+  }
+
+  public NftListByAccountIdQuery tokenId(
+      final @NonNull Operator operator, final @NonNull String spenderId) {
+    Objects.requireNonNull(operator, "operator must not be null");
+    Objects.requireNonNull(tokenId, "tokenId must not be null");
+    return tokenId(operator, TokenId.fromString(spenderId));
+  }
+
+  public NftListByAccountIdQuery tokenId(
+      final @NonNull Operator operator, final @NonNull TokenId tokenId) {
+    Objects.requireNonNull(operator, "operator must not be null");
+    Objects.requireNonNull(tokenId, "tokenId must not be null");
+
+    this.tokenId = new CriteriaParam<>(operator, tokenId);
+    return this;
+  }
+
+  public NftListByAccountIdQuery serial(final @NonNull Operator operator, final long serialNumber) {
+    Objects.requireNonNull(operator, "operator must not be null");
+
+    this.serialNumber = new CriteriaParam<>(operator, serialNumber);
+    return this;
+  }
+
+  @Override
+  MirrorNodeRequest buildRequest() {
+    MirrorNodeRequest.Builder request =
+        MirrorNodeRequest.newBuilder()
+            .url(this.client.getBaseUrl() + "/api/v1/accounts/" + accountId + "/nfts")
+            .method("GET")
+            .queryParam("limit", String.valueOf(limit))
+            .queryParam("order", order.getValue());
+
+    if (spenderId != null) {
+      request.queryParam(
+          "spender.id", spenderId.getOperator().getValue() + ":" + spenderId.getValue().toString());
+    }
+
+    if (tokenId != null) {
+      request.queryParam(
+          "token.id", tokenId.getOperator().getValue() + ":" + tokenId.getValue().toString());
+    }
+
+    if (serialNumber != null) {
+      request.queryParam(
+          "serialnumber", serialNumber.getOperator().getValue() + ":" + serialNumber.getValue());
+    }
+
+    return request.build();
+  }
+
+  @Override
+  Page<Nft> mapResponse(JsonNode node) {
+    return JsonParserImpl.parseNfts(node);
+  }
+}
