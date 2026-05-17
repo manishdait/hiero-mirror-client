@@ -1,3 +1,3 @@
-module io.github.manishdait.mirrornode.clientj.example {
-  requires io.github.manishdait.mirrornode.clientj.core;
+module io.github.manishdait.mirrornodeclientj.example {
+  requires io.github.manishdait.mirrornodeclientj.core;
 }

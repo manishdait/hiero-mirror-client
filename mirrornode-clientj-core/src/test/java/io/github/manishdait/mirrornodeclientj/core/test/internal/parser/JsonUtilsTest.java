@@ -1,8 +1,9 @@
-package io.github.manishdait.mirrornodeclientj.core.internal.parser;
+package io.github.manishdait.mirrornodeclientj.core.test.internal.parser;
 
 import com.google.protobuf.InvalidProtocolBufferException;
 import com.hedera.hashgraph.sdk.Key;
 import com.hedera.hashgraph.sdk.PublicKey;
+import io.github.manishdait.mirrornodeclientj.core.internal.parser.JsonUtils;
 import java.util.HexFormat;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
