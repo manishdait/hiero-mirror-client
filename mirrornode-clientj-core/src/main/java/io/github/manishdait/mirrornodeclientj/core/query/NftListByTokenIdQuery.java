@@ -28,6 +28,26 @@ public class NftListByTokenIdQuery extends Query<Page<Nft>> {
     this.tokenId = tokenId;
   }
 
+  public TokenId getTokenId() {
+    return tokenId;
+  }
+
+  public Order getOrder() {
+    return order;
+  }
+
+  public int getLimit() {
+    return limit;
+  }
+
+  public CriteriaParam<AccountId> getAccountId() {
+    return accountId;
+  }
+
+  public CriteriaParam<Long> getSerialNumber() {
+    return serialNumber;
+  }
+
   public NftListByTokenIdQuery limit(final int limit) {
     if (limit <= 0) {
       throw new IllegalArgumentException("limit must be greater than 0");

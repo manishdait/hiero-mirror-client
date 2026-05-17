@@ -26,6 +26,22 @@ public class TokenRelationshipInfoQuery extends Query<Page<TokenRelationShip>> {
     this.accountId = accountId;
   }
 
+  public AccountId getAccountId() {
+    return accountId;
+  }
+
+  public Order getOrder() {
+    return order;
+  }
+
+  public int getLimit() {
+    return limit;
+  }
+
+  public CriteriaParam<TokenId> getTokenId() {
+    return tokenId;
+  }
+
   public TokenRelationshipInfoQuery limit(final int limit) {
     if (limit <= 0) {
       throw new IllegalArgumentException("limit must be greater than 0");

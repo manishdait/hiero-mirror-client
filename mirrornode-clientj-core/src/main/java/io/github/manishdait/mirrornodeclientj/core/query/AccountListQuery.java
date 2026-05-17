@@ -28,6 +28,30 @@ public class AccountListQuery extends Query<Page<AccountInfo>> {
     super(client);
   }
 
+  public boolean isBalance() {
+    return balance;
+  }
+
+  public Order getOrder() {
+    return order;
+  }
+
+  public int getLimit() {
+    return limit;
+  }
+
+  public PublicKey getPublicKey() {
+    return publicKey;
+  }
+
+  public CriteriaParam<AccountId> getAccountId() {
+    return accountId;
+  }
+
+  public CriteriaParam<Hbar> getAccountBalance() {
+    return accountBalance;
+  }
+
   public AccountListQuery limit(final int limit) {
     if (limit <= 0) {
       throw new IllegalArgumentException("limit must be greater than 0");

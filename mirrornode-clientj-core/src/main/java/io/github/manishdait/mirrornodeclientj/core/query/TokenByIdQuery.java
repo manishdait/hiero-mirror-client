@@ -21,6 +21,14 @@ public class TokenByIdQuery extends Query<Optional<TokenInfo>> {
     this.tokenId = tokenId;
   }
 
+  public TokenId getTokenId() {
+    return tokenId;
+  }
+
+  public CriteriaParam<Instant> getTimestamp() {
+    return timestamp;
+  }
+
   public TokenByIdQuery timestamp(Operator operator, Instant timestamp) {
     this.timestamp = new CriteriaParam<>(operator, timestamp);
     return this;

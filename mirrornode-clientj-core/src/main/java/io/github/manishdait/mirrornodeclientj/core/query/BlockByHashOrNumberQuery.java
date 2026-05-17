@@ -15,6 +15,10 @@ public class BlockByHashOrNumberQuery extends Query<Optional<Block>> {
     this.hashOrNumber = hashOrNumber;
   }
 
+  public String getHashOrNumber() {
+    return hashOrNumber;
+  }
+
   @Override
   MirrorNodeRequest buildRequest() {
     MirrorNodeRequest.Builder request =

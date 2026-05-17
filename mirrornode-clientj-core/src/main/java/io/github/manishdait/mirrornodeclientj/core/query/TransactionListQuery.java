@@ -29,6 +29,38 @@ public class TransactionListQuery extends Query<Page<Transaction>> {
   private CriteriaParam<AccountId> accountId;
   private final List<CriteriaParam<Instant>> timestamps = new ArrayList<>();
 
+  public TransactionListQuery(MirrorNodeClient client) {
+    super(client);
+  }
+
+  public Order getOrder() {
+    return order;
+  }
+
+  public int getLimit() {
+    return limit;
+  }
+
+  public TransactionType getTransactionType() {
+    return transactionType;
+  }
+
+  public TransactionResult getTransactionResult() {
+    return transactionResult;
+  }
+
+  public BalanceModifier getBalanceModifier() {
+    return balanceModifier;
+  }
+
+  public CriteriaParam<AccountId> getAccountId() {
+    return accountId;
+  }
+
+  public List<CriteriaParam<Instant>> getTimestamps() {
+    return timestamps;
+  }
+
   public TransactionListQuery limit(final int limit) {
     if (limit <= 0) {
       throw new IllegalArgumentException("limit must be greater than 0");
@@ -83,10 +115,6 @@ public class TransactionListQuery extends Query<Page<Transaction>> {
     Objects.requireNonNull(timestamp, "timestamp must not be null");
     this.timestamps.add(new CriteriaParam<>(operator, timestamp));
     return this;
-  }
-
-  public TransactionListQuery(MirrorNodeClient client) {
-    super(client);
   }
 
   @Override

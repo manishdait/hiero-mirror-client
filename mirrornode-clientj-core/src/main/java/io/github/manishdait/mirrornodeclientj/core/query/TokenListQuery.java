@@ -32,6 +32,34 @@ public class TokenListQuery extends Query<Page<Token>> {
     super(client);
   }
 
+  public Order getOrder() {
+    return order;
+  }
+
+  public int getLimit() {
+    return limit;
+  }
+
+  public String getName() {
+    return name;
+  }
+
+  public PublicKey getPublicKey() {
+    return publicKey;
+  }
+
+  public List<TokenType> getTokenTypes() {
+    return tokenTypes;
+  }
+
+  public CriteriaParam<AccountId> getAccountId() {
+    return accountId;
+  }
+
+  public CriteriaParam<TokenId> getTokenId() {
+    return tokenId;
+  }
+
   public TokenListQuery limit(final int limit) {
     if (limit <= 0) {
       throw new IllegalArgumentException("limit must be greater than 0");

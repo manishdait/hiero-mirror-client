@@ -16,6 +16,10 @@ public class NftByIdQuery extends Query<Optional<Nft>> {
     this.nftId = nftId;
   }
 
+  public NftId getNftId() {
+    return nftId;
+  }
+
   @Override
   MirrorNodeRequest buildRequest() {
     MirrorNodeRequest.Builder request =

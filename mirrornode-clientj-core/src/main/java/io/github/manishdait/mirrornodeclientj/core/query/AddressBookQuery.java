@@ -24,6 +24,22 @@ public class AddressBookQuery extends Query<Page<Node>> {
     super(client);
   }
 
+  public Order getOrder() {
+    return order;
+  }
+
+  public int getLimit() {
+    return limit;
+  }
+
+  public CriteriaParam<FileId> getFileId() {
+    return fileId;
+  }
+
+  public CriteriaParam<Long> getNodeId() {
+    return nodeId;
+  }
+
   public AddressBookQuery limit(final int limit) {
     if (limit <= 0) {
       throw new IllegalArgumentException("limit must be greater than 0");

@@ -16,6 +16,10 @@ public class ScheduleByIdQuery extends Query<Optional<ScheduleInfo>> {
     this.scheduleId = scheduleId;
   }
 
+  public ScheduleId getScheduleId() {
+    return scheduleId;
+  }
+
   @Override
   MirrorNodeRequest buildRequest() {
     MirrorNodeRequest.Builder request =

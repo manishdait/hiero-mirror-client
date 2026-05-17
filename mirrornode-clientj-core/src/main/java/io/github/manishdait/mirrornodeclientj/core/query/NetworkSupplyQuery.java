@@ -21,6 +21,10 @@ public class NetworkSupplyQuery extends Query<Optional<NetworkSupply>> {
     super(client);
   }
 
+  public List<CriteriaParam<Instant>> getTimestamps() {
+    return timestamps;
+  }
+
   public NetworkSupplyQuery timestamp(
       final @NonNull Operator operator, final @NonNull Instant timestamp) {
     Objects.requireNonNull(operator, "operator must not be null");

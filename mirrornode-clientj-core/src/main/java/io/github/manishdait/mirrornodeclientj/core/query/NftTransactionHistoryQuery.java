@@ -29,6 +29,22 @@ public class NftTransactionHistoryQuery extends Query<Page<NftTransaction>> {
     this.nftId = nftId;
   }
 
+  public NftId getNftId() {
+    return nftId;
+  }
+
+  public Order getOrder() {
+    return order;
+  }
+
+  public int getLimit() {
+    return limit;
+  }
+
+  public List<CriteriaParam<Instant>> getTimestamps() {
+    return timestamps;
+  }
+
   public NftTransactionHistoryQuery limit(final int limit) {
     if (limit <= 0) {
       throw new IllegalArgumentException("limit must be greater than 0");

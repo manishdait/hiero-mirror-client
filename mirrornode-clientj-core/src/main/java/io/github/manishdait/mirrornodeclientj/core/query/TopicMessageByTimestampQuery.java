@@ -18,6 +18,14 @@ public class TopicMessageByTimestampQuery extends Query<Optional<TopicMessage>> 
     this.timestamp = timestamp;
   }
 
+  public TopicId getTopicId() {
+    return topicId;
+  }
+
+  public String getTimestamp() {
+    return timestamp;
+  }
+
   @Override
   MirrorNodeRequest buildRequest() {
     MirrorNodeRequest.Builder request =

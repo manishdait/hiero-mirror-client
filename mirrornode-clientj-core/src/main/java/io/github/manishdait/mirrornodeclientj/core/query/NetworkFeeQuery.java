@@ -23,6 +23,14 @@ public class NetworkFeeQuery extends Query<Optional<NetworkFee>> {
     super(client);
   }
 
+  public List<CriteriaParam<Instant>> getTimestamps() {
+    return timestamps;
+  }
+
+  public Order getOrder() {
+    return order;
+  }
+
   public NetworkFeeQuery order(final @NonNull Order order) {
     Objects.requireNonNull(order, "order must not be null");
     this.order = order;

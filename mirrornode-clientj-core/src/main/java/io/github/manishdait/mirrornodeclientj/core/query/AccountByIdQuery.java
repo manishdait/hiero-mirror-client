@@ -31,6 +31,30 @@ public class AccountByIdQuery extends Query<Optional<AccountInfo>> {
     this.accountId = accountId;
   }
 
+  public AccountId getAccountId() {
+    return accountId;
+  }
+
+  public Order getOrder() {
+    return order;
+  }
+
+  public int getLimit() {
+    return limit;
+  }
+
+  public boolean isIncludeTransaction() {
+    return includeTransaction;
+  }
+
+  public List<CriteriaParam<Instant>> getTimestamps() {
+    return timestamps;
+  }
+
+  public TransactionType getTransactionType() {
+    return transactionType;
+  }
+
   public AccountByIdQuery limit(final int limit) {
     if (limit <= 0) {
       throw new IllegalArgumentException("limit must be greater than 0");

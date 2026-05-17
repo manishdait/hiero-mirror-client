@@ -16,6 +16,10 @@ public class TopicByIdQuery extends Query<Optional<Topic>> {
     this.topicId = topicId;
   }
 
+  public TopicId getTopicId() {
+    return topicId;
+  }
+
   public TopicMessageBySequenceQuery messageBySequenceNumber(long sequenceNumber) {
     return new TopicMessageBySequenceQuery(client, topicId, sequenceNumber);
   }

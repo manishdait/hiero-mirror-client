@@ -25,6 +25,22 @@ public class CryptoAllowanceQuery extends Query<Page<CryptoAllowance>> {
     this.accountId = accountId;
   }
 
+  public AccountId getAccountId() {
+    return accountId;
+  }
+
+  public Order getOrder() {
+    return order;
+  }
+
+  public int getLimit() {
+    return limit;
+  }
+
+  public CriteriaParam<AccountId> getSpenderId() {
+    return spenderId;
+  }
+
   public CryptoAllowanceQuery limit(final int limit) {
     if (limit <= 0) {
       throw new IllegalArgumentException("limit must be greater than 0");

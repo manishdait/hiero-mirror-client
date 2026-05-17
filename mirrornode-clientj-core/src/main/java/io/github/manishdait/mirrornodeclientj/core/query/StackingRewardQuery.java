@@ -28,6 +28,22 @@ public class StackingRewardQuery extends Query<Page<StakingReward>> {
     this.accountId = accountId;
   }
 
+  public AccountId getAccountId() {
+    return accountId;
+  }
+
+  public Order getOrder() {
+    return order;
+  }
+
+  public int getLimit() {
+    return limit;
+  }
+
+  public List<CriteriaParam<Instant>> getTimestamps() {
+    return timestamps;
+  }
+
   public StackingRewardQuery limit(final int limit) {
     if (limit <= 0) {
       throw new IllegalArgumentException("limit must be greater than 0");

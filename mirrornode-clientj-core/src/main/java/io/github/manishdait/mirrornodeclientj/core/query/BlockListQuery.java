@@ -26,6 +26,22 @@ public class BlockListQuery extends Query<Page<Block>> {
     super(client);
   }
 
+  public Order getOrder() {
+    return order;
+  }
+
+  public int getLimit() {
+    return limit;
+  }
+
+  public CriteriaParam<Long> getBlockNumber() {
+    return blockNumber;
+  }
+
+  public List<CriteriaParam<Instant>> getTimestamps() {
+    return timestamps;
+  }
+
   public BlockListQuery limit(final int limit) {
     if (limit <= 0) {
       throw new IllegalArgumentException("limit must be greater than 0");

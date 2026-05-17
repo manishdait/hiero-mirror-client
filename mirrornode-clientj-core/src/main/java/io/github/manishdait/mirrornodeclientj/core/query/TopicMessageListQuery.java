@@ -16,6 +16,10 @@ public class TopicMessageListQuery extends Query<Page<TopicMessage>> {
     this.topicId = topicId;
   }
 
+  public TopicId getTopicId() {
+    return topicId;
+  }
+
   @Override
   MirrorNodeRequest buildRequest() {
     MirrorNodeRequest.Builder request =

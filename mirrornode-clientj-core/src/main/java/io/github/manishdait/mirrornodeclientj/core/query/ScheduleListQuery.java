@@ -25,6 +25,22 @@ public class ScheduleListQuery extends Query<Page<ScheduleInfo>> {
     super(client);
   }
 
+  public Order getOrder() {
+    return order;
+  }
+
+  public int getLimit() {
+    return limit;
+  }
+
+  public CriteriaParam<AccountId> getAccountId() {
+    return accountId;
+  }
+
+  public CriteriaParam<ScheduleId> getScheduleId() {
+    return scheduleId;
+  }
+
   public ScheduleListQuery order(final @NonNull Order order) {
     Objects.requireNonNull(order, "order must not be null");
     this.order = order;

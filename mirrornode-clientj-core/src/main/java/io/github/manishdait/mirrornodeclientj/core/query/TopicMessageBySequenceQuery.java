@@ -19,6 +19,14 @@ public class TopicMessageBySequenceQuery extends Query<Optional<TopicMessage>> {
     this.sequenceNumber = sequenceNumber;
   }
 
+  public TopicId getTopicId() {
+    return topicId;
+  }
+
+  public Long getSequenceNumber() {
+    return sequenceNumber;
+  }
+
   @Override
   MirrorNodeRequest buildRequest() {
     MirrorNodeRequest.Builder request =

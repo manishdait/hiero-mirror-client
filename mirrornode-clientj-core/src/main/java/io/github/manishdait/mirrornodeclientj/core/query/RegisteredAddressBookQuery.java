@@ -24,6 +24,22 @@ public class RegisteredAddressBookQuery extends Query<Page<RegisteredNode>> {
     super(client);
   }
 
+  public Order getOrder() {
+    return order;
+  }
+
+  public int getLimit() {
+    return limit;
+  }
+
+  public RegisteredServiceType getType() {
+    return type;
+  }
+
+  public CriteriaParam<Long> getRegisteredNodeId() {
+    return registeredNodeId;
+  }
+
   public RegisteredAddressBookQuery limit(final int limit) {
     if (limit <= 0) {
       throw new IllegalArgumentException("limit must be greater than 0");

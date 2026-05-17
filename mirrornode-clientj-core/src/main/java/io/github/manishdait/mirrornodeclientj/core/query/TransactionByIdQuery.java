@@ -11,12 +11,24 @@ import tools.jackson.databind.JsonNode;
 public class TransactionByIdQuery extends Query<Optional<Transaction>> {
   private final String transactionId;
 
-  Integer nonce;
-  Boolean scheduled;
+  private Integer nonce;
+  private Boolean scheduled;
 
   public TransactionByIdQuery(MirrorNodeClient client, String transactionId) {
     super(client);
     this.transactionId = transactionId;
+  }
+
+  public String getTransactionId() {
+    return transactionId;
+  }
+
+  public Integer getNonce() {
+    return nonce;
+  }
+
+  public Boolean getScheduled() {
+    return scheduled;
   }
 
   public TransactionByIdQuery nonce(int nonce) {
