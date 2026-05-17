@@ -40,9 +40,9 @@ import io.github.manishdait.mirrornodeclientj.core.data.Operator;
 import java.time.Duration;
 
 public class AccountList {
-public static void main(String[] args) {
-// Initialize client for Hiero Testnet
-var client = new MirrorNodeClient(NetworkType.TESTNET);
+    public static void main(String[] args) {
+        // Initialize client for Hiero Testnet
+        var client = new MirrorNodeClient(NetworkType.TESTNET);
 
         // Build and execute the query
         var accounts = client.accounts()
@@ -65,9 +65,9 @@ import io.github.manishdait.mirrornodeclientj.core.MirrorNodeClient;
 import io.github.manishdait.mirrornodeclientj.core.data.NetworkType;
 
 public class AccountById {
-public static void main(String[] args) {
-// Initialize client
-var client = new MirrorNodeClient(NetworkType.TESTNET);
+    public static void main(String[] args) {
+        // Initialize client
+        var client = new MirrorNodeClient(NetworkType.TESTNET);
 
         // Query a single account entity
         var account = client.accounts()
@@ -80,6 +80,35 @@ var client = new MirrorNodeClient(NetworkType.TESTNET);
     }
 }
 ```
+
+### 3. Alternative Query Approach (Direct Instance Instantiation)
+
+Alternatively, you can instantiate the query object directly instead of using the client factory methods.
+
+```java
+import com.hedera.hashgraph.sdk.AccountId;
+import io.github.manishdait.mirrornodeclientj.core.MirrorNodeClient;
+import io.github.manishdait.mirrornodeclientj.core.data.NetworkType;
+import io.github.manishdait.mirrornodeclientj.core.data.TransactionType;
+import io.github.manishdait.mirrornodeclientj.core.query.AccountByIdQuery; // Adjust import path as necessary
+
+public class AccountAlternativeQuery {
+    public static void main(String[] args) {
+        var client = new MirrorNodeClient(NetworkType.TESTNET);
+
+        // Directly instantiate the query builder
+        var query = new AccountByIdQuery(client, AccountId.fromString("0.0.2"))
+            .limit(10)
+            .includeTransaction(true)
+            .transactionType(TransactionType.ETHEREUM_TRANSACTION);
+
+        var account = query.execute();
+        account.ifPresent(accountInfo -> System.out.println("Account: " + accountInfo));
+    }
+}
+```
+
+
 
 ## Acknowledgments
 
