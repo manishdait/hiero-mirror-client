@@ -4,6 +4,7 @@ import com.hedera.hashgraph.sdk.AccountId;
 import com.hedera.hashgraph.sdk.BlockNodeApi;
 import com.hedera.hashgraph.sdk.FileId;
 import com.hedera.hashgraph.sdk.Key;
+import com.hedera.hashgraph.sdk.ScheduleId;
 import com.hedera.hashgraph.sdk.Status;
 import com.hedera.hashgraph.sdk.TokenId;
 import com.hedera.hashgraph.sdk.TokenSupplyType;
@@ -28,6 +29,8 @@ import io.github.manishdait.mirrornodeclientj.data.Page;
 import io.github.manishdait.mirrornodeclientj.data.RegisteredNode;
 import io.github.manishdait.mirrornodeclientj.data.RegisteredServiceType;
 import io.github.manishdait.mirrornodeclientj.data.RpcRelayEndpoint;
+import io.github.manishdait.mirrornodeclientj.data.ScheduleInfo;
+import io.github.manishdait.mirrornodeclientj.data.ScheduleSignatures;
 import io.github.manishdait.mirrornodeclientj.data.StakeInfo;
 import io.github.manishdait.mirrornodeclientj.data.StakingReward;
 import io.github.manishdait.mirrornodeclientj.data.StakingRewardTransfer;
@@ -1186,6 +1189,80 @@ public class JsonParserImpl {
         generalService,
         mirrorNode,
         rpcRelay);
+  }
+
+  public static Page<ScheduleInfo> parseScheduleInfos(JsonNode node) {
+    if (node == null
+        || node.isEmpty()
+        || node.get("schedules").isEmpty()
+        || !node.get("schedules").isArray()) {
+      return new Page<>(List.of(), null);
+    }
+
+    try {
+      ArrayNode schedules = node.get("schedules").asArray();
+      List<ScheduleInfo> scheduleList =
+          schedules.valueStream().map(schedule -> parseScheduleInfo(schedule).get()).toList();
+      return new Page<>(scheduleList, JsonUtils.toNullableString(node.get("links"), "next"));
+    } catch (Exception e) {
+      throw new RuntimeException("Unable to parse json", e);
+    }
+  }
+
+  public static Optional<ScheduleInfo> parseScheduleInfo(JsonNode node) {
+    if (node == null || node.isEmpty()) {
+      return Optional.empty();
+    }
+
+    try {
+      Key adminKey = JsonUtils.toKey(node, "admin_key");
+      Instant consensusTimestamp = JsonUtils.toInstant(node, "consensus_timestamp");
+      AccountId creatorAccountId =
+          JsonUtils.toEntityId(node, "creator_account_id", AccountId.class);
+      boolean deleted = JsonUtils.toBoolean(node, "deleted");
+      Instant executedTimestamp = JsonUtils.toInstant(node, "executed_timestamp");
+      Instant expirationTime = JsonUtils.toInstant(node, "expiration_time");
+      String memo = JsonUtils.toNullableString(node, "memo");
+      AccountId payerAccount = JsonUtils.toEntityId(node, "payer_account_id", AccountId.class);
+      ScheduleId scheduleId = JsonUtils.toEntityId(node, "schedule_id", ScheduleId.class);
+
+      List<ScheduleSignatures> signatures = new ArrayList<>();
+      if (node.has("signatures") && !node.get("signatures").isNull()) {
+        signatures =
+            node.get("signatures")
+                .asArray()
+                .valueStream()
+                .map(
+                    s -> {
+                      return new ScheduleSignatures(
+                          JsonUtils.toInstant(s, "consensus_timestamp"),
+                          JsonUtils.toBytes(s, "public_key_prefix"),
+                          JsonUtils.toBytes(s, "signature"),
+                          JsonUtils.toNullableString(s, "type"));
+                    })
+                .collect(Collectors.toUnmodifiableList());
+      }
+
+      byte[] transactionBody = JsonUtils.toBytes(node, "transaction_body");
+      boolean waitForExpiry = JsonUtils.toBoolean(node, "wait_for_expiry");
+
+      return Optional.of(
+          new ScheduleInfo(
+              adminKey,
+              consensusTimestamp,
+              creatorAccountId,
+              deleted,
+              executedTimestamp,
+              expirationTime,
+              memo,
+              payerAccount,
+              scheduleId,
+              signatures,
+              transactionBody,
+              waitForExpiry));
+    } catch (Exception e) {
+      throw new RuntimeException("Unable to parse json", e);
+    }
   }
 
   private static Node.ServiceEndpoint parseServiceEndpoint(JsonNode node) {

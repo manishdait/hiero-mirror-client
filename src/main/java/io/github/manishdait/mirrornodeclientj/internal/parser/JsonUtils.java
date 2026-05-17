@@ -4,6 +4,7 @@ import com.hedera.hashgraph.sdk.AccountId;
 import com.hedera.hashgraph.sdk.FileId;
 import com.hedera.hashgraph.sdk.Key;
 import com.hedera.hashgraph.sdk.PublicKey;
+import com.hedera.hashgraph.sdk.ScheduleId;
 import com.hedera.hashgraph.sdk.Status;
 import com.hedera.hashgraph.sdk.TokenId;
 import com.hedera.hashgraph.sdk.TokenSupplyType;
@@ -147,6 +148,7 @@ public class JsonUtils {
       case "TokenId" -> clazz.cast(TokenId.fromString(entityId));
       case "TopicId" -> clazz.cast(TopicId.fromString(entityId));
       case "FileId" -> clazz.cast(FileId.fromString(entityId));
+      case "ScheduleId" -> clazz.cast(ScheduleId.fromString(entityId));
       default -> throw new RuntimeException("Unsupported class");
     };
   }
