@@ -84,3 +84,7 @@ var client = new MirrorNodeClient(NetworkType.TESTNET);
 ## Acknowledgments
 
 This project is architecturally inspired by and modeled after the mirrornode data-access paradigms established within the official **Hiero Enterprise Java repositories** (such as their `AccountRepository` specification).
+
+## License
+
+This project is licensed under the MIT License see the [LICENSE](LICENSE) file for details.
