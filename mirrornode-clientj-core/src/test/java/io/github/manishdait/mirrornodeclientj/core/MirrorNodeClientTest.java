@@ -8,7 +8,7 @@ public class MirrorNodeClientTest {
   @Test
   void shouldCallEndpoint() throws IOException, InterruptedException {
     MirrorNodeClient client = new MirrorNodeClient(NetworkType.TESTNET);
-    var list = client.tokens().findNftsForAccountId("0.0.6105114").execute();
+    var list = client.tokens().findNftTransactions("0.0.8984601", 1).execute();
 
     System.out.println(list);
   }

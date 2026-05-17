@@ -6,6 +6,7 @@ import com.hedera.hashgraph.sdk.TokenId;
 import io.github.manishdait.mirrornodeclientj.core.query.NftByIdQuery;
 import io.github.manishdait.mirrornodeclientj.core.query.NftListByAccountIdQuery;
 import io.github.manishdait.mirrornodeclientj.core.query.NftListByTokenIdQuery;
+import io.github.manishdait.mirrornodeclientj.core.query.NftTransactionHistoryQuery;
 import io.github.manishdait.mirrornodeclientj.core.query.TokenByIdQuery;
 import io.github.manishdait.mirrornodeclientj.core.query.TokenListQuery;
 import org.jspecify.annotations.NonNull;
@@ -37,4 +38,11 @@ public interface TokenResource {
   }
 
   @NonNull NftListByAccountIdQuery findNftsForAccountId(AccountId accountId);
+
+  default @NonNull NftTransactionHistoryQuery findNftTransactions(String tokenId, long serial) {
+    NftId id = new NftId(TokenId.fromString(tokenId), serial);
+    return findNftTransactions(id);
+  }
+
+  @NonNull NftTransactionHistoryQuery findNftTransactions(NftId nftId);
 }

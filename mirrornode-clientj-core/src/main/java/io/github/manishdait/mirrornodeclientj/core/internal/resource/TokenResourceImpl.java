@@ -8,6 +8,7 @@ import io.github.manishdait.mirrornodeclientj.core.TokenResource;
 import io.github.manishdait.mirrornodeclientj.core.query.NftByIdQuery;
 import io.github.manishdait.mirrornodeclientj.core.query.NftListByAccountIdQuery;
 import io.github.manishdait.mirrornodeclientj.core.query.NftListByTokenIdQuery;
+import io.github.manishdait.mirrornodeclientj.core.query.NftTransactionHistoryQuery;
 import io.github.manishdait.mirrornodeclientj.core.query.TokenByIdQuery;
 import io.github.manishdait.mirrornodeclientj.core.query.TokenListQuery;
 import org.jspecify.annotations.NonNull;
@@ -42,5 +43,10 @@ public class TokenResourceImpl implements TokenResource {
   @Override
   public @NonNull NftListByAccountIdQuery findNftsForAccountId(AccountId accountId) {
     return new NftListByAccountIdQuery(client, accountId);
+  }
+
+  @Override
+  public @NonNull NftTransactionHistoryQuery findNftTransactions(NftId nftId) {
+    return new NftTransactionHistoryQuery(client, nftId);
   }
 }

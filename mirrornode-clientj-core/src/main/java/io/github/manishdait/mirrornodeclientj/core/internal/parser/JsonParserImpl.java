@@ -24,6 +24,7 @@ import io.github.manishdait.mirrornodeclientj.core.data.NetworkFee;
 import io.github.manishdait.mirrornodeclientj.core.data.NetworkSupply;
 import io.github.manishdait.mirrornodeclientj.core.data.Nft;
 import io.github.manishdait.mirrornodeclientj.core.data.NftAllowance;
+import io.github.manishdait.mirrornodeclientj.core.data.NftTransaction;
 import io.github.manishdait.mirrornodeclientj.core.data.NftTransfer;
 import io.github.manishdait.mirrornodeclientj.core.data.Node;
 import io.github.manishdait.mirrornodeclientj.core.data.Page;
@@ -1311,6 +1312,56 @@ public class JsonParserImpl {
               serialNumber,
               spenderId,
               tokenId));
+    } catch (Exception e) {
+      throw new RuntimeException("Unable to parse json", e);
+    }
+  }
+
+  public static Page<NftTransaction> parseNftTransactions(JsonNode node) {
+    if (node == null
+        || node.isEmpty()
+        || node.get("transactions").isEmpty()
+        || !node.get("transactions").isArray()) {
+      return new Page<>(List.of(), null);
+    }
+
+    try {
+      ArrayNode transactions = node.get("transactions").asArray();
+      List<NftTransaction> nftsTransactions =
+          transactions
+              .valueStream()
+              .map(transaction -> parseNftTransaction(transaction).get())
+              .toList();
+      return new Page<>(nftsTransactions, JsonUtils.toNullableString(node.get("links"), "next"));
+    } catch (Exception e) {
+      throw new RuntimeException("Unable to parse json", e);
+    }
+  }
+
+  public static Optional<NftTransaction> parseNftTransaction(JsonNode node) {
+    if (node == null || node.isEmpty()) {
+      return Optional.empty();
+    }
+
+    try {
+      Instant consensusTimestamp = JsonUtils.toInstant(node, "consensus_timestamp");
+      boolean isApproval = JsonUtils.toBoolean(node, "is_approval");
+      long nonce = JsonUtils.toLong(node, "nonce");
+      AccountId receiverAccountId =
+          JsonUtils.toEntityId(node, "receiver_account_id", AccountId.class);
+      AccountId senderAccountId = JsonUtils.toEntityId(node, "sender_account_id", AccountId.class);
+      String transactionId = JsonUtils.toNullableString(node, "transaction_id");
+      TransactionType type = JsonUtils.toEnum(node, "type", TransactionType.class);
+
+      return Optional.of(
+          new NftTransaction(
+              consensusTimestamp,
+              isApproval,
+              nonce,
+              receiverAccountId,
+              senderAccountId,
+              transactionId,
+              type));
     } catch (Exception e) {
       throw new RuntimeException("Unable to parse json", e);
     }
