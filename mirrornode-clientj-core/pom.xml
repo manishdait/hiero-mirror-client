@@ -4,13 +4,15 @@
   <parent>
     <groupId>io.github.manishdait</groupId>
     <artifactId>mirrornode-clientj</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>0.0.1</version>
   </parent>
 
   <artifactId>mirrornode-clientj-core</artifactId>
   <packaging>jar</packaging>
 
   <name>mirrornode-clientj-core</name>
+  <description>A lightweight, Java client wrapper designed to easily query the Hiero Mirror Node REST API.</description>
+  <url>https://github.com/manishdait/mirrornode-clientj</url>
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>

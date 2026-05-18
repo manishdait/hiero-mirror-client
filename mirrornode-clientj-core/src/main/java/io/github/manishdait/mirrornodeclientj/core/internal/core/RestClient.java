@@ -21,8 +21,6 @@ public class RestClient {
       @NonNull final MirrorNodeRequest request, Duration duration) {
     Objects.requireNonNull(request, "request must not be null");
 
-    System.out.println(parseUrl(request));
-
     HttpRequest httpRequest =
         HttpRequest.newBuilder().timeout(duration).uri(URI.create(parseUrl(request))).GET().build();
 

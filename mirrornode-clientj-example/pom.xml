@@ -4,13 +4,15 @@
   <parent>
     <groupId>io.github.manishdait</groupId>
     <artifactId>mirrornode-clientj</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>0.0.1</version>
   </parent>
 
   <artifactId>mirrornode-clientj-example</artifactId>
   <packaging>jar</packaging>
 
   <name>mirrornode-clientj-examples</name>
+  <description>Sample examples for using the mirronode-clientj-core module.</description>
+  <url>https://github.com/manishdait/mirrornode-clientj</url>
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -22,7 +24,7 @@
     <dependency>
       <groupId>io.github.manishdait</groupId>
       <artifactId>mirrornode-clientj-core</artifactId>
-      <version>0.0.1-SNAPSHOT</version>
+      <version>0.0.1</version>
     </dependency>
   </dependencies>
 </project>
