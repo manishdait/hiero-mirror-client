@@ -7,6 +7,31 @@
   <version>0.0.1-SNAPSHOT</version>
   <packaging>pom</packaging>
 
+  <name>mirrornode-clientj</name>
+  <description>A lightweight, Java client wrapper designed to easily query the Hiero Mirror Node REST API.</description>
+  <url>https://github.com/manishdait/mirrornode-clientj</url>
+
+  <licenses>
+    <license>
+      <name>MIT</name>
+      <url>https://github.com/manishdait/mirrornode-clientj/blob/master/LICENSE</url>
+    </license>
+  </licenses>
+
+  <developers>
+    <developer>
+      <id>manishdait</id>
+      <name>Manish Dait</name>
+    </developer>
+  </developers>
+
+  <scm>
+    <connection>scm:git:git://github.com/manishdait/mirrornode-clientj.git</connection>
+    <developerConnection>scm:git:ssh://github.com/manishdait/mirrornode-clientj.git</developerConnection>
+    <url>https://github.com/manishdait/mirrornode-clientj</url>
+    <tag>HEAD</tag>
+  </scm>
+
   <modules>
     <module>mirrornode-clientj-core</module>
     <module>mirrornode-clientj-example</module>
@@ -99,4 +124,67 @@
       </plugin>
     </plugins>
   </build>
+
+  <profiles>
+    <profile>
+      <id>publication</id>
+
+      <properties>
+        <jreleaser.config.file>jreleaser.toml</jreleaser.config.file>
+      </properties>
+
+      <build>
+        <defaultGoal>deploy</defaultGoal>
+        <plugins>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-javadoc-plugin</artifactId>
+            <executions>
+              <execution>
+                <id>attach-javadocs</id>
+                <goals>
+                  <goal>jar</goal>
+                </goals>
+                <configuration>
+                  <attach>true</attach>
+                </configuration>
+              </execution>
+            </executions>
+          </plugin>
+
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-source-plugin</artifactId>
+            <executions>
+              <execution>
+                <id>attach-sources</id>
+                <goals>
+                  <goal>jar</goal>
+                </goals>
+                <configuration>
+                  <attach>true</attach>
+                </configuration>
+              </execution>
+            </executions>
+          </plugin>
+
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-deploy-plugin</artifactId>
+            <configuration>
+              <altDeploymentRepository>local::file:./target/staging-deploy</altDeploymentRepository>
+              <altReleaseDeploymentRepository>local::file:./target/staging-deploy</altReleaseDeploymentRepository>
+              <altSnapshotDeploymentRepository>local::file:./target/staging-deploy</altSnapshotDeploymentRepository>
+            </configuration>
+          </plugin>
+
+          <plugin>
+            <groupId>org.jreleaser</groupId>
+            <artifactId>jreleaser-maven-plugin</artifactId>
+            <inherited>false</inherited>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+  </profiles>
 </project>

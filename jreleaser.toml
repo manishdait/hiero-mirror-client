@@ -1,0 +1,26 @@
+# https://jreleaser.org/guide/latest/reference
+
+[signing.pgp]
+active = "ALWAYS"
+armored = true
+
+[deploy.maven.mavenCentral.release-deploy]
+active = "RELEASE"
+url = "https://central.sonatype.com/api/v1/publisher"
+stagingRepositories = ["target/staging-deploy"]
+applyMavenCentralRules = true
+
+retryDelay = 20
+maxRetries = 102
+
+[release.github]
+owner = "manishdait"
+name = "mirrornode-clientj"
+skipTag = true
+skipRelease = true
+
+[release.github.update]
+enabled = true
+
+[release.github.changelog]
+enabled = false
