@@ -2,8 +2,8 @@
 
 Mirrornode-ClientJ is a lightweight, Java client wrapper designed to easily query the **Hiero Mirror Node REST API**. It integrates seamlessly with the official Hiero SDK classes (like `AccountId`) while providing a clean, builder-style interface to fetch network data.
 
-> ⚠️ **Project Status: Work In Progress**  
-> This library is currently in early-stage development. No pre-built binaries or snapshot releases are available on Maven Central yet. To try it out, you will need to clone and build the library locally.
+> ⚠️ **Project Status: Initial Release**  
+> While the first stable artifact is now published to Maven Central, please note that the API is still maturing and may undergo breaking updates prior to the v1.0.0 release.
 ---
 
 ## Features
@@ -13,17 +13,17 @@ Mirrornode-ClientJ is a lightweight, Java client wrapper designed to easily quer
 * **Type Safe:** Utilizes Hiero SDK primitives for predictable entity parsing.
 
 
-## Local Setup & Installation
+## Installation
 
-Since the project is not yet released, you need to compile and install it to your local Maven repository (`~/.m2/repository`) to use it in other test projects.
+To include the release of the library in your project, add the following dependency to your build configuration.
 
-### Clone and Install Locally
-
-Clone the repository and run the install command depending on your build system:
-```bash
-git clone https://github.com/manishdait/mirrornode-clientj.git
-cd mirrornode-clientj
-mvn clean install
+### Maven (`pom.xml`)
+```xml
+<dependency>
+  <groupId>io.github.manishdait</groupId>
+  <artifactId>mirrornode-clientj-core</artifactId>
+  <version>0.0.1</version>
+</dependency>
 ```
 
 ## Usage Examples
@@ -107,6 +107,17 @@ public class AccountAlternativeQuery {
     }
 }
 ```
+
+## Local Setup & Installation
+
+If you want to modify the library or build it from the source locally, compile and install it to your local Maven repository (`~/.m2/repository`):
+
+```bash
+git clone https://github.com/manishdait/mirrornode-clientj.git
+cd mirrornode-clientj
+mvn clean install
+```
+
 
 
 
