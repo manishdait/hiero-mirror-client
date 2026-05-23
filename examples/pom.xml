@@ -1,0 +1,31 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <groupId>io.github.manishdait</groupId>
+    <artifactId>hiero-mirror-client</artifactId>
+    <version>0.0.1</version>
+  </parent>
+
+  <artifactId>examples</artifactId>
+  <packaging>jar</packaging>
+
+  <name>examples</name>
+  <description>Runnable, practical implementation code and sandbox.</description>
+  <url>https://github.com/manishdait/hiero-mirror-client</url>
+
+  <properties>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <maven.deploy.skip>true</maven.deploy.skip>
+    <jreleaser.skip>true</jreleaser.skip>
+  </properties>
+
+  <dependencies>
+    <dependency>
+      <groupId>io.github.manishdait</groupId>
+      <artifactId>hiero-mirror-client-core</artifactId>
+      <version>0.0.1</version>
+      <scope>compile</scope>
+    </dependency>
+  </dependencies>
+</project>

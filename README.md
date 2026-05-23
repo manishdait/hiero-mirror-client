@@ -4,6 +4,7 @@ Mirrornode-ClientJ is a lightweight, Java client wrapper designed to easily quer
 
 > ⚠️ **Project Status: Initial Release**  
 > While the first stable artifact is now published to Maven Central, please note that the API is still maturing and may undergo breaking updates prior to the v1.0.0 release.
+
 ---
 
 ## Features
@@ -34,7 +35,7 @@ An example of querying accounts list using condition operators, limits, and cust
 
 ```java
 import com.hedera.hashgraph.sdk.AccountId;
-import io.github.manishdait.mirrornodeclientj.core.MirrorNodeClient;
+import io.github.manishdait.hieromirror.MirrorNodeClient;
 import io.github.manishdait.mirrornodeclientj.core.data.NetworkType;
 import io.github.manishdait.mirrornodeclientj.core.data.Operator;
 import java.time.Duration;
@@ -61,7 +62,7 @@ public class AccountList {
 An example to query an account directly by its string ID and choose whether to include transactional history details in the response.
 
 ```java
-import io.github.manishdait.mirrornodeclientj.core.MirrorNodeClient;
+import io.github.manishdait.hieromirror.MirrorNodeClient;
 import io.github.manishdait.mirrornodeclientj.core.data.NetworkType;
 
 public class AccountById {
@@ -87,7 +88,7 @@ Alternatively, you can instantiate the query object directly instead of using th
 
 ```java
 import com.hedera.hashgraph.sdk.AccountId;
-import io.github.manishdait.mirrornodeclientj.core.MirrorNodeClient;
+import io.github.manishdait.hieromirror.MirrorNodeClient;
 import io.github.manishdait.mirrornodeclientj.core.data.NetworkType;
 import io.github.manishdait.mirrornodeclientj.core.data.TransactionType;
 import io.github.manishdait.mirrornodeclientj.core.query.AccountByIdQuery; // Adjust import path as necessary
