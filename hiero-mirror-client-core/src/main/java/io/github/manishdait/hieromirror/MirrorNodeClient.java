@@ -1,5 +1,6 @@
 package io.github.manishdait.hieromirror;
 
+import io.github.manishdait.hieromirror.internal.resource.AccountResourceImpl;
 import io.github.manishdait.hieromirror.resource.AccountResource;
 import java.time.Duration;
 import java.util.Objects;
@@ -32,6 +33,6 @@ public class MirrorNodeClient {
   }
 
   public AccountResource accounts() {
-    return new AccountResource(this);
+    return new AccountResourceImpl(this);
   }
 }

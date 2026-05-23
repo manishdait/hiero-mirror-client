@@ -1,4 +1,4 @@
-package io.github.manishdait.hieromirror.internal.wrapper;
+package io.github.manishdait.hieromirror.internal.resource.wrapper;
 
 import io.github.manishdait.hieromirror.MirrorNodeClient;
 import io.github.manishdait.hieromirror.model.AccountInfo;

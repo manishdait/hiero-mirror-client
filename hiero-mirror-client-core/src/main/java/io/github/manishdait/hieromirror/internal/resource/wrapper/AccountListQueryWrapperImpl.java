@@ -1,4 +1,4 @@
-package io.github.manishdait.hieromirror.internal.wrapper;
+package io.github.manishdait.hieromirror.internal.resource.wrapper;
 
 import com.hedera.hashgraph.sdk.AccountId;
 import com.hedera.hashgraph.sdk.Hbar;
