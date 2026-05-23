@@ -1,5 +1,6 @@
 package io.github.manishdait.hieromirror;
 
+import io.github.manishdait.hieromirror.resource.AccountResource;
 import java.time.Duration;
 import java.util.Objects;
 import org.jspecify.annotations.NonNull;
@@ -28,5 +29,9 @@ public class MirrorNodeClient {
 
   public void setTimeout(final @NonNull Duration timeout) {
     this.timeout = Objects.requireNonNull(timeout, "timeout must not be null");
+  }
+
+  public AccountResource accounts() {
+    return new AccountResource(this);
   }
 }

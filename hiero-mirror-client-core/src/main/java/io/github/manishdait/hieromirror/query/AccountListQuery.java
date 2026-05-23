@@ -70,7 +70,7 @@ public final class AccountListQuery extends Query<Page<AccountInfo>> {
    * @return {@code this} query builder instance
    * @throws IllegalArgumentException if limit is outside range [1, 100]
    */
-  public AccountListQuery limit(final int limit) {
+  public AccountListQuery setLimit(final int limit) {
     if (limit < 1 || limit > 100) {
       throw new IllegalArgumentException("limit must be greater than 0 and less than 100");
     }

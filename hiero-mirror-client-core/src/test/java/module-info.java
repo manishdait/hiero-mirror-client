@@ -7,8 +7,6 @@ module io.github.manishdait.hieromirror.test {
 
   opens io.github.manishdait.hieromirror.test.internal.core to
       org.junit.platform.commons;
-  opens io.github.manishdait.hieromirror.test.internal.resource to
-      org.junit.platform.commons;
-  opens io.github.manishdait.mirrornodeclientj.core.test.query to
+  opens io.github.manishdait.hieromirror.test.query to
       org.junit.platform.commons;
 }
