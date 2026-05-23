@@ -6,15 +6,12 @@ import io.github.manishdait.hieromirror.internal.core.MirrorNodeResponse;
 import io.github.manishdait.hieromirror.internal.core.RestClient;
 import java.time.Duration;
 import java.util.Objects;
-
 import org.jspecify.annotations.NonNull;
 import tools.jackson.databind.JsonNode;
 import tools.jackson.databind.ObjectMapper;
 
-/**
- * Abstract base class for all Hiero Mirror Node API queries.
- */
-public abstract class Query<T> {
+/** Abstract base class for all Hiero Mirror Node API queries. */
+abstract class Query<T> {
   static final ObjectMapper mapper = new ObjectMapper();
 
   /**

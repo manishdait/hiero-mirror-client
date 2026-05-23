@@ -2,106 +2,101 @@ package io.github.manishdait.hieromirror.query;
 
 import com.hedera.hashgraph.sdk.AccountId;
 import io.github.manishdait.hieromirror.MirrorNodeClient;
+import io.github.manishdait.hieromirror.internal.core.MirrorNodeJsonParser;
+import io.github.manishdait.hieromirror.internal.core.MirrorNodeRequest;
 import io.github.manishdait.hieromirror.model.BalanceModifier;
 import io.github.manishdait.hieromirror.model.CriteriaParam;
-import io.github.manishdait.hieromirror.model.Operator;
 import io.github.manishdait.hieromirror.model.Order;
 import io.github.manishdait.hieromirror.model.Page;
+import io.github.manishdait.hieromirror.model.QueryOperator;
 import io.github.manishdait.hieromirror.model.Transaction;
 import io.github.manishdait.hieromirror.model.TransactionResult;
 import io.github.manishdait.hieromirror.model.TransactionType;
-import io.github.manishdait.hieromirror.internal.core.MirrorNodeRequest;
-import io.github.manishdait.hieromirror.internal.parser.JsonParserImpl;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.Nullable;
 import tools.jackson.databind.JsonNode;
 
 public class TransactionListQuery extends Query<Page<Transaction>> {
   private Order order = Order.DESC;
   private int limit = 25;
-  private TransactionType transactionType;
-  private TransactionResult transactionResult;
-  private BalanceModifier balanceModifier;
+  @Nullable private TransactionType transactionType;
+  @Nullable private TransactionResult transactionResult;
+  @Nullable private BalanceModifier balanceModifier;
 
-  private CriteriaParam<AccountId> accountId;
-  private final List<CriteriaParam<Instant>> timestamps = new ArrayList<>();
+  @Nullable private CriteriaParam<AccountId> accountId;
+  private List<CriteriaParam<Instant>> timestamps = new ArrayList<>();
 
-  public TransactionListQuery(MirrorNodeClient client) {
-    super(client);
-  }
+  public TransactionListQuery() {}
 
   public Order getOrder() {
     return order;
+  }
+
+  public TransactionListQuery setOrder(final @NonNull Order order) {
+    Objects.requireNonNull(order, "order must not be null");
+    this.order = order;
+    return this;
   }
 
   public int getLimit() {
     return limit;
   }
 
-  public TransactionType getTransactionType() {
-    return transactionType;
-  }
-
-  public TransactionResult getTransactionResult() {
-    return transactionResult;
-  }
-
-  public BalanceModifier getBalanceModifier() {
-    return balanceModifier;
-  }
-
-  public CriteriaParam<AccountId> getAccountId() {
-    return accountId;
-  }
-
-  public List<CriteriaParam<Instant>> getTimestamps() {
-    return timestamps;
-  }
-
-  public TransactionListQuery limit(final int limit) {
-    if (limit <= 0) {
-      throw new IllegalArgumentException("limit must be greater than 0");
+  public TransactionListQuery setLimit(final int limit) {
+    if (limit < 1 || limit > 100) {
+      throw new IllegalArgumentException("limit must be greater than 0 and less than 100");
     }
     this.limit = limit;
     return this;
   }
 
-  public TransactionListQuery order(final @NonNull Order order) {
-    Objects.requireNonNull(order, "order must not be null");
-    this.order = order;
-    return this;
+  public @Nullable TransactionType getTransactionType() {
+    return transactionType;
   }
 
-  public TransactionListQuery transactionType(final @NonNull TransactionType type) {
+  public TransactionListQuery setTransactionType(final @NonNull TransactionType type) {
     Objects.requireNonNull(type, "type must not be null");
     this.transactionType = type;
     return this;
   }
 
-  public TransactionListQuery result(final @NonNull TransactionResult result) {
+  public @Nullable TransactionResult getTransactionResult() {
+    return transactionResult;
+  }
+
+  public TransactionListQuery setTransactionResult(final @NonNull TransactionResult result) {
     Objects.requireNonNull(result, "result must not be null");
     this.transactionResult = result;
     return this;
   }
 
-  public TransactionListQuery type(final @NonNull BalanceModifier balanceModifier) {
+  public @Nullable BalanceModifier getBalanceModifier() {
+    return balanceModifier;
+  }
+
+  public TransactionListQuery setBalanceModifier(final @NonNull BalanceModifier balanceModifier) {
     Objects.requireNonNull(balanceModifier, "balanceModifier must not be null");
     this.balanceModifier = balanceModifier;
     return this;
   }
 
-  public TransactionListQuery accountId(
-      final @NonNull Operator operator, final @NonNull String accountId) {
-    Objects.requireNonNull(operator, "operator must not be null");
-    Objects.requireNonNull(accountId, "accountId must not be null");
-    return accountId(operator, AccountId.fromString(accountId));
+  public @Nullable CriteriaParam<AccountId> getAccountId() {
+    return accountId;
   }
 
-  public TransactionListQuery accountId(
-      final @NonNull Operator operator, final @NonNull AccountId accountId) {
+  public TransactionListQuery setAccountId(
+      final @NonNull QueryOperator operator, final @NonNull String accountId) {
+    Objects.requireNonNull(operator, "operator must not be null");
+    Objects.requireNonNull(accountId, "accountId must not be null");
+    return setAccountId(operator, AccountId.fromString(accountId));
+  }
+
+  public TransactionListQuery setAccountId(
+      final @NonNull QueryOperator operator, final @NonNull AccountId accountId) {
     Objects.requireNonNull(operator, "operator must not be null");
     Objects.requireNonNull(accountId, "accountId must not be null");
 
@@ -109,8 +104,23 @@ public class TransactionListQuery extends Query<Page<Transaction>> {
     return this;
   }
 
-  public TransactionListQuery timestamp(
-      final @NonNull Operator operator, final @NonNull Instant timestamp) {
+  public List<CriteriaParam<Instant>> getTimestamps() {
+    return timestamps;
+  }
+
+  public TransactionListQuery setTimestamp(final @NonNull List<CriteriaParam<Instant>> timestamps) {
+    Objects.requireNonNull(timestamps, "timestamps must not be null");
+    this.timestamps = new ArrayList<>(timestamps);
+    return this;
+  }
+
+  public TransactionListQuery clearTimestamps() {
+    this.timestamps = new ArrayList<>();
+    return this;
+  }
+
+  public TransactionListQuery addTimestamp(
+      final @NonNull QueryOperator operator, final @NonNull Instant timestamp) {
     Objects.requireNonNull(operator, "operator must not be null");
     Objects.requireNonNull(timestamp, "timestamp must not be null");
     this.timestamps.add(new CriteriaParam<>(operator, timestamp));
@@ -118,10 +128,12 @@ public class TransactionListQuery extends Query<Page<Transaction>> {
   }
 
   @Override
-  MirrorNodeRequest buildRequest() {
+  MirrorNodeRequest buildRequest(final @NonNull MirrorNodeClient client) {
+    Objects.requireNonNull(client, "client must not be null");
+
     MirrorNodeRequest.Builder request =
         MirrorNodeRequest.newBuilder()
-            .url(this.client.getBaseUrl() + "/api/v1/transactions")
+            .url(client.getBaseUrl() + "/api/v1/transactions")
             .method("GET")
             .queryParam("limit", String.valueOf(limit))
             .queryParam("order", order.getValue());
@@ -158,6 +170,6 @@ public class TransactionListQuery extends Query<Page<Transaction>> {
 
   @Override
   Page<Transaction> mapResponse(@NonNull JsonNode node) {
-    return JsonParserImpl.parseTransactions(node);
+    return MirrorNodeJsonParser.parseTransactions(node);
   }
 }

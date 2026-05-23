@@ -4,15 +4,16 @@ module io.github.manishdait.hieromirror {
   requires java.net.http;
   requires java.annotation;
   requires tools.jackson.databind;
+  requires jdk.jfr;
 
-  exports io.github.manishdait.mirrornodeclientj.core;
-  exports io.github.manishdait.hieromirror.model;
   exports io.github.manishdait.hieromirror.query;
   exports io.github.manishdait.hieromirror.internal.core to
-      io.github.manishdait.mirrornodeclientj.core.test;
+      io.github.manishdait.hieromirror.test;
   exports io.github.manishdait.hieromirror.internal.parser to
-      io.github.manishdait.mirrornodeclientj.core.test;
+      io.github.manishdait.hieromirror.test;
   exports io.github.manishdait.hieromirror.internal.resource to
-      io.github.manishdait.mirrornodeclientj.core.test;
+      io.github.manishdait.hieromirror.test;
+  exports io.github.manishdait.hieromirror.model;
   exports io.github.manishdait.hieromirror;
+  exports io.github.manishdait.hieromirror.resource;
 }

@@ -4,27 +4,27 @@ import com.hedera.hashgraph.sdk.TopicId;
 import io.github.manishdait.hieromirror.MirrorNodeClient;
 import io.github.manishdait.hieromirror.internal.core.MirrorNodeJsonParser;
 import io.github.manishdait.hieromirror.internal.core.MirrorNodeRequest;
-import io.github.manishdait.hieromirror.model.Page;
-import io.github.manishdait.hieromirror.model.TopicMessage;
+import io.github.manishdait.hieromirror.model.Topic;
 import java.util.Objects;
+import java.util.Optional;
 import org.jspecify.annotations.NonNull;
 import tools.jackson.databind.JsonNode;
 
-public class TopicMessageListQuery extends Query<Page<TopicMessage>> {
+public class TopicQuery extends Query<Optional<Topic>> {
   private TopicId topicId;
 
-  public TopicMessageListQuery() {}
+  public TopicQuery() {}
 
   public TopicId getTopicId() {
     return topicId;
   }
 
-  public TopicMessageListQuery setTopicId(final @NonNull String topicId) {
+  public TopicQuery setTopicId(final @NonNull String topicId) {
     Objects.requireNonNull(topicId, "topicId must not be null");
     return setTopicId(TopicId.fromString(topicId));
   }
 
-  public TopicMessageListQuery setTopicId(final @NonNull TopicId topicId) {
+  public TopicQuery setTopicId(final @NonNull TopicId topicId) {
     Objects.requireNonNull(topicId, "topicId must not be null");
     this.topicId = topicId;
     return this;
@@ -37,16 +37,17 @@ public class TopicMessageListQuery extends Query<Page<TopicMessage>> {
     if (topicId == null) {
       throw new IllegalStateException("topicId must be set before executing query");
     }
+
     MirrorNodeRequest.Builder request =
         MirrorNodeRequest.newBuilder()
-            .url(client.getBaseUrl() + "/api/v1/topics/" + topicId + "/messages")
+            .url(client.getBaseUrl() + "/api/v1/topics/" + topicId)
             .method("GET");
 
     return request.build();
   }
 
   @Override
-  Page<TopicMessage> mapResponse(@NonNull JsonNode node) {
-    return MirrorNodeJsonParser.parseTopicMessages(node);
+  Optional<Topic> mapResponse(@NonNull JsonNode node) {
+    return MirrorNodeJsonParser.parseTopic(node);
   }
 }

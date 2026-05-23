@@ -1,9 +1,8 @@
 package io.github.manishdait.hieromirror;
 
-import org.jspecify.annotations.NonNull;
-
 import java.time.Duration;
 import java.util.Objects;
+import org.jspecify.annotations.NonNull;
 
 public class MirrorNodeClient {
   private final String baseUrl;
@@ -15,7 +14,8 @@ public class MirrorNodeClient {
   }
 
   public MirrorNodeClient(final @NonNull String baseUrl) {
-    this.baseUrl = Objects.requireNonNull(baseUrl, "baseUrl must not be null");;
+    this.baseUrl = Objects.requireNonNull(baseUrl, "baseUrl must not be null");
+    ;
   }
 
   public @NonNull String getBaseUrl() {

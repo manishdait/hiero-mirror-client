@@ -1,45 +1,49 @@
 package io.github.manishdait.hieromirror.query;
 
+import com.hedera.hashgraph.sdk.TokenId;
 import io.github.manishdait.hieromirror.MirrorNodeClient;
 import io.github.manishdait.hieromirror.internal.core.MirrorNodeJsonParser;
 import io.github.manishdait.hieromirror.internal.core.MirrorNodeRequest;
 import io.github.manishdait.hieromirror.model.CriteriaParam;
-import io.github.manishdait.hieromirror.model.ExchangeRate;
 import io.github.manishdait.hieromirror.model.QueryOperator;
+import io.github.manishdait.hieromirror.model.TokenInfo;
 import java.time.Instant;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import org.jspecify.annotations.NonNull;
 import tools.jackson.databind.JsonNode;
 
-public class NetworkExchangeRateQuery extends Query<Optional<ExchangeRate>> {
-  private List<CriteriaParam<Instant>> timestamps = new ArrayList<>();
+public class TokenQuery extends Query<Optional<TokenInfo>> {
+  private TokenId tokenId;
 
-  public NetworkExchangeRateQuery() {}
+  private CriteriaParam<Instant> timestamp;
 
-  public List<CriteriaParam<Instant>> getTimestamps() {
-    return timestamps;
+  public TokenQuery() {}
+
+  public TokenId getTokenId() {
+    return tokenId;
   }
 
-  public NetworkExchangeRateQuery setTimestamp(
-      final @NonNull List<CriteriaParam<Instant>> timestamps) {
-    Objects.requireNonNull(timestamps, "timestamps must not be null");
-    this.timestamps = new ArrayList<>(timestamps);
+  public TokenQuery setTokenId(final @NonNull String tokenId) {
+    Objects.requireNonNull(tokenId, "tokenId must not be null");
+    return setTokenId(TokenId.fromString(tokenId));
+  }
+
+  public TokenQuery setTokenId(final @NonNull TokenId tokenId) {
+    Objects.requireNonNull(tokenId, "tokenId must not be null");
+    this.tokenId = tokenId;
     return this;
   }
 
-  public NetworkExchangeRateQuery clearTimestamps() {
-    this.timestamps = new ArrayList<>();
-    return this;
+  public CriteriaParam<Instant> getTimestamp() {
+    return timestamp;
   }
 
-  public NetworkExchangeRateQuery addTimestamp(
+  public TokenQuery setTimestamp(
       final @NonNull QueryOperator operator, final @NonNull Instant timestamp) {
     Objects.requireNonNull(operator, "operator must not be null");
     Objects.requireNonNull(timestamp, "timestamp must not be null");
-    this.timestamps.add(new CriteriaParam<>(operator, timestamp));
+    this.timestamp = new CriteriaParam<>(operator, timestamp);
     return this;
   }
 
@@ -47,10 +51,16 @@ public class NetworkExchangeRateQuery extends Query<Optional<ExchangeRate>> {
   MirrorNodeRequest buildRequest(final @NonNull MirrorNodeClient client) {
     Objects.requireNonNull(client, "client must not be null");
 
-    MirrorNodeRequest.Builder request =
-        MirrorNodeRequest.newBuilder().url(client.getBaseUrl() + "/api/v1/network/exchangerate");
+    if (tokenId == null) {
+      throw new IllegalStateException("tokenId must set before executing query");
+    }
 
-    for (CriteriaParam<Instant> timestamp : timestamps) {
+    MirrorNodeRequest.Builder request =
+        MirrorNodeRequest.newBuilder()
+            .url(client.getBaseUrl() + "/api/v1/tokens/" + tokenId)
+            .method("GET");
+
+    if (timestamp != null) {
       request.queryParam(
           "timestamp",
           timestamp.getOperator().getValue()
@@ -64,7 +74,7 @@ public class NetworkExchangeRateQuery extends Query<Optional<ExchangeRate>> {
   }
 
   @Override
-  Optional<ExchangeRate> mapResponse(@NonNull JsonNode node) {
-    return MirrorNodeJsonParser.parseExchangeRate(node);
+  Optional<TokenInfo> mapResponse(@NonNull JsonNode node) {
+    return MirrorNodeJsonParser.parseTokenInfo(node);
   }
 }
