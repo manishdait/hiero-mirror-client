@@ -8,14 +8,17 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.Nullable;
 import tools.jackson.databind.JsonNode;
 
+/** Query to get transaction by transactionId. */
 public class TransactionQuery extends Query<Optional<Transaction>> {
   private String transactionId;
 
-  private Integer nonce;
-  private Boolean scheduled;
+  @Nullable private Integer nonce;
+  @Nullable private Boolean scheduled;
 
+  /** Constructor. */
   public TransactionQuery() {}
 
   public String getTransactionId() {
@@ -28,19 +31,41 @@ public class TransactionQuery extends Query<Optional<Transaction>> {
     return this;
   }
 
-  public Integer getNonce() {
+  /**
+   * Gets the nonce filter.
+   *
+   * @return the none
+   */
+  public @Nullable Integer getNonce() {
     return nonce;
   }
 
+  /**
+   * Sets the nonce filter.
+   *
+   * @param nonce the nonce
+   * @return {@code this}
+   */
   public TransactionQuery setNonce(Integer nonce) {
     this.nonce = nonce;
     return this;
   }
 
-  public Boolean getScheduled() {
+  /**
+   * Gets the scheduled filter.
+   *
+   * @return the scheduled value
+   */
+  public @Nullable Boolean getScheduled() {
     return scheduled;
   }
 
+  /**
+   * Sets the scheduled filter.
+   *
+   * @param value the schedule value
+   * @return {@code this}
+   */
   public TransactionQuery setScheduled(Boolean value) {
     this.scheduled = value;
     return this;
