@@ -10,20 +10,39 @@ import java.util.Objects;
 import org.jspecify.annotations.NonNull;
 import tools.jackson.databind.JsonNode;
 
+/** Query to get list of topic messages for the given topic id. */
 public class TopicMessageListQuery extends Query<Page<TopicMessage>> {
   private TopicId topicId;
 
+  /** Constructor. */
   public TopicMessageListQuery() {}
 
+  /**
+   * Gets the topicId.
+   *
+   * @return the topicId
+   */
   public TopicId getTopicId() {
     return topicId;
   }
 
+  /**
+   * Sets the topicId.
+   *
+   * @param topicId the string representation of topicId
+   * @return {@code this}
+   */
   public TopicMessageListQuery setTopicId(final @NonNull String topicId) {
     Objects.requireNonNull(topicId, "topicId must not be null");
     return setTopicId(TopicId.fromString(topicId));
   }
 
+  /**
+   * Sets the topicId.
+   *
+   * @param topicId the target {@link TopicId} instance
+   * @return {@code this}
+   */
   public TopicMessageListQuery setTopicId(final @NonNull TopicId topicId) {
     Objects.requireNonNull(topicId, "topicId must not be null");
     this.topicId = topicId;
