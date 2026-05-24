@@ -16,7 +16,7 @@ public class AccountQueryTest {
   private final AccountId ID = new AccountId(0, 0, 2);
   private final Order ORDER = Order.ASC;
   private final int LIMIT = 10;
-  private final boolean INCLUDE_TRANSACTION = true;
+  private final boolean INCLUDE_TRANSACTION = false;
   private final TransactionType TRANSACTION_TYPE = TransactionType.CRYPTO_CREATE_ACCOUNT;
   private final List<CriteriaParam<Instant>> TIMESTAMPS =
       List.of(new CriteriaParam<>(QueryOperator.EQ, Instant.now()));
@@ -28,7 +28,7 @@ public class AccountQueryTest {
     Assertions.assertThat(query).isNotNull();
     Assertions.assertThat(query.getOrder()).isEqualTo(Order.DESC);
     Assertions.assertThat(query.getLimit()).isEqualTo(25);
-    Assertions.assertThat(query.getIncludeTransaction()).isFalse();
+    Assertions.assertThat(query.getIncludeTransaction()).isTrue();
     Assertions.assertThat(query.getTransactionType()).isNull();
     Assertions.assertThat(query.getTimestamps()).isEmpty();
   }
