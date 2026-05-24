@@ -83,7 +83,7 @@ public class AccountQueryWrapperImpl implements AccountQueryWrapper {
     }
 
     if (timestamps != null) {
-      query.setTimestamp(timestamps);
+      query.setTimestamps(timestamps);
     }
 
     return query.execute(client);

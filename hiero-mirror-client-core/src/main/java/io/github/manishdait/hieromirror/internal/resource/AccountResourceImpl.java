@@ -6,9 +6,8 @@ import io.github.manishdait.hieromirror.internal.resource.wrapper.AccountQueryWr
 import io.github.manishdait.hieromirror.resource.AccountResource;
 import io.github.manishdait.hieromirror.resource.wrapper.AccountListQueryWrapper;
 import io.github.manishdait.hieromirror.resource.wrapper.AccountQueryWrapper;
-import org.jspecify.annotations.NonNull;
-
 import java.util.Objects;
+import org.jspecify.annotations.NonNull;
 
 public class AccountResourceImpl implements AccountResource {
   private final MirrorNodeClient client;
@@ -24,7 +23,7 @@ public class AccountResourceImpl implements AccountResource {
   }
 
   @Override
-  public AccountQueryWrapper findById(String idOrAliasOrEvmAddress) {
+  public AccountQueryWrapper findByIdOrAliasOrEvmAddress(String idOrAliasOrEvmAddress) {
     return new AccountQueryWrapperImpl(client, idOrAliasOrEvmAddress);
   }
 }

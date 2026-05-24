@@ -11,7 +11,7 @@
   <packaging>jar</packaging>
 
   <name>hiero-mirror-client-core</name>
-  <description>The core runtime artifact for the Hiero Mirror Client</description>
+  <description>The core runtime artifact for the Hiero Mirror Client.</description>
   <url>https://github.com/manishdait/hiero-mirror-client</url>
 
   <properties>

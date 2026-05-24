@@ -30,8 +30,7 @@ public final class AccountListQuery extends Query<Page<AccountInfo>> {
   public AccountListQuery() {}
 
   /**
-   * Returns the sorting order for the query items.</br> [Query Param: {@code order}] Defaults to
-   * {@code asc}.
+   * Gets the sorting order for the query items. Defaults to {@code asc}.
    *
    * @return the {@link Order}
    */
@@ -40,11 +39,10 @@ public final class AccountListQuery extends Query<Page<AccountInfo>> {
   }
 
   /**
-   * Sets the sorting order for the query items.</br> [Query Param: {@code order}] Configures {@code
-   * asc} or {@code desc}.
+   * Sets the sorting order for the query items.
    *
    * @param order the {@link Order} sequence to enforce
-   * @return {@code this} query builder instance
+   * @return {@code this}
    */
   public AccountListQuery setOrder(final @NonNull Order order) {
     Objects.requireNonNull(order, "order must not be null");
@@ -53,8 +51,7 @@ public final class AccountListQuery extends Query<Page<AccountInfo>> {
   }
 
   /**
-   * Returns the maximum number of items to be retrieved.<br>
-   * [Query Param: {@code limit}] Defaults to {@code 25}.
+   * Gets the maximum number of items to be retrieved. Defaults to {@code 25}.
    *
    * @return maximum number of records
    */
@@ -63,11 +60,10 @@ public final class AccountListQuery extends Query<Page<AccountInfo>> {
   }
 
   /**
-   * Sets the maximum number of items to return.</br> [Query Param: {@code limit}] Must be within
-   * range: 1 to 100 inclusive.
+   * Sets the maximum number of items to return. Must be within range: 1 to 100 inclusive.
    *
    * @param limit maximum items to return
-   * @return {@code this} query builder instance
+   * @return {@code this}
    * @throws IllegalArgumentException if limit is outside range [1, 100]
    */
   public AccountListQuery setLimit(final int limit) {
@@ -80,8 +76,7 @@ public final class AccountListQuery extends Query<Page<AccountInfo>> {
   }
 
   /**
-   * Checks if balance payloads are included in the results.</br> [Query Param: {@code balance}]
-   * Defaults to {@code true}.
+   * Checks if balance fields are included in the response. Defaults to {@code true}.
    *
    * @return {@code true} if balances are fetched; otherwise {@code false}
    */
@@ -90,11 +85,11 @@ public final class AccountListQuery extends Query<Page<AccountInfo>> {
   }
 
   /**
-   * Set whether to include balance fields.</br> [Query Param: {@code balance}] Note: Included token
-   * balances are capped at 50 records per account as outlined in HIP-367.
+   * Set whether to include balance fields. Note: Included token balances are capped at 50 records
+   * per account as outlined in HIP-367.
    *
    * @param value {@code true} to include balances, {@code false} to omit
-   * @return {@code this} query builder instance
+   * @return {@code this}
    */
   public AccountListQuery setIncludeBalance(final boolean value) {
     this.includeBalance = value;
@@ -102,8 +97,7 @@ public final class AccountListQuery extends Query<Page<AccountInfo>> {
   }
 
   /**
-   * Returns the filter criteria for the account's public key.</br> [Query Param: {@code
-   * account.publickey}]
+   * Gets account publicKey criteria filter.
    *
    * @return the target {@link PublicKey}, or {@code null}
    */
@@ -112,11 +106,10 @@ public final class AccountListQuery extends Query<Page<AccountInfo>> {
   }
 
   /**
-   * Sets the account public key filter criteria from a raw string.</br> [Query Param: {@code
-   * account.publickey}]
+   * Sets the account public key criteria filter.
    *
    * @param publicKey the hex or DER encoded public key string
-   * @return {@code this} query builder instance
+   * @return {@code this}
    */
   public AccountListQuery setPublicKey(final @NonNull String publicKey) {
     Objects.requireNonNull(publicKey, "publicKey must not be null");
@@ -124,10 +117,10 @@ public final class AccountListQuery extends Query<Page<AccountInfo>> {
   }
 
   /**
-   * Sets the account public key filter criteria.</br> [Query Param: {@code account.publickey}]
+   * Sets the account public key criteria filter.
    *
    * @param publicKey the target {@link PublicKey} instance
-   * @return {@code this} query builder instance
+   * @return {@code this}
    */
   public AccountListQuery setPublicKey(final @NonNull PublicKey publicKey) {
     Objects.requireNonNull(publicKey, "publicKey must not be null");
@@ -136,8 +129,7 @@ public final class AccountListQuery extends Query<Page<AccountInfo>> {
   }
 
   /**
-   * Returns the comparison parameters filtering the account ID values.</br> [Query Param: {@code
-   * account.id}]
+   * Gets the accountId criteria filter.
    *
    * @return the account ID {@link CriteriaParam}, or {@code null}
    */
@@ -146,12 +138,12 @@ public final class AccountListQuery extends Query<Page<AccountInfo>> {
   }
 
   /**
-   * Sets an account ID evaluation criteria filter.</br> [Query Param: {@code account.id}]
+   * Sets an accountId criteria filter.
    *
    * @param operator the {@link QueryOperator} (e.g., {@link QueryOperator#EQ}, {@link
    *     QueryOperator#GTE})
-   * @param accountId string representation of the target account ID
-   * @return {@code this} query builder instance
+   * @param accountId string representation of accountId
+   * @return {@code this}
    */
   public AccountListQuery setAccountId(
       final @NonNull QueryOperator operator, final @NonNull String accountId) {
@@ -162,12 +154,12 @@ public final class AccountListQuery extends Query<Page<AccountInfo>> {
   }
 
   /**
-   * Sets an account ID evaluation criteria filter.</br> [Query Param: {@code account.id}]
+   * Sets an accountId criteria filter.
    *
    * @param operator the {@link QueryOperator} (e.g., {@link QueryOperator#EQ}, {@link
    *     QueryOperator#GTE})
-   * @param accountId instance of targeted {@link AccountId}
-   * @return {@code this} query builder instance
+   * @param accountId the target {@link AccountId} instance
+   * @return {@code this}
    */
   public AccountListQuery setAccountId(
       final @NonNull QueryOperator operator, final @NonNull AccountId accountId) {
@@ -179,8 +171,7 @@ public final class AccountListQuery extends Query<Page<AccountInfo>> {
   }
 
   /**
-   * Returns the comparison parameters filtering the account balance totals.</br> [Query Param:
-   * {@code account.balance}]
+   * Gets the account balance criteria filter.
    *
    * @return the balance {@link CriteriaParam}, or {@code null}
    */
@@ -189,12 +180,12 @@ public final class AccountListQuery extends Query<Page<AccountInfo>> {
   }
 
   /**
-   * Sets a balance evaluation criteria using tinybars.</br> [Query Param: {@code account.balance}]
+   * Sets an account balance criteria filter.
    *
    * @param operator the {@link QueryOperator} (e.g., {@link QueryOperator#EQ}, {@link
    *     QueryOperator#GTE})
-   * @param balance value expressed as a raw long count of tinybars
-   * @return {@code this} query builder instance
+   * @param balance value expressed as long count of tinybars
+   * @return {@code this}
    * @throws IllegalArgumentException if balance value drops below 0 tinybars
    */
   public AccountListQuery setBalance(final @NonNull QueryOperator operator, final long balance) {
@@ -207,12 +198,12 @@ public final class AccountListQuery extends Query<Page<AccountInfo>> {
   }
 
   /**
-   * Sets a balance evaluation criteria using tinybars.</br> [Query Param: {@code account.balance}]
+   * Sets an account balance criteria filter.
    *
    * @param operator the {@link QueryOperator} (e.g., {@link QueryOperator#EQ}, {@link
    *     QueryOperator#GTE})
    * @param balance the instance of {@link Hbar}
-   * @return {@code this} query builder instance
+   * @return {@code this}
    */
   public AccountListQuery setBalance(
       final @NonNull QueryOperator operator, final @NonNull Hbar balance) {

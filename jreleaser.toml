@@ -15,7 +15,7 @@ maxRetries = 200
 
 [release.github]
 owner = "manishdait"
-name = "mirrornode-clientj"
+name = "hiero-mirror-client"
 skipTag = true
 skipRelease = true
 

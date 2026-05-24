@@ -1,9 +1,8 @@
-package io.github.manishdait.hieromirror.test.internal.core;
+package io.github.manishdait.hieromirror.internal.core;
 
 import com.google.protobuf.InvalidProtocolBufferException;
 import com.hedera.hashgraph.sdk.Key;
 import com.hedera.hashgraph.sdk.PublicKey;
-import io.github.manishdait.hieromirror.internal.core.JsonHelper;
 import java.util.HexFormat;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;

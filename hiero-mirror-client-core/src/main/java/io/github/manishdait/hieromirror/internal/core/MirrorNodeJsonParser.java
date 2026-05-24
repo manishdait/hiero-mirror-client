@@ -60,7 +60,7 @@ import java.util.stream.Collectors;
 import tools.jackson.databind.JsonNode;
 import tools.jackson.databind.node.ArrayNode;
 
-public class MirrorNodeJsonParser {
+public final class MirrorNodeJsonParser {
   public static Page<AccountInfo> parseAccountInfos(JsonNode node) {
     if (node == null
         || node.isEmpty()

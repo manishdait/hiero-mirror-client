@@ -1,15 +1,17 @@
-package io.github.manishdait.hieromirror.test.query;
+package io.github.manishdait.hieromirror.query;
 
 import com.hedera.hashgraph.sdk.AccountId;
 import com.hedera.hashgraph.sdk.Hbar;
 import com.hedera.hashgraph.sdk.PrivateKey;
 import com.hedera.hashgraph.sdk.PublicKey;
+import io.github.manishdait.hieromirror.MirrorNodeClient;
 import io.github.manishdait.hieromirror.model.CriteriaParam;
 import io.github.manishdait.hieromirror.model.Order;
 import io.github.manishdait.hieromirror.model.QueryOperator;
-import io.github.manishdait.hieromirror.query.AccountListQuery;
+import java.util.List;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
 
 public class AccountListQueryTest {
   private final int LIMIT = 10;
@@ -100,5 +102,39 @@ public class AccountListQueryTest {
     Assertions.assertThat(query.getBalance()).isNotNull();
     Assertions.assertThat(query.getBalance().getOperator()).isEqualTo(BALANCE.getOperator());
     Assertions.assertThat(query.getBalance().getValue()).isEqualTo(BALANCE.getValue());
+  }
+
+  @Test
+  void shouldBuildRequestFromAllParams() {
+    var mockClient = Mockito.mock(MirrorNodeClient.class);
+    Mockito.when(mockClient.getBaseUrl()).thenReturn("https://example.com");
+
+    var query =
+        new AccountListQuery()
+            .setOrder(ORDER)
+            .setLimit(LIMIT)
+            .setIncludeBalance(INCLUDE_BALANCE)
+            .setPublicKey(PUBLIC_KEY)
+            .setAccountId(ACCOUNT_ID.getOperator(), ACCOUNT_ID.getValue())
+            .setBalance(BALANCE.getOperator(), BALANCE.getValue());
+
+    var request = query.buildRequest(mockClient);
+
+    Assertions.assertThat(request).isNotNull();
+    Assertions.assertThat(request.getUrl()).isEqualTo("https://example.com/api/v1/accounts");
+    Assertions.assertThat(request.getMethod()).isEqualTo("GET");
+    Assertions.assertThat(request.getQueryParams())
+        .extractingByKeys(
+            "limit", "order", "balance", "account.publickey", "account.id", "account.balance")
+        .contains(
+            List.of(String.valueOf(LIMIT)),
+            List.of(ORDER.getValue()),
+            List.of(String.valueOf(INCLUDE_BALANCE)),
+            List.of(PUBLIC_KEY.toString()),
+            List.of(ACCOUNT_ID.getOperator().getValue() + ":" + ACCOUNT_ID.getValue().toString()),
+            List.of(
+                BALANCE.getOperator().getValue()
+                    + ":"
+                    + String.valueOf(BALANCE.getValue().toTinybars())));
   }
 }

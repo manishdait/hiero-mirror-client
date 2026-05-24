@@ -22,7 +22,7 @@ public class GetAccountById {
     var account2 =
         client
             .accounts()
-            .findById("0.0.1")
+            .findByIdOrAliasOrEvmAddress("0.0.1")
             .includeTransaction(true)
             .transactionType(TransactionType.CONSENSUS_CREATE_TOPIC)
             .call();
