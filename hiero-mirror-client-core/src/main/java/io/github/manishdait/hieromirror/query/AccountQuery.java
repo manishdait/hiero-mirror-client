@@ -144,7 +144,7 @@ public class AccountQuery extends AccountIdentifierQuery<AccountQuery, Optional<
    * @return {@code this}
    */
   public AccountQuery clearTimestamps() {
-    this.timestamps = new ArrayList<>();
+    this.timestamps.clear();
     return this;
   }
 

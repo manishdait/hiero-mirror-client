@@ -14,26 +14,52 @@ import java.util.Optional;
 import org.jspecify.annotations.NonNull;
 import tools.jackson.databind.JsonNode;
 
+/** Query to get the network supply. */
 public class NetworkSupplyQuery extends Query<Optional<NetworkSupply>> {
   private List<CriteriaParam<Instant>> timestamps = new ArrayList<>();
 
+  /** Constructor. */
   public NetworkSupplyQuery() {}
 
+  /**
+   * Gets the timestamp criteria filter.
+   *
+   * @return list of timestamp criteria.
+   */
   public List<CriteriaParam<Instant>> getTimestamps() {
     return timestamps;
   }
 
+  /**
+   * Sets the timestamp criteria filter using a list of timestamps.
+   *
+   * @param timestamps list of timestamp criterial params
+   * @return {@code this}
+   */
   public NetworkSupplyQuery setTimestamp(final @NonNull List<CriteriaParam<Instant>> timestamps) {
     Objects.requireNonNull(timestamps, "timestamps must not be null");
     this.timestamps = new ArrayList<>(timestamps);
     return this;
   }
 
+  /**
+   * Clears all timestamp criteria filter.
+   *
+   * @return {@code this}
+   */
   public NetworkSupplyQuery clearTimestamps() {
-    this.timestamps = new ArrayList<>();
+    this.timestamps.clear();
     return this;
   }
 
+  /**
+   * Adds a single timestamp criteria to the filter.
+   *
+   * @param operator the {@link QueryOperator} (e.g., {@link QueryOperator#EQ}, {@link
+   *     QueryOperator#GTE})
+   * @param timestamp the timestamp to add
+   * @return {@code this}
+   */
   public NetworkSupplyQuery addTimestamp(
       final @NonNull QueryOperator operator, final @NonNull Instant timestamp) {
     Objects.requireNonNull(operator, "operator must not be null");

@@ -14,27 +14,53 @@ import java.util.Optional;
 import org.jspecify.annotations.NonNull;
 import tools.jackson.databind.JsonNode;
 
+/** Query to get the network exchange rate to estimate costs. */
 public class NetworkExchangeRateQuery extends Query<Optional<ExchangeRate>> {
   private List<CriteriaParam<Instant>> timestamps = new ArrayList<>();
 
+  /** Constructor. */
   public NetworkExchangeRateQuery() {}
 
+  /**
+   * Gets the timestamp criteria filter.
+   *
+   * @return list of timestamp criteria.
+   */
   public List<CriteriaParam<Instant>> getTimestamps() {
     return timestamps;
   }
 
-  public NetworkExchangeRateQuery setTimestamp(
+  /**
+   * Sets the timestamp criteria filter using a list of timestamps.
+   *
+   * @param timestamps list of timestamp criterial params
+   * @return {@code this}
+   */
+  public NetworkExchangeRateQuery setTimestamps(
       final @NonNull List<CriteriaParam<Instant>> timestamps) {
     Objects.requireNonNull(timestamps, "timestamps must not be null");
     this.timestamps = new ArrayList<>(timestamps);
     return this;
   }
 
+  /**
+   * Clears all timestamp criteria filter.
+   *
+   * @return {@code this}
+   */
   public NetworkExchangeRateQuery clearTimestamps() {
-    this.timestamps = new ArrayList<>();
+    this.timestamps.clear();
     return this;
   }
 
+  /**
+   * Adds a single timestamp criteria to the filter.
+   *
+   * @param operator the {@link QueryOperator} (e.g., {@link QueryOperator#EQ}, {@link
+   *     QueryOperator#GTE})
+   * @param timestamp the timestamp to add
+   * @return {@code this}
+   */
   public NetworkExchangeRateQuery addTimestamp(
       final @NonNull QueryOperator operator, final @NonNull Instant timestamp) {
     Objects.requireNonNull(operator, "operator must not be null");

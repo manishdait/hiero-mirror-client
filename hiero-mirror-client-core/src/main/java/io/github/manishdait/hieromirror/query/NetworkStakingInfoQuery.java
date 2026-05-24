@@ -9,8 +9,10 @@ import java.util.Optional;
 import org.jspecify.annotations.NonNull;
 import tools.jackson.databind.JsonNode;
 
+/** Query to get network stake information. */
 public class NetworkStakingInfoQuery extends Query<Optional<StakeInfo>> {
 
+  /** Constructor. */
   public NetworkStakingInfoQuery() {}
 
   @Override

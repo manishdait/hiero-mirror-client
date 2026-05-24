@@ -11,32 +11,59 @@ import io.github.manishdait.hieromirror.model.RegisteredNode;
 import io.github.manishdait.hieromirror.model.RegisteredServiceType;
 import java.util.Objects;
 import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.Nullable;
 import tools.jackson.databind.JsonNode;
 
-public class RegisteredAddressBookQuery extends Query<Page<RegisteredNode>> {
+/** Query to get the list of registered nodes. */
+public class NetworkRegisteredAddressBookQuery extends Query<Page<RegisteredNode>> {
   private Order order = Order.ASC;
   private int limit = 25;
-  private RegisteredServiceType type;
 
-  private CriteriaParam<Long> registeredNodeId;
+  @Nullable private RegisteredServiceType type;
 
-  public RegisteredAddressBookQuery() {}
+  @Nullable private CriteriaParam<Long> registeredNodeId;
 
+  /** Constructor. */
+  public NetworkRegisteredAddressBookQuery() {}
+
+  /**
+   * Gets the sorting order for the query items. Defaults to {@code asc}.
+   *
+   * @return the {@link Order}
+   */
   public Order getOrder() {
     return order;
   }
 
-  public RegisteredAddressBookQuery setOrder(final @NonNull Order order) {
+  /**
+   * Sets the sorting order for the query items.
+   *
+   * @param order the {@link Order} sequence to enforce
+   * @return {@code this}
+   */
+  public NetworkRegisteredAddressBookQuery setOrder(final @NonNull Order order) {
     Objects.requireNonNull(order, "order must not be null");
     this.order = order;
     return this;
   }
 
+  /**
+   * Gets the maximum number of transactions to be retrieved. Defaults to {@code 25}.
+   *
+   * @return maximum number of records
+   */
   public int getLimit() {
     return limit;
   }
 
-  public RegisteredAddressBookQuery setLimit(final int limit) {
+  /**
+   * Sets the maximum number of transactions to return. Must be within range: 1 to 100 inclusive.
+   *
+   * @param limit maximum items to return
+   * @return {@code this}
+   * @throws IllegalArgumentException if limit is outside range [1, 100]
+   */
+  public NetworkRegisteredAddressBookQuery setLimit(final int limit) {
     if (limit < 1 || limit > 100) {
       throw new IllegalArgumentException("limit must be greater than 0 and less than 100");
     }
@@ -44,21 +71,46 @@ public class RegisteredAddressBookQuery extends Query<Page<RegisteredNode>> {
     return this;
   }
 
-  public RegisteredServiceType getType() {
+  /**
+   * Gets the RegisterServiceType to ge fetch.
+   *
+   * @return the RegisterServiceType
+   */
+  public RegisteredServiceType getRegisterServiceType() {
     return type;
   }
 
-  public RegisteredAddressBookQuery setType(final @NonNull RegisteredServiceType type) {
+  /**
+   * Sets the RegisterServiceType to ge fetch.
+   *
+   * @param type the registerServiceType
+   * @return {@code this}
+   */
+  public NetworkRegisteredAddressBookQuery setRegisteredServiceType(
+      final @NonNull RegisteredServiceType type) {
     Objects.requireNonNull(type, "type must not be null");
     this.type = type;
     return this;
   }
 
-  public CriteriaParam<Long> getRegisteredNodeId() {
+  /**
+   * Gets the registeredNodeId criteria filter.
+   *
+   * @return the registeredNodeId criteria
+   */
+  public @Nullable CriteriaParam<Long> getRegisteredNodeId() {
     return registeredNodeId;
   }
 
-  public RegisteredAddressBookQuery setRegisteredNodeId(
+  /**
+   * Sets the registeredNodeId criteria filter.
+   *
+   * @param operator the {@link QueryOperator} (e.g., {@link QueryOperator#EQ}, {@link
+   *     QueryOperator#GTE})
+   * @param nodeId the registeredNodeId
+   * @return {@code this}
+   */
+  public NetworkRegisteredAddressBookQuery setRegisteredNodeId(
       final @NonNull QueryOperator operator, final long nodeId) {
     Objects.requireNonNull(operator, "operator must not be null");
     this.registeredNodeId = new CriteriaParam<>(operator, nodeId);
