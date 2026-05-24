@@ -15,6 +15,7 @@ import org.jspecify.annotations.NonNull;
 import org.jspecify.annotations.Nullable;
 import tools.jackson.databind.JsonNode;
 
+/** Query to list schedules entities. */
 public class ScheduleListQuery extends Query<Page<ScheduleInfo>> {
   private Order order = Order.ASC;
   private int limit = 25;
@@ -22,22 +23,46 @@ public class ScheduleListQuery extends Query<Page<ScheduleInfo>> {
   @Nullable private CriteriaParam<AccountId> accountId;
   @Nullable private CriteriaParam<ScheduleId> scheduleId;
 
+  /** Constructor. */
   public ScheduleListQuery() {}
 
+  /**
+   * Gets the sorting order for the query items. Defaults to {@code asc}.
+   *
+   * @return the {@link Order}
+   */
   public Order getOrder() {
     return order;
   }
 
+  /**
+   * Sets the sorting order for the query items.
+   *
+   * @param order the {@link Order} sequence to enforce
+   * @return {@code this}
+   */
   public ScheduleListQuery setOrder(final @NonNull Order order) {
     Objects.requireNonNull(order, "order must not be null");
     this.order = order;
     return this;
   }
 
+  /**
+   * Gets the maximum number of items to be retrieved. Defaults to {@code 25}.
+   *
+   * @return maximum number of records
+   */
   public int getLimit() {
     return limit;
   }
 
+  /**
+   * Sets the maximum number of items to return. Must be within range: 1 to 100 inclusive.
+   *
+   * @param limit maximum items to return
+   * @return {@code this}
+   * @throws IllegalArgumentException if limit is outside range [1, 100]
+   */
   public ScheduleListQuery getLimit(final int limit) {
     if (limit < 0 || limit > 100) {
       throw new IllegalArgumentException("limit must be greater than 0 and less than 100");
@@ -46,10 +71,23 @@ public class ScheduleListQuery extends Query<Page<ScheduleInfo>> {
     return this;
   }
 
+  /**
+   * Gets the accountId criteria filter.
+   *
+   * @return the account ID {@link CriteriaParam}, or {@code null}
+   */
   public @Nullable CriteriaParam<AccountId> getAccountId() {
     return accountId;
   }
 
+  /**
+   * Sets an accountId criteria filter.
+   *
+   * @param operator the {@link QueryOperator} (e.g., {@link QueryOperator#EQ}, {@link
+   *     QueryOperator#GTE})
+   * @param accountId string representation of accountId
+   * @return {@code this}
+   */
   public ScheduleListQuery setAccountId(
       final @NonNull QueryOperator operator, final @NonNull String accountId) {
     Objects.requireNonNull(operator, "operator must not be null");
@@ -57,6 +95,14 @@ public class ScheduleListQuery extends Query<Page<ScheduleInfo>> {
     return setAccountId(operator, AccountId.fromString(accountId));
   }
 
+  /**
+   * Sets an accountId criteria filter.
+   *
+   * @param operator the {@link QueryOperator} (e.g., {@link QueryOperator#EQ}, {@link
+   *     QueryOperator#GTE})
+   * @param accountId the target {@link AccountId} instance
+   * @return {@code this}
+   */
   public ScheduleListQuery setAccountId(
       final @NonNull QueryOperator operator, final @NonNull AccountId accountId) {
     Objects.requireNonNull(operator, "operator must not be null");
