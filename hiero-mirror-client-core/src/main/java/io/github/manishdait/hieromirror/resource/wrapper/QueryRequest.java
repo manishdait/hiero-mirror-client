@@ -3,7 +3,7 @@ package io.github.manishdait.hieromirror.resource.wrapper;
 import java.time.Duration;
 import org.jspecify.annotations.NonNull;
 
-public interface QueryWrapper<Q, R> {
+public interface QueryRequest<Q, R> {
   /** Return the query from the wrapper. */
   @NonNull Q getQuery();
 

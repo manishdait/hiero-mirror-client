@@ -8,11 +8,11 @@ import io.github.manishdait.hieromirror.model.Page;
 import io.github.manishdait.hieromirror.query.AccountCryptoAllowanceQuery;
 import org.jspecify.annotations.NonNull;
 
-public interface AccountCryptoAllowanceQueryWrapper
-    extends QueryWrapper<AccountCryptoAllowanceQuery, Page<CryptoAllowance>> {
-  @NonNull AccountCryptoAllowanceQueryWrapper limit(int limit);
+public interface AccountCryptoAllowanceRequest
+    extends QueryRequest<AccountCryptoAllowanceQuery, Page<CryptoAllowance>> {
+  @NonNull AccountCryptoAllowanceRequest limit(int limit);
 
-  @NonNull AccountCryptoAllowanceQueryWrapper order(Order order);
+  @NonNull AccountCryptoAllowanceRequest order(Order order);
 
-  @NonNull AccountCryptoAllowanceQueryWrapper spenderId(CriteriaParam<AccountId> spenderId);
+  @NonNull AccountCryptoAllowanceRequest spenderId(CriteriaParam<AccountId> spenderId);
 }

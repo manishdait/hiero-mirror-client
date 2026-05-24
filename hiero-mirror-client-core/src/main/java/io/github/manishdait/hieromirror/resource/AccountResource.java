@@ -2,8 +2,8 @@ package io.github.manishdait.hieromirror.resource;
 
 import com.hedera.hashgraph.sdk.AccountId;
 import com.hedera.hashgraph.sdk.EvmAddress;
-import io.github.manishdait.hieromirror.resource.wrapper.AccountListQueryWrapper;
-import io.github.manishdait.hieromirror.resource.wrapper.AccountQueryWrapper;
+import io.github.manishdait.hieromirror.resource.wrapper.AccountListRequest;
+import io.github.manishdait.hieromirror.resource.wrapper.AccountRequest;
 import java.util.Objects;
 import org.jspecify.annotations.NonNull;
 
@@ -11,17 +11,16 @@ import org.jspecify.annotations.NonNull;
 public interface AccountResource {
 
   /** Prepares a query wrapper to fetch list of accounts. */
-  @NonNull AccountListQueryWrapper findAll();
+  @NonNull AccountListRequest findAll();
 
   /** Prepares a query wrapper to fetch a single account by AccountId. */
-  default @NonNull AccountQueryWrapper findByIdOrAliasOrEvmAddress(
-      final @NonNull AccountId accountId) {
+  default @NonNull AccountRequest findByIdOrAliasOrEvmAddress(final @NonNull AccountId accountId) {
     Objects.requireNonNull(accountId, "accountId must not be null");
     return findByIdOrAliasOrEvmAddress(accountId.toString());
   }
 
   /** Prepares a query wrapper to fetch a single account by EvmAddress. */
-  default @NonNull AccountQueryWrapper findByIdOrAliasOrEvmAddress(
+  default @NonNull AccountRequest findByIdOrAliasOrEvmAddress(
       final @NonNull EvmAddress evmAddress) {
     Objects.requireNonNull(evmAddress, "evmAddress must not be null");
     return findByIdOrAliasOrEvmAddress(evmAddress.toString());
@@ -31,6 +30,5 @@ public interface AccountResource {
    * Prepares a query wrapper to fetch a single account by raw string AccountId or EvmAddress or
    * Alias.
    */
-  @NonNull AccountQueryWrapper findByIdOrAliasOrEvmAddress(
-      final @NonNull String idOrAliasOrEvmAddress);
+  @NonNull AccountRequest findByIdOrAliasOrEvmAddress(final @NonNull String idOrAliasOrEvmAddress);
 }

@@ -9,15 +9,15 @@ import io.github.manishdait.hieromirror.model.Page;
 import io.github.manishdait.hieromirror.query.AccountNftAllowanceQuery;
 import org.jspecify.annotations.NonNull;
 
-public interface AccountNftAllowanceQueryWrapper
-    extends QueryWrapper<AccountNftAllowanceQuery, Page<NftAllowance>> {
-  @NonNull AccountNftAllowanceQueryWrapper limit(int limit);
+public interface AccountNftAllowanceRequest
+    extends QueryRequest<AccountNftAllowanceQuery, Page<NftAllowance>> {
+  @NonNull AccountNftAllowanceRequest limit(int limit);
 
-  @NonNull AccountNftAllowanceQueryWrapper order(Order order);
+  @NonNull AccountNftAllowanceRequest order(Order order);
 
-  @NonNull AccountNftAllowanceQueryWrapper accountId(CriteriaParam<AccountId> spenderId);
+  @NonNull AccountNftAllowanceRequest accountId(CriteriaParam<AccountId> accountId);
 
-  @NonNull AccountNftAllowanceQueryWrapper tokenId(CriteriaParam<TokenId> tokenId);
+  @NonNull AccountNftAllowanceRequest tokenId(CriteriaParam<TokenId> tokenId);
 
-  @NonNull AccountNftAllowanceQueryWrapper owner(boolean value);
+  @NonNull AccountNftAllowanceRequest owner(boolean value);
 }

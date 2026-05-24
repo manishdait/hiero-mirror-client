@@ -11,16 +11,16 @@ import io.github.manishdait.hieromirror.query.AccountListQuery;
 import org.jspecify.annotations.NonNull;
 
 /** Wrapper for AccountListQuery. */
-public interface AccountListQueryWrapper extends QueryWrapper<AccountListQuery, Page<AccountInfo>> {
-  @NonNull AccountListQueryWrapper order(Order order);
+public interface AccountListRequest extends QueryRequest<AccountListQuery, Page<AccountInfo>> {
+  @NonNull AccountListRequest order(Order order);
 
-  @NonNull AccountListQueryWrapper limit(int limit);
+  @NonNull AccountListRequest limit(int limit);
 
-  @NonNull AccountListQueryWrapper includeBalance(boolean includeBalance);
+  @NonNull AccountListRequest includeBalance(boolean includeBalance);
 
-  @NonNull AccountListQueryWrapper publicKey(PublicKey publicKey);
+  @NonNull AccountListRequest publicKey(PublicKey publicKey);
 
-  @NonNull AccountListQueryWrapper accountId(CriteriaParam<AccountId> accountId);
+  @NonNull AccountListRequest accountId(CriteriaParam<AccountId> accountId);
 
-  @NonNull AccountListQueryWrapper balance(CriteriaParam<Hbar> balance);
+  @NonNull AccountListRequest balance(CriteriaParam<Hbar> balance);
 }

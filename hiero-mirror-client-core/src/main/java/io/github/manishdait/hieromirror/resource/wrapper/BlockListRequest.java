@@ -9,12 +9,12 @@ import java.time.Instant;
 import java.util.List;
 import org.jspecify.annotations.NonNull;
 
-public interface BlockListQueryWrapper extends QueryWrapper<BlockListQuery, Page<Block>> {
-  @NonNull BlockListQueryWrapper order(Order order);
+public interface BlockListRequest extends QueryRequest<BlockListQuery, Page<Block>> {
+  @NonNull BlockListRequest order(Order order);
 
-  @NonNull BlockListQueryWrapper limit(int limit);
+  @NonNull BlockListRequest limit(int limit);
 
-  @NonNull BlockListQueryWrapper blockNumber(CriteriaParam<Long> blockNumber);
+  @NonNull BlockListRequest blockNumber(CriteriaParam<Long> blockNumber);
 
-  @NonNull BlockListQueryWrapper timestamps(List<CriteriaParam<Instant>> timestamps);
+  @NonNull BlockListRequest timestamps(List<CriteriaParam<Instant>> timestamps);
 }

@@ -8,12 +8,12 @@ import io.github.manishdait.hieromirror.model.Nft;
 import io.github.manishdait.hieromirror.model.Order;
 import io.github.manishdait.hieromirror.model.Page;
 import io.github.manishdait.hieromirror.query.AccountNftListQuery;
-import io.github.manishdait.hieromirror.resource.wrapper.AccountNftListQueryWrapper;
+import io.github.manishdait.hieromirror.resource.wrapper.AccountNftListRequest;
 import java.time.Duration;
 import java.util.Objects;
 import org.jspecify.annotations.NonNull;
 
-public class AccountNftListQueryWrapperImpl implements AccountNftListQueryWrapper {
+public class AccountNftListRequestImpl implements AccountNftListRequest {
   private final MirrorNodeClient client;
   private final String idOrAliasOrEvmAddress;
 
@@ -23,7 +23,7 @@ public class AccountNftListQueryWrapperImpl implements AccountNftListQueryWrappe
   private CriteriaParam<TokenId> tokenId;
   private CriteriaParam<Long> serialNumber;
 
-  public AccountNftListQueryWrapperImpl(
+  public AccountNftListRequestImpl(
       final @NonNull MirrorNodeClient client, final @NonNull String idOrAliasOrEvmAddress) {
     Objects.requireNonNull(client, "client must not be null");
     Objects.requireNonNull(idOrAliasOrEvmAddress, "idOrAliasOrEvmAddress must not be null");
@@ -33,31 +33,31 @@ public class AccountNftListQueryWrapperImpl implements AccountNftListQueryWrappe
   }
 
   @Override
-  public @NonNull AccountNftListQueryWrapper limit(int limit) {
+  public @NonNull AccountNftListRequest limit(int limit) {
     this.limit = limit;
     return this;
   }
 
   @Override
-  public @NonNull AccountNftListQueryWrapper order(Order order) {
+  public @NonNull AccountNftListRequest order(Order order) {
     this.order = order;
     return this;
   }
 
   @Override
-  public @NonNull AccountNftListQueryWrapper senderId(CriteriaParam<AccountId> senderId) {
+  public @NonNull AccountNftListRequest senderId(CriteriaParam<AccountId> senderId) {
     this.senderId = senderId;
     return this;
   }
 
   @Override
-  public @NonNull AccountNftListQueryWrapper tokenId(CriteriaParam<TokenId> tokenId) {
+  public @NonNull AccountNftListRequest tokenId(CriteriaParam<TokenId> tokenId) {
     this.tokenId = tokenId;
     return this;
   }
 
   @Override
-  public @NonNull AccountNftListQueryWrapper serialNumber(CriteriaParam<Long> serialNumber) {
+  public @NonNull AccountNftListRequest serialNumber(CriteriaParam<Long> serialNumber) {
     this.serialNumber = serialNumber;
     return this;
   }

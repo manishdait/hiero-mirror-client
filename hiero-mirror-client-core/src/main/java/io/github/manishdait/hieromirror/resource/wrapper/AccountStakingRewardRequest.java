@@ -9,11 +9,11 @@ import java.time.Instant;
 import java.util.List;
 import org.jspecify.annotations.NonNull;
 
-public interface AccountStakingRewardQueryWrapper
-    extends QueryWrapper<AccountStakingRewardQuery, Page<StakingReward>> {
-  @NonNull AccountStakingRewardQueryWrapper limit(int limit);
+public interface AccountStakingRewardRequest
+    extends QueryRequest<AccountStakingRewardQuery, Page<StakingReward>> {
+  @NonNull AccountStakingRewardRequest limit(int limit);
 
-  @NonNull AccountStakingRewardQueryWrapper order(Order order);
+  @NonNull AccountStakingRewardRequest order(Order order);
 
-  @NonNull AccountStakingRewardQueryWrapper timestamp(List<CriteriaParam<Instant>> timestamp);
+  @NonNull AccountStakingRewardRequest timestamp(List<CriteriaParam<Instant>> timestamp);
 }

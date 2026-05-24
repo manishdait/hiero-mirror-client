@@ -1,11 +1,11 @@
 package io.github.manishdait.hieromirror.internal.resource;
 
 import io.github.manishdait.hieromirror.MirrorNodeClient;
-import io.github.manishdait.hieromirror.internal.resource.wrapper.AccountListQueryWrapperImpl;
-import io.github.manishdait.hieromirror.internal.resource.wrapper.AccountQueryWrapperImpl;
+import io.github.manishdait.hieromirror.internal.resource.wrapper.AccountListRequestImpl;
+import io.github.manishdait.hieromirror.internal.resource.wrapper.AccountRequestImpl;
 import io.github.manishdait.hieromirror.resource.AccountResource;
-import io.github.manishdait.hieromirror.resource.wrapper.AccountListQueryWrapper;
-import io.github.manishdait.hieromirror.resource.wrapper.AccountQueryWrapper;
+import io.github.manishdait.hieromirror.resource.wrapper.AccountListRequest;
+import io.github.manishdait.hieromirror.resource.wrapper.AccountRequest;
 import java.util.Objects;
 import org.jspecify.annotations.NonNull;
 
@@ -18,13 +18,13 @@ public class AccountResourceImpl implements AccountResource {
   }
 
   @Override
-  public @NonNull AccountListQueryWrapper findAll() {
-    return new AccountListQueryWrapperImpl(client);
+  public @NonNull AccountListRequest findAll() {
+    return new AccountListRequestImpl(client);
   }
 
   @Override
-  public @NonNull AccountQueryWrapper findByIdOrAliasOrEvmAddress(
+  public @NonNull AccountRequest findByIdOrAliasOrEvmAddress(
       @NonNull String idOrAliasOrEvmAddress) {
-    return new AccountQueryWrapperImpl(client, idOrAliasOrEvmAddress);
+    return new AccountRequestImpl(client, idOrAliasOrEvmAddress);
   }
 }

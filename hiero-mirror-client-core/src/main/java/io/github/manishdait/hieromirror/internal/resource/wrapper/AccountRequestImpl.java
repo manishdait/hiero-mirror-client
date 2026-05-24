@@ -6,12 +6,12 @@ import io.github.manishdait.hieromirror.model.CriteriaParam;
 import io.github.manishdait.hieromirror.model.Order;
 import io.github.manishdait.hieromirror.model.TransactionType;
 import io.github.manishdait.hieromirror.query.AccountQuery;
-import io.github.manishdait.hieromirror.resource.wrapper.AccountCryptoAllowanceQueryWrapper;
-import io.github.manishdait.hieromirror.resource.wrapper.AccountNftAllowanceQueryWrapper;
-import io.github.manishdait.hieromirror.resource.wrapper.AccountNftListQueryWrapper;
-import io.github.manishdait.hieromirror.resource.wrapper.AccountQueryWrapper;
-import io.github.manishdait.hieromirror.resource.wrapper.AccountStakingRewardQueryWrapper;
-import io.github.manishdait.hieromirror.resource.wrapper.AccountTokenAllowanceQueryWrapper;
+import io.github.manishdait.hieromirror.resource.wrapper.AccountCryptoAllowanceRequest;
+import io.github.manishdait.hieromirror.resource.wrapper.AccountNftAllowanceRequest;
+import io.github.manishdait.hieromirror.resource.wrapper.AccountNftListRequest;
+import io.github.manishdait.hieromirror.resource.wrapper.AccountRequest;
+import io.github.manishdait.hieromirror.resource.wrapper.AccountStakingRewardRequest;
+import io.github.manishdait.hieromirror.resource.wrapper.AccountTokenAllowanceRequest;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.List;
@@ -19,7 +19,7 @@ import java.util.Objects;
 import java.util.Optional;
 import org.jspecify.annotations.NonNull;
 
-public class AccountQueryWrapperImpl implements AccountQueryWrapper {
+public class AccountRequestImpl implements AccountRequest {
   private final MirrorNodeClient client;
   private final String idOrAliasOrEvmAddress;
 
@@ -29,7 +29,7 @@ public class AccountQueryWrapperImpl implements AccountQueryWrapper {
   private TransactionType transactionType;
   private List<CriteriaParam<Instant>> timestamp;
 
-  public AccountQueryWrapperImpl(
+  public AccountRequestImpl(
       final @NonNull MirrorNodeClient client, final @NonNull String idOrAliasOrEvmAddress) {
     Objects.requireNonNull(client, "client must not be null");
     Objects.requireNonNull(idOrAliasOrEvmAddress, "idOrAliasOrEvmAddress must not be null");
@@ -39,58 +39,58 @@ public class AccountQueryWrapperImpl implements AccountQueryWrapper {
   }
 
   @Override
-  public @NonNull AccountQueryWrapper order(Order order) {
+  public @NonNull AccountRequest order(Order order) {
     this.order = order;
     return this;
   }
 
   @Override
-  public @NonNull AccountQueryWrapper limit(Integer limit) {
+  public @NonNull AccountRequest limit(Integer limit) {
     this.limit = limit;
     return this;
   }
 
   @Override
-  public @NonNull AccountQueryWrapper includeTransaction(Boolean includeTransaction) {
+  public @NonNull AccountRequest includeTransaction(Boolean includeTransaction) {
     this.includeTransaction = includeTransaction;
     return this;
   }
 
   @Override
-  public @NonNull AccountQueryWrapper transactionType(TransactionType transactionType) {
+  public @NonNull AccountRequest transactionType(TransactionType transactionType) {
     this.transactionType = transactionType;
     return this;
   }
 
   @Override
-  public @NonNull AccountQueryWrapper timestamp(List<CriteriaParam<Instant>> timestamp) {
+  public @NonNull AccountRequest timestamp(List<CriteriaParam<Instant>> timestamp) {
     this.timestamp = timestamp;
     return this;
   }
 
   @Override
-  public @NonNull AccountCryptoAllowanceQueryWrapper cryptoAllowance() {
-    return new AccountCryptoAllowanceQueryWrapperImpl(client, idOrAliasOrEvmAddress);
+  public @NonNull AccountCryptoAllowanceRequest cryptoAllowance() {
+    return new AccountCryptoAllowanceRequestImpl(client, idOrAliasOrEvmAddress);
   }
 
   @Override
-  public @NonNull AccountTokenAllowanceQueryWrapper tokenAllowance() {
-    return new AccountTokenAllowanceQueryWrapperImpl(client, idOrAliasOrEvmAddress);
+  public @NonNull AccountTokenAllowanceRequest tokenAllowance() {
+    return new AccountTokenAllowanceRequestImpl(client, idOrAliasOrEvmAddress);
   }
 
   @Override
-  public @NonNull AccountNftAllowanceQueryWrapper nftAllowance() {
-    return new AccountNftAllowanceQueryWrapperImpl(client, idOrAliasOrEvmAddress);
+  public @NonNull AccountNftAllowanceRequest nftAllowance() {
+    return new AccountNftAllowanceRequestImpl(client, idOrAliasOrEvmAddress);
   }
 
   @Override
-  public @NonNull AccountNftListQueryWrapper nftList() {
-    return new AccountNftListQueryWrapperImpl(client, idOrAliasOrEvmAddress);
+  public @NonNull AccountNftListRequest nftList() {
+    return new AccountNftListRequestImpl(client, idOrAliasOrEvmAddress);
   }
 
   @Override
-  public @NonNull AccountStakingRewardQueryWrapper stakingReward() {
-    return new AccountStakingRewardQueryWrapperImpl(client, idOrAliasOrEvmAddress);
+  public @NonNull AccountStakingRewardRequest stakingReward() {
+    return new AccountStakingRewardRequestImpl(client, idOrAliasOrEvmAddress);
   }
 
   @Override

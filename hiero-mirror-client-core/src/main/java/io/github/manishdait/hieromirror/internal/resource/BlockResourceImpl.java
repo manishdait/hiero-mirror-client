@@ -1,11 +1,11 @@
 package io.github.manishdait.hieromirror.internal.resource;
 
 import io.github.manishdait.hieromirror.MirrorNodeClient;
-import io.github.manishdait.hieromirror.internal.resource.wrapper.BlockListQueryWrapperImpl;
-import io.github.manishdait.hieromirror.internal.resource.wrapper.BlockQueryWrapperImpl;
+import io.github.manishdait.hieromirror.internal.resource.wrapper.BlockListRequestImpl;
+import io.github.manishdait.hieromirror.internal.resource.wrapper.BlockRequestImpl;
 import io.github.manishdait.hieromirror.resource.BlockResource;
-import io.github.manishdait.hieromirror.resource.wrapper.BlockListQueryWrapper;
-import io.github.manishdait.hieromirror.resource.wrapper.BlockQueryWrapper;
+import io.github.manishdait.hieromirror.resource.wrapper.BlockListRequest;
+import io.github.manishdait.hieromirror.resource.wrapper.BlockRequest;
 import java.util.Objects;
 import org.jspecify.annotations.NonNull;
 
@@ -18,13 +18,13 @@ public class BlockResourceImpl implements BlockResource {
   }
 
   @Override
-  public @NonNull BlockListQueryWrapper findAll() {
-    return new BlockListQueryWrapperImpl(client);
+  public @NonNull BlockListRequest findAll() {
+    return new BlockListRequestImpl(client);
   }
 
   @Override
-  public @NonNull BlockQueryWrapper findByHashOrNumber(final @NonNull String hashOrNumber) {
+  public @NonNull BlockRequest findByHashOrNumber(final @NonNull String hashOrNumber) {
     Objects.requireNonNull(hashOrNumber, "hashOrNumber must not be null");
-    return new BlockQueryWrapperImpl(client, hashOrNumber);
+    return new BlockRequestImpl(client, hashOrNumber);
   }
 }

@@ -8,12 +8,12 @@ import io.github.manishdait.hieromirror.model.NftAllowance;
 import io.github.manishdait.hieromirror.model.Order;
 import io.github.manishdait.hieromirror.model.Page;
 import io.github.manishdait.hieromirror.query.AccountNftAllowanceQuery;
-import io.github.manishdait.hieromirror.resource.wrapper.AccountNftAllowanceQueryWrapper;
+import io.github.manishdait.hieromirror.resource.wrapper.AccountNftAllowanceRequest;
 import java.time.Duration;
 import java.util.Objects;
 import org.jspecify.annotations.NonNull;
 
-public class AccountNftAllowanceQueryWrapperImpl implements AccountNftAllowanceQueryWrapper {
+public class AccountNftAllowanceRequestImpl implements AccountNftAllowanceRequest {
   private final MirrorNodeClient client;
   private final String idOrAliasOrEvmAddress;
 
@@ -23,7 +23,7 @@ public class AccountNftAllowanceQueryWrapperImpl implements AccountNftAllowanceQ
   private CriteriaParam<TokenId> tokenId;
   private Boolean owner;
 
-  public AccountNftAllowanceQueryWrapperImpl(
+  public AccountNftAllowanceRequestImpl(
       final @NonNull MirrorNodeClient client, final @NonNull String idOrAliasOrEvmAddress) {
     Objects.requireNonNull(client, "client must not be null");
     Objects.requireNonNull(idOrAliasOrEvmAddress, "idOrAliasOrEvmAddress must not be null");
@@ -33,31 +33,31 @@ public class AccountNftAllowanceQueryWrapperImpl implements AccountNftAllowanceQ
   }
 
   @Override
-  public @NonNull AccountNftAllowanceQueryWrapper limit(int limit) {
+  public @NonNull AccountNftAllowanceRequest limit(int limit) {
     this.limit = limit;
     return this;
   }
 
   @Override
-  public @NonNull AccountNftAllowanceQueryWrapper order(Order order) {
+  public @NonNull AccountNftAllowanceRequest order(Order order) {
     this.order = order;
     return this;
   }
 
   @Override
-  public @NonNull AccountNftAllowanceQueryWrapper accountId(CriteriaParam<AccountId> accountId) {
+  public @NonNull AccountNftAllowanceRequest accountId(CriteriaParam<AccountId> accountId) {
     this.accountId = accountId;
     return this;
   }
 
   @Override
-  public @NonNull AccountNftAllowanceQueryWrapper tokenId(CriteriaParam<TokenId> tokenId) {
+  public @NonNull AccountNftAllowanceRequest tokenId(CriteriaParam<TokenId> tokenId) {
     this.tokenId = tokenId;
     return this;
   }
 
   @Override
-  public @NonNull AccountNftAllowanceQueryWrapper owner(boolean value) {
+  public @NonNull AccountNftAllowanceRequest owner(boolean value) {
     this.owner = value;
     return this;
   }

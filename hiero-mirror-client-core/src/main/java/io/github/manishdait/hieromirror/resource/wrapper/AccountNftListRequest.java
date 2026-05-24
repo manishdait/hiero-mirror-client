@@ -9,14 +9,14 @@ import io.github.manishdait.hieromirror.model.Page;
 import io.github.manishdait.hieromirror.query.AccountNftListQuery;
 import org.jspecify.annotations.NonNull;
 
-public interface AccountNftListQueryWrapper extends QueryWrapper<AccountNftListQuery, Page<Nft>> {
-  @NonNull AccountNftListQueryWrapper limit(int limit);
+public interface AccountNftListRequest extends QueryRequest<AccountNftListQuery, Page<Nft>> {
+  @NonNull AccountNftListRequest limit(int limit);
 
-  @NonNull AccountNftListQueryWrapper order(Order order);
+  @NonNull AccountNftListRequest order(Order order);
 
-  @NonNull AccountNftListQueryWrapper senderId(CriteriaParam<AccountId> spenderId);
+  @NonNull AccountNftListRequest senderId(CriteriaParam<AccountId> spenderId);
 
-  @NonNull AccountNftListQueryWrapper tokenId(CriteriaParam<TokenId> tokenId);
+  @NonNull AccountNftListRequest tokenId(CriteriaParam<TokenId> tokenId);
 
-  @NonNull AccountNftListQueryWrapper serialNumber(CriteriaParam<Long> tokenId);
+  @NonNull AccountNftListRequest serialNumber(CriteriaParam<Long> tokenId);
 }

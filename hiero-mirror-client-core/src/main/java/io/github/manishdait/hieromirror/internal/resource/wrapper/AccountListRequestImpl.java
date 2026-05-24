@@ -9,12 +9,12 @@ import io.github.manishdait.hieromirror.model.CriteriaParam;
 import io.github.manishdait.hieromirror.model.Order;
 import io.github.manishdait.hieromirror.model.Page;
 import io.github.manishdait.hieromirror.query.AccountListQuery;
-import io.github.manishdait.hieromirror.resource.wrapper.AccountListQueryWrapper;
+import io.github.manishdait.hieromirror.resource.wrapper.AccountListRequest;
 import java.time.Duration;
 import java.util.Objects;
 import org.jspecify.annotations.NonNull;
 
-public class AccountListQueryWrapperImpl implements AccountListQueryWrapper {
+public class AccountListRequestImpl implements AccountListRequest {
   private final MirrorNodeClient client;
 
   private Order order;
@@ -24,43 +24,43 @@ public class AccountListQueryWrapperImpl implements AccountListQueryWrapper {
   private CriteriaParam<AccountId> accountId;
   private CriteriaParam<Hbar> balance;
 
-  public AccountListQueryWrapperImpl(final @NonNull MirrorNodeClient client) {
+  public AccountListRequestImpl(final @NonNull MirrorNodeClient client) {
     Objects.requireNonNull(client, "client must not be null");
     this.client = client;
   }
 
   @Override
-  public @NonNull AccountListQueryWrapper order(Order order) {
+  public @NonNull AccountListRequest order(Order order) {
     this.order = order;
     return this;
   }
 
   @Override
-  public @NonNull AccountListQueryWrapper limit(int limit) {
+  public @NonNull AccountListRequest limit(int limit) {
     this.limit = limit;
     return this;
   }
 
   @Override
-  public @NonNull AccountListQueryWrapper includeBalance(boolean includeBalance) {
+  public @NonNull AccountListRequest includeBalance(boolean includeBalance) {
     this.includeBalance = includeBalance;
     return this;
   }
 
   @Override
-  public @NonNull AccountListQueryWrapper publicKey(PublicKey publicKey) {
+  public @NonNull AccountListRequest publicKey(PublicKey publicKey) {
     this.publicKey = publicKey;
     return this;
   }
 
   @Override
-  public @NonNull AccountListQueryWrapper accountId(CriteriaParam<AccountId> accountId) {
+  public @NonNull AccountListRequest accountId(CriteriaParam<AccountId> accountId) {
     this.accountId = accountId;
     return this;
   }
 
   @Override
-  public @NonNull AccountListQueryWrapper balance(CriteriaParam<Hbar> balance) {
+  public @NonNull AccountListRequest balance(CriteriaParam<Hbar> balance) {
     this.balance = balance;
     return this;
   }

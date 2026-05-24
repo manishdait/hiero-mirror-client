@@ -6,14 +6,14 @@ import io.github.manishdait.hieromirror.model.Order;
 import io.github.manishdait.hieromirror.model.Page;
 import io.github.manishdait.hieromirror.model.StakingReward;
 import io.github.manishdait.hieromirror.query.AccountStakingRewardQuery;
-import io.github.manishdait.hieromirror.resource.wrapper.AccountStakingRewardQueryWrapper;
+import io.github.manishdait.hieromirror.resource.wrapper.AccountStakingRewardRequest;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.List;
 import java.util.Objects;
 import org.jspecify.annotations.NonNull;
 
-public class AccountStakingRewardQueryWrapperImpl implements AccountStakingRewardQueryWrapper {
+public class AccountStakingRewardRequestImpl implements AccountStakingRewardRequest {
   private final MirrorNodeClient client;
   private final String idOrAliasOrEvmAddress;
 
@@ -21,7 +21,7 @@ public class AccountStakingRewardQueryWrapperImpl implements AccountStakingRewar
   private Integer limit;
   private List<CriteriaParam<Instant>> timestamp;
 
-  public AccountStakingRewardQueryWrapperImpl(
+  public AccountStakingRewardRequestImpl(
       final @NonNull MirrorNodeClient client, final @NonNull String idOrAliasOrEvmAddress) {
     Objects.requireNonNull(client, "client must not be null");
     Objects.requireNonNull(idOrAliasOrEvmAddress, "idOrAliasOrEvmAddress must not be null");
@@ -31,20 +31,19 @@ public class AccountStakingRewardQueryWrapperImpl implements AccountStakingRewar
   }
 
   @Override
-  public @NonNull AccountStakingRewardQueryWrapper limit(int limit) {
+  public @NonNull AccountStakingRewardRequest limit(int limit) {
     this.limit = limit;
     return this;
   }
 
   @Override
-  public @NonNull AccountStakingRewardQueryWrapper order(Order order) {
+  public @NonNull AccountStakingRewardRequest order(Order order) {
     this.order = order;
     return this;
   }
 
   @Override
-  public @NonNull AccountStakingRewardQueryWrapper timestamp(
-      List<CriteriaParam<Instant>> timestamp) {
+  public @NonNull AccountStakingRewardRequest timestamp(List<CriteriaParam<Instant>> timestamp) {
     this.timestamp = timestamp;
     return this;
   }

@@ -9,13 +9,13 @@ import io.github.manishdait.hieromirror.model.TokenAllowance;
 import io.github.manishdait.hieromirror.query.AccountTokenAllowanceQuery;
 import org.jspecify.annotations.NonNull;
 
-public interface AccountTokenAllowanceQueryWrapper
-    extends QueryWrapper<AccountTokenAllowanceQuery, Page<TokenAllowance>> {
-  @NonNull AccountTokenAllowanceQueryWrapper limit(int limit);
+public interface AccountTokenAllowanceRequest
+    extends QueryRequest<AccountTokenAllowanceQuery, Page<TokenAllowance>> {
+  @NonNull AccountTokenAllowanceRequest limit(int limit);
 
-  @NonNull AccountTokenAllowanceQueryWrapper order(Order order);
+  @NonNull AccountTokenAllowanceRequest order(Order order);
 
-  @NonNull AccountTokenAllowanceQueryWrapper spenderId(CriteriaParam<AccountId> spenderId);
+  @NonNull AccountTokenAllowanceRequest spenderId(CriteriaParam<AccountId> spenderId);
 
-  @NonNull AccountTokenAllowanceQueryWrapper tokenId(CriteriaParam<TokenId> tokenId);
+  @NonNull AccountTokenAllowanceRequest tokenId(CriteriaParam<TokenId> tokenId);
 }
