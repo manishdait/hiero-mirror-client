@@ -10,6 +10,7 @@ import io.github.manishdait.hieromirror.model.Order;
 import io.github.manishdait.hieromirror.model.Page;
 import io.github.manishdait.hieromirror.query.AccountListQuery;
 import io.github.manishdait.hieromirror.resource.wrapper.AccountListQueryWrapper;
+import java.time.Duration;
 import java.util.Objects;
 import org.jspecify.annotations.NonNull;
 
@@ -65,7 +66,7 @@ public class AccountListQueryWrapperImpl implements AccountListQueryWrapper {
   }
 
   @Override
-  public @NonNull Page<AccountInfo> call() {
+  public @NonNull AccountListQuery getQuery() {
     AccountListQuery query = new AccountListQuery();
     if (order != null) {
       query.setOrder(order);
@@ -91,6 +92,17 @@ public class AccountListQueryWrapperImpl implements AccountListQueryWrapper {
       query.setBalance(balance.getOperator(), balance.getValue());
     }
 
-    return query.execute(client);
+    return query;
+  }
+
+  @Override
+  public @NonNull Page<AccountInfo> call() {
+    return call(client.getTimeout());
+  }
+
+  @Override
+  public @NonNull Page<AccountInfo> call(@NonNull Duration timeout) {
+    AccountListQuery query = getQuery();
+    return query.execute(client, timeout);
   }
 }

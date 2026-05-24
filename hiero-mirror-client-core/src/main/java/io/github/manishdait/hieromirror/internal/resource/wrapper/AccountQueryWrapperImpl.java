@@ -6,9 +6,14 @@ import io.github.manishdait.hieromirror.model.CriteriaParam;
 import io.github.manishdait.hieromirror.model.Order;
 import io.github.manishdait.hieromirror.model.TransactionType;
 import io.github.manishdait.hieromirror.query.AccountQuery;
+import io.github.manishdait.hieromirror.resource.wrapper.AccountCryptoAllowanceQueryWrapper;
+import io.github.manishdait.hieromirror.resource.wrapper.AccountNftAllowanceQueryWrapper;
+import io.github.manishdait.hieromirror.resource.wrapper.AccountNftListQueryWrapper;
 import io.github.manishdait.hieromirror.resource.wrapper.AccountQueryWrapper;
+import io.github.manishdait.hieromirror.resource.wrapper.AccountStakingRewardQueryWrapper;
+import io.github.manishdait.hieromirror.resource.wrapper.AccountTokenAllowanceQueryWrapper;
+import java.time.Duration;
 import java.time.Instant;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -22,48 +27,74 @@ public class AccountQueryWrapperImpl implements AccountQueryWrapper {
   private Integer limit;
   private Boolean includeTransaction;
   private TransactionType transactionType;
-  private List<CriteriaParam<Instant>> timestamps = new ArrayList<>();
+  private List<CriteriaParam<Instant>> timestamp;
 
   public AccountQueryWrapperImpl(
       final @NonNull MirrorNodeClient client, final @NonNull String idOrAliasOrEvmAddress) {
     Objects.requireNonNull(client, "client must not be null");
     Objects.requireNonNull(idOrAliasOrEvmAddress, "idOrAliasOrEvmAddress must not be null");
+
     this.client = client;
     this.idOrAliasOrEvmAddress = idOrAliasOrEvmAddress;
   }
 
   @Override
-  public AccountQueryWrapper order(Order order) {
+  public @NonNull AccountQueryWrapper order(Order order) {
     this.order = order;
     return this;
   }
 
   @Override
-  public AccountQueryWrapper limit(Integer limit) {
+  public @NonNull AccountQueryWrapper limit(Integer limit) {
     this.limit = limit;
     return this;
   }
 
   @Override
-  public AccountQueryWrapper includeTransaction(Boolean includeTransaction) {
+  public @NonNull AccountQueryWrapper includeTransaction(Boolean includeTransaction) {
     this.includeTransaction = includeTransaction;
     return this;
   }
 
   @Override
-  public AccountQueryWrapper transactionType(TransactionType transactionType) {
+  public @NonNull AccountQueryWrapper transactionType(TransactionType transactionType) {
     this.transactionType = transactionType;
     return this;
   }
 
   @Override
-  public AccountQueryWrapper timestamps(List<CriteriaParam<Instant>> timestamps) {
-    this.timestamps = timestamps;
+  public @NonNull AccountQueryWrapper timestamp(List<CriteriaParam<Instant>> timestamp) {
+    this.timestamp = timestamp;
     return this;
   }
 
   @Override
-  public Optional<AccountInfo> call() {
+  public @NonNull AccountCryptoAllowanceQueryWrapper cryptoAllowance() {
+    return new AccountCryptoAllowanceQueryWrapperImpl(client, idOrAliasOrEvmAddress);
+  }
+
+  @Override
+  public @NonNull AccountTokenAllowanceQueryWrapper tokenAllowance() {
+    return new AccountTokenAllowanceQueryWrapperImpl(client, idOrAliasOrEvmAddress);
+  }
+
+  @Override
+  public @NonNull AccountNftAllowanceQueryWrapper nftAllowance() {
+    return new AccountNftAllowanceQueryWrapperImpl(client, idOrAliasOrEvmAddress);
+  }
+
+  @Override
+  public @NonNull AccountNftListQueryWrapper nftList() {
+    return new AccountNftListQueryWrapperImpl(client, idOrAliasOrEvmAddress);
+  }
+
+  @Override
+  public @NonNull AccountStakingRewardQueryWrapper stakingReward() {
+    return new AccountStakingRewardQueryWrapperImpl(client, idOrAliasOrEvmAddress);
+  }
+
+  @Override
+  public @NonNull AccountQuery getQuery() {
     AccountQuery query = new AccountQuery().setAlias(idOrAliasOrEvmAddress);
 
     if (order != null) {
@@ -82,10 +113,21 @@ public class AccountQueryWrapperImpl implements AccountQueryWrapper {
       query.setTransactionType(transactionType);
     }
 
-    if (timestamps != null) {
-      query.setTimestamps(timestamps);
+    if (timestamp != null) {
+      query.setTimestamps(timestamp);
     }
 
-    return query.execute(client);
+    return query;
+  }
+
+  @Override
+  public @NonNull Optional<AccountInfo> call() {
+    return call(client.getTimeout());
+  }
+
+  @Override
+  public @NonNull Optional<AccountInfo> call(@NonNull Duration timeout) {
+    AccountQuery query = getQuery();
+    return query.execute(client, timeout);
   }
 }

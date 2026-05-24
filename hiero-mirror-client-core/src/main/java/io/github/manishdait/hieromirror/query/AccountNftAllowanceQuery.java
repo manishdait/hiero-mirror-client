@@ -1,5 +1,6 @@
 package io.github.manishdait.hieromirror.query;
 
+import com.hedera.hashgraph.sdk.AccountId;
 import com.hedera.hashgraph.sdk.TokenId;
 import io.github.manishdait.hieromirror.MirrorNodeClient;
 import io.github.manishdait.hieromirror.internal.core.MirrorNodeJsonParser;
@@ -22,6 +23,7 @@ public class AccountNftAllowanceQuery
   private boolean owner = true;
 
   @Nullable private CriteriaParam<TokenId> tokenId;
+  @Nullable private CriteriaParam<AccountId> spenderId;
 
   /** Constructor. */
   public AccountNftAllowanceQuery() {}
@@ -130,6 +132,48 @@ public class AccountNftAllowanceQuery
     Objects.requireNonNull(tokenId, "tokenId must not be nul;");
 
     this.tokenId = new CriteriaParam<>(operator, tokenId);
+    return this;
+  }
+
+  /**
+   * Gets the spenderId criteria filter.
+   *
+   * @return the spenderId criteria filter
+   */
+  public @Nullable CriteriaParam<AccountId> getSpenderId() {
+    return spenderId;
+  }
+
+  /**
+   * Sets the spenderId criteria filter.
+   *
+   * @param operator the {@link QueryOperator} (e.g., {@link QueryOperator#EQ}, {@link
+   *     QueryOperator#GTE})
+   * @param spenderId the string representation of accountId
+   * @return {@code this}
+   */
+  public AccountNftAllowanceQuery setSpenderId(
+      final @NonNull QueryOperator operator, final @NonNull String spenderId) {
+    Objects.requireNonNull(operator, "operator must not be null");
+    Objects.requireNonNull(spenderId, "spenderId must not be nul;");
+
+    return setSpenderId(operator, AccountId.fromString(spenderId));
+  }
+
+  /**
+   * Sets the spenderId criteria filter.
+   *
+   * @param operator the {@link QueryOperator} (e.g., {@link QueryOperator#EQ}, {@link
+   *     QueryOperator#GTE})
+   * @param spenderId the target {@link AccountId} instance
+   * @return {@code this}
+   */
+  public AccountNftAllowanceQuery setSpenderId(
+      final @NonNull QueryOperator operator, final @NonNull AccountId spenderId) {
+    Objects.requireNonNull(operator, "operator must not be null");
+    Objects.requireNonNull(spenderId, "spenderId must not be nul;");
+
+    this.spenderId = new CriteriaParam<>(operator, spenderId);
     return this;
   }
 
