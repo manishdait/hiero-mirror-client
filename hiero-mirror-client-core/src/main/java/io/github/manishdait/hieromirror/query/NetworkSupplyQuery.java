@@ -36,7 +36,7 @@ public final class NetworkSupplyQuery extends Query<Optional<NetworkSupply>> {
    * @param timestamps list of timestamp criterial params
    * @return {@code this}
    */
-  public NetworkSupplyQuery setTimestamp(final @NonNull List<CriteriaParam<Instant>> timestamps) {
+  public NetworkSupplyQuery setTimestamps(final @NonNull List<CriteriaParam<Instant>> timestamps) {
     Objects.requireNonNull(timestamps, "timestamps must not be null");
     this.timestamps = new ArrayList<>(timestamps);
     return this;
