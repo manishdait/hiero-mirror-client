@@ -42,7 +42,7 @@ public class BlockListQuery extends Query<Page<Block>> {
    * @param order the {@link Order} sequence to enforce
    * @return {@code this}
    */
-  public BlockListQuery getOrder(final @NonNull Order order) {
+  public BlockListQuery setOrder(final @NonNull Order order) {
     Objects.requireNonNull(order, "order must not be null");
     this.order = order;
     return this;
