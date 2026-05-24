@@ -15,7 +15,7 @@ import org.jspecify.annotations.Nullable;
 import tools.jackson.databind.JsonNode;
 
 /** Query to get token by id. */
-public class TokenQuery extends Query<Optional<TokenInfo>> {
+public final class TokenQuery extends Query<Optional<TokenInfo>> {
   private TokenId tokenId;
 
   @Nullable private CriteriaParam<Instant> timestamp;

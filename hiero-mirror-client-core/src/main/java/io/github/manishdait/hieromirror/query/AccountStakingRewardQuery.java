@@ -16,7 +16,7 @@ import org.jspecify.annotations.NonNull;
 import tools.jackson.databind.JsonNode;
 
 /** Query to get past staking reward payouts for an account. */
-public class AccountStakingRewardQuery
+public final class AccountStakingRewardQuery
     extends AccountIdentifierQuery<AccountStakingRewardQuery, Page<StakingReward>> {
   private Order order = Order.DESC;
   private int limit = 25;

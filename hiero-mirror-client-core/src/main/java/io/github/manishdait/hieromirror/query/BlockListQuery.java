@@ -17,7 +17,7 @@ import org.jspecify.annotations.Nullable;
 import tools.jackson.databind.JsonNode;
 
 /** Query to get list of blocks on the network. */
-public class BlockListQuery extends Query<Page<Block>> {
+public final class BlockListQuery extends Query<Page<Block>> {
   private Order order = Order.DESC;
   private int limit = 25;
 

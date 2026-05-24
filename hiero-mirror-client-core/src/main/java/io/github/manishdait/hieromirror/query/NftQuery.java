@@ -12,7 +12,7 @@ import org.jspecify.annotations.NonNull;
 import tools.jackson.databind.JsonNode;
 
 /** Query to get information for a non-fungible token */
-public class NftQuery extends Query<Optional<Nft>> {
+public final class NftQuery extends Query<Optional<Nft>> {
   private NftId nftId;
 
   /** Constructor. */

@@ -20,7 +20,7 @@ import org.jspecify.annotations.Nullable;
 import tools.jackson.databind.JsonNode;
 
 /** Query to get a list of tokens on the network. */
-public class TokenListQuery extends Query<Page<Token>> {
+public final class TokenListQuery extends Query<Page<Token>> {
   private Order order = Order.ASC;
   private int limit = 25;
 

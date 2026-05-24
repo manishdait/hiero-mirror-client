@@ -15,7 +15,7 @@ import tools.jackson.databind.JsonNode;
  * Query to get a single topic message for the given topic id and either sequence number or
  * consensusTimestamp.
  */
-public class TopicMessageQuery extends Query<Optional<TopicMessage>> {
+public final class TopicMessageQuery extends Query<Optional<TopicMessage>> {
   private TopicId topicId;
   @Nullable private Long sequenceNumber;
   @Nullable private String timestamp;

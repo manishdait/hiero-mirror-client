@@ -21,7 +21,7 @@ import org.jspecify.annotations.Nullable;
 import tools.jackson.databind.JsonNode;
 
 /** Query to get lists of transactions on the network. */
-public class TransactionListQuery extends Query<Page<Transaction>> {
+public final class TransactionListQuery extends Query<Page<Transaction>> {
   private Order order = Order.DESC;
   private int limit = 25;
 

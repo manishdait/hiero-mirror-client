@@ -15,7 +15,7 @@ import org.jspecify.annotations.NonNull;
 import tools.jackson.databind.JsonNode;
 
 /** Query to get the network supply. */
-public class NetworkSupplyQuery extends Query<Optional<NetworkSupply>> {
+public final class NetworkSupplyQuery extends Query<Optional<NetworkSupply>> {
   private List<CriteriaParam<Instant>> timestamps = new ArrayList<>();
 
   /** Constructor. */

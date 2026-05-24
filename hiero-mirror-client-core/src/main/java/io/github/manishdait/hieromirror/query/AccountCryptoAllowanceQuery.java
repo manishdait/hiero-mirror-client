@@ -15,7 +15,7 @@ import org.jspecify.annotations.Nullable;
 import tools.jackson.databind.JsonNode;
 
 /** Query to get crypto allowances for an account. */
-public class AccountCryptoAllowanceQuery
+public final class AccountCryptoAllowanceQuery
     extends AccountIdentifierQuery<AccountCryptoAllowanceQuery, Page<CryptoAllowance>> {
   private Order order = Order.DESC;
   private int limit = 25;

@@ -16,7 +16,7 @@ import org.jspecify.annotations.NonNull;
 import tools.jackson.databind.JsonNode;
 
 /** Query to get the network fees. */
-public class NetworkFeeQuery extends Query<Optional<NetworkFee>> {
+public final class NetworkFeeQuery extends Query<Optional<NetworkFee>> {
   private Order order = Order.ASC;
   private List<CriteriaParam<Instant>> timestamps = new ArrayList<>();
 

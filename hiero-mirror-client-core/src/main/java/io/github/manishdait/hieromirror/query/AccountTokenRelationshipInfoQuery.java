@@ -15,7 +15,7 @@ import org.jspecify.annotations.Nullable;
 import tools.jackson.databind.JsonNode;
 
 /** Query to get token relationships info for an account. */
-public class AccountTokenRelationshipInfoQuery
+public final class AccountTokenRelationshipInfoQuery
     extends AccountIdentifierQuery<AccountTokenRelationshipInfoQuery, Page<TokenRelationShip>> {
   private Order order = Order.ASC;
   private int limit = 25;

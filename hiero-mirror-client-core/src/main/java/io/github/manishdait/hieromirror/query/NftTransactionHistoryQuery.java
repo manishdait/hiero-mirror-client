@@ -18,7 +18,7 @@ import org.jspecify.annotations.NonNull;
 import tools.jackson.databind.JsonNode;
 
 /** Query to get nfts transction history. */
-public class NftTransactionHistoryQuery extends Query<Page<NftTransaction>> {
+public final class NftTransactionHistoryQuery extends Query<Page<NftTransaction>> {
   private NftId nftId;
 
   private Order order = Order.DESC;

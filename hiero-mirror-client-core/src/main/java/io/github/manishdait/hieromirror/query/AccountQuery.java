@@ -18,7 +18,8 @@ import org.jspecify.annotations.Nullable;
 import tools.jackson.databind.JsonNode;
 
 /** Query to get an account by its alias, id, or evm address. */
-public class AccountQuery extends AccountIdentifierQuery<AccountQuery, Optional<AccountInfo>> {
+public final class AccountQuery
+    extends AccountIdentifierQuery<AccountQuery, Optional<AccountInfo>> {
   private Order order = Order.DESC;
   private int limit = 25;
   private boolean includeTransaction = true;

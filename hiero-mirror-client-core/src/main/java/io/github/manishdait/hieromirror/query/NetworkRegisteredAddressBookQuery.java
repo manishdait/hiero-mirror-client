@@ -15,7 +15,7 @@ import org.jspecify.annotations.Nullable;
 import tools.jackson.databind.JsonNode;
 
 /** Query to get the list of registered nodes. */
-public class NetworkRegisteredAddressBookQuery extends Query<Page<RegisteredNode>> {
+public final class NetworkRegisteredAddressBookQuery extends Query<Page<RegisteredNode>> {
   private Order order = Order.ASC;
   private int limit = 25;
 

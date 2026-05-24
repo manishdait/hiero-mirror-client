@@ -15,7 +15,7 @@ import org.jspecify.annotations.NonNull;
 import tools.jackson.databind.JsonNode;
 
 /** Query to get the network exchange rate to estimate costs. */
-public class NetworkExchangeRateQuery extends Query<Optional<ExchangeRate>> {
+public final class NetworkExchangeRateQuery extends Query<Optional<ExchangeRate>> {
   private List<CriteriaParam<Instant>> timestamps = new ArrayList<>();
 
   /** Constructor. */

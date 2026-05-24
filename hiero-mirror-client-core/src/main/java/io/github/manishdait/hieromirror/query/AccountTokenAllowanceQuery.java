@@ -16,7 +16,7 @@ import org.jspecify.annotations.Nullable;
 import tools.jackson.databind.JsonNode;
 
 /** Query to get fungible token allowances for an account. */
-public class AccountTokenAllowanceQuery
+public final class AccountTokenAllowanceQuery
     extends AccountIdentifierQuery<AccountTokenAllowanceQuery, Page<TokenAllowance>> {
   private Order order = Order.ASC;
   private int limit = 25;

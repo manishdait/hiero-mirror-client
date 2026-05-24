@@ -11,7 +11,7 @@ import org.jspecify.annotations.NonNull;
 import tools.jackson.databind.JsonNode;
 
 /** Query to get schedule information based on the given schedule id. */
-public class ScheduleQuery extends Query<Optional<ScheduleInfo>> {
+public final class ScheduleQuery extends Query<Optional<ScheduleInfo>> {
   private ScheduleId scheduleId;
 
   /** Constructor. */

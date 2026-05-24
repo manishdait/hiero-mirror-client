@@ -15,7 +15,7 @@ import org.jspecify.annotations.Nullable;
 import tools.jackson.databind.JsonNode;
 
 /** Query to get the network address book nodes. */
-public class NetworkAddressBookQuery extends Query<Page<Node>> {
+public final class NetworkAddressBookQuery extends Query<Page<Node>> {
   private Order order = Order.ASC;
   private int limit = 25;
 

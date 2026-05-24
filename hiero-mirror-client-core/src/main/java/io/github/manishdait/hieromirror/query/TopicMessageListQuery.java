@@ -11,7 +11,7 @@ import org.jspecify.annotations.NonNull;
 import tools.jackson.databind.JsonNode;
 
 /** Query to get list of topic messages for the given topic id. */
-public class TopicMessageListQuery extends Query<Page<TopicMessage>> {
+public final class TopicMessageListQuery extends Query<Page<TopicMessage>> {
   private TopicId topicId;
 
   /** Constructor. */

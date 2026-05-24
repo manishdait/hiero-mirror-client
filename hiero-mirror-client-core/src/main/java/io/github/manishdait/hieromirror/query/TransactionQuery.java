@@ -12,7 +12,7 @@ import org.jspecify.annotations.Nullable;
 import tools.jackson.databind.JsonNode;
 
 /** Query to get transaction by transactionId. */
-public class TransactionQuery extends Query<Optional<Transaction>> {
+public final class TransactionQuery extends Query<Optional<Transaction>> {
   private String transactionId;
 
   @Nullable private Integer nonce;

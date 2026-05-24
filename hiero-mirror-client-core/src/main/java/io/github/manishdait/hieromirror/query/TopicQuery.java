@@ -11,7 +11,7 @@ import org.jspecify.annotations.NonNull;
 import tools.jackson.databind.JsonNode;
 
 /** Query to get the topic details for the given topic ID. */
-public class TopicQuery extends Query<Optional<Topic>> {
+public final class TopicQuery extends Query<Optional<Topic>> {
   private TopicId topicId;
 
   /** Constructor. */

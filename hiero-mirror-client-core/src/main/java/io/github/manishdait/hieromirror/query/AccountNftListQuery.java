@@ -16,7 +16,8 @@ import org.jspecify.annotations.Nullable;
 import tools.jackson.databind.JsonNode;
 
 /** Query to get nfts for an account. */
-public class AccountNftListQuery extends AccountIdentifierQuery<AccountNftListQuery, Page<Nft>> {
+public final class AccountNftListQuery
+    extends AccountIdentifierQuery<AccountNftListQuery, Page<Nft>> {
   private Order order = Order.DESC;
   private int limit = 25;
 

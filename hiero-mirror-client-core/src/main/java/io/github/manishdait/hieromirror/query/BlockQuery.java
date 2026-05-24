@@ -10,7 +10,7 @@ import org.jspecify.annotations.NonNull;
 import tools.jackson.databind.JsonNode;
 
 /** Query to get block by hash or number. */
-public class BlockQuery extends Query<Optional<Block>> {
+public final class BlockQuery extends Query<Optional<Block>> {
   private String identifier;
 
   /** Constructor. */

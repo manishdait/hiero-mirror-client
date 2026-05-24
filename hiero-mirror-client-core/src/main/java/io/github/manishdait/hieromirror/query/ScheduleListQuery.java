@@ -16,7 +16,7 @@ import org.jspecify.annotations.Nullable;
 import tools.jackson.databind.JsonNode;
 
 /** Query to list schedules entities. */
-public class ScheduleListQuery extends Query<Page<ScheduleInfo>> {
+public final class ScheduleListQuery extends Query<Page<ScheduleInfo>> {
   private Order order = Order.ASC;
   private int limit = 25;
 

@@ -16,7 +16,7 @@ import org.jspecify.annotations.Nullable;
 import tools.jackson.databind.JsonNode;
 
 /** Query to get a list of non-fungible tokens */
-public class TokenNftListQuery extends Query<Page<Nft>> {
+public final class TokenNftListQuery extends Query<Page<Nft>> {
   private TokenId tokenId;
 
   private Order order = Order.DESC;

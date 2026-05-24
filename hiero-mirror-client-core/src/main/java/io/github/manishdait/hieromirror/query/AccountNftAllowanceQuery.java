@@ -16,7 +16,7 @@ import org.jspecify.annotations.Nullable;
 import tools.jackson.databind.JsonNode;
 
 /** Query to get non-fungible token allowances for an account. */
-public class AccountNftAllowanceQuery
+public final class AccountNftAllowanceQuery
     extends AccountIdentifierQuery<AccountNftAllowanceQuery, Page<NftAllowance>> {
   private Order order = Order.ASC;
   private int limit = 25;
