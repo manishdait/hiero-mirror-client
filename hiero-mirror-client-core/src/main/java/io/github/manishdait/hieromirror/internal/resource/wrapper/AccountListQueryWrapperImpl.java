@@ -29,43 +29,43 @@ public class AccountListQueryWrapperImpl implements AccountListQueryWrapper {
   }
 
   @Override
-  public AccountListQueryWrapper order(Order order) {
+  public @NonNull AccountListQueryWrapper order(Order order) {
     this.order = order;
     return this;
   }
 
   @Override
-  public AccountListQueryWrapper limit(int limit) {
+  public @NonNull AccountListQueryWrapper limit(int limit) {
     this.limit = limit;
     return this;
   }
 
   @Override
-  public AccountListQueryWrapper includeBalance(boolean includeBalance) {
+  public @NonNull AccountListQueryWrapper includeBalance(boolean includeBalance) {
     this.includeBalance = includeBalance;
     return this;
   }
 
   @Override
-  public AccountListQueryWrapper publicKey(PublicKey publicKey) {
+  public @NonNull AccountListQueryWrapper publicKey(PublicKey publicKey) {
     this.publicKey = publicKey;
     return this;
   }
 
   @Override
-  public AccountListQueryWrapper accountId(CriteriaParam<AccountId> accountId) {
+  public @NonNull AccountListQueryWrapper accountId(CriteriaParam<AccountId> accountId) {
     this.accountId = accountId;
     return this;
   }
 
   @Override
-  public AccountListQueryWrapper balance(CriteriaParam<Hbar> balance) {
+  public @NonNull AccountListQueryWrapper balance(CriteriaParam<Hbar> balance) {
     this.balance = balance;
     return this;
   }
 
   @Override
-  public Page<AccountInfo> call() {
+  public @NonNull Page<AccountInfo> call() {
     AccountListQuery query = new AccountListQuery();
     if (order != null) {
       query.setOrder(order);

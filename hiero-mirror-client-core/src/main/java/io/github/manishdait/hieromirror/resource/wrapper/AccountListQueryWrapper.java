@@ -7,19 +7,21 @@ import io.github.manishdait.hieromirror.model.AccountInfo;
 import io.github.manishdait.hieromirror.model.CriteriaParam;
 import io.github.manishdait.hieromirror.model.Order;
 import io.github.manishdait.hieromirror.model.Page;
+import org.jspecify.annotations.NonNull;
 
+/** Wrapper for AccountListQuery. */
 public interface AccountListQueryWrapper {
-  AccountListQueryWrapper order(Order order);
+  @NonNull AccountListQueryWrapper order(Order order);
 
-  AccountListQueryWrapper limit(int limit);
+  @NonNull AccountListQueryWrapper limit(int limit);
 
-  AccountListQueryWrapper includeBalance(boolean includeBalance);
+  @NonNull AccountListQueryWrapper includeBalance(boolean includeBalance);
 
-  AccountListQueryWrapper publicKey(PublicKey publicKey);
+  @NonNull AccountListQueryWrapper publicKey(PublicKey publicKey);
 
-  AccountListQueryWrapper accountId(CriteriaParam<AccountId> accountId);
+  @NonNull AccountListQueryWrapper accountId(CriteriaParam<AccountId> accountId);
 
-  AccountListQueryWrapper balance(CriteriaParam<Hbar> balance);
+  @NonNull AccountListQueryWrapper balance(CriteriaParam<Hbar> balance);
 
-  Page<AccountInfo> call();
+  @NonNull Page<AccountInfo> call();
 }

@@ -18,12 +18,13 @@ public class AccountResourceImpl implements AccountResource {
   }
 
   @Override
-  public AccountListQueryWrapper findAll() {
+  public @NonNull AccountListQueryWrapper findAll() {
     return new AccountListQueryWrapperImpl(client);
   }
 
   @Override
-  public AccountQueryWrapper findByIdOrAliasOrEvmAddress(String idOrAliasOrEvmAddress) {
+  public @NonNull AccountQueryWrapper findByIdOrAliasOrEvmAddress(
+      @NonNull String idOrAliasOrEvmAddress) {
     return new AccountQueryWrapperImpl(client, idOrAliasOrEvmAddress);
   }
 }

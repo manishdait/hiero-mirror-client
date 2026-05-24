@@ -11,15 +11,30 @@ import java.util.Optional;
 import org.jspecify.annotations.NonNull;
 import tools.jackson.databind.JsonNode;
 
+/** Query to get information for a non-fungible token */
 public class NftQuery extends Query<Optional<Nft>> {
   private NftId nftId;
 
+  /** Constructor. */
   public NftQuery() {}
 
+  /**
+   * Gets the nftId of the token to fetch.
+   *
+   * @return the nftId
+   */
   public NftId getNftId() {
     return nftId;
   }
 
+  /**
+   * Sets the nftId form tokenId and serialNumber.
+   *
+   * @param tokenId the string representation of tokenId
+   * @param serial the serial number of nft
+   * @return {@code this}
+   * @throws IllegalArgumentException id serial is negative
+   */
   public NftQuery setNftId(final @NonNull String tokenId, final long serial) {
     Objects.requireNonNull(tokenId, "tokenId must not be null");
     if (serial < 0) {
@@ -29,6 +44,14 @@ public class NftQuery extends Query<Optional<Nft>> {
     return setNftId(TokenId.fromString(tokenId), serial);
   }
 
+  /**
+   * Sets the nftId form tokenId and serialNumber.
+   *
+   * @param tokenId the target {@link TokenId} instance
+   * @param serial the serial number of nft
+   * @return {@code this}
+   * @throws IllegalArgumentException id serial is negative
+   */
   public NftQuery setNftId(final @NonNull TokenId tokenId, final long serial) {
     Objects.requireNonNull(tokenId, "tokenId must not be null");
     if (serial < 0) {
@@ -38,11 +61,23 @@ public class NftQuery extends Query<Optional<Nft>> {
     return setNftId(new NftId(tokenId, serial));
   }
 
+  /**
+   * Sets the nftId.
+   *
+   * @param nftId the string representation of nftId
+   * @return {@code this}
+   */
   public NftQuery setNftId(final @NonNull String nftId) {
     Objects.requireNonNull(nftId, "nftId must not be null");
     return setNftId(NftId.fromString(nftId));
   }
 
+  /**
+   * Sets the nftId.
+   *
+   * @param nftId the target {@link NftId} instance
+   * @return {@code this}
+   */
   public NftQuery setNftId(final @NonNull NftId nftId) {
     Objects.requireNonNull(nftId, "nftId must not be null");
     this.nftId = nftId;
