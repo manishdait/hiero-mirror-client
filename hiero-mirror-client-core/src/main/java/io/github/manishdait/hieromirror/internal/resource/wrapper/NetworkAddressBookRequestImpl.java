@@ -15,6 +15,11 @@ import org.jspecify.annotations.NonNull;
 public class NetworkAddressBookRequestImpl implements NetworkAddressBookRequest {
   private final MirrorNodeClient client;
 
+  private Order order;
+  private Integer limit;
+  private CriteriaParam<FileId> fileId;
+  private CriteriaParam<Long> nodeId;
+
   public NetworkAddressBookRequestImpl(final @NonNull MirrorNodeClient client) {
     Objects.requireNonNull(client, "client must not be null");
     this.client = client;
@@ -22,36 +27,59 @@ public class NetworkAddressBookRequestImpl implements NetworkAddressBookRequest 
 
   @Override
   public @NonNull NetworkAddressBookRequest limit(int limit) {
-    return null;
+    this.limit = limit;
+    return this;
   }
 
   @Override
   public @NonNull NetworkAddressBookRequest order(Order order) {
-    return null;
+    this.order = order;
+    return this;
   }
 
   @Override
   public @NonNull NetworkAddressBookRequest nodeId(CriteriaParam<Long> nodeId) {
-    return null;
+    this.nodeId = nodeId;
+    return this;
   }
 
   @Override
   public @NonNull NetworkAddressBookRequest fileId(CriteriaParam<FileId> fileId) {
-    return null;
+    this.fileId = fileId;
+    return this;
   }
 
   @Override
   public @NonNull NetworkAddressBookQuery getQuery() {
-    return null;
+    NetworkAddressBookQuery query = new NetworkAddressBookQuery();
+
+    if (limit != null) {
+      query.setLimit(limit);
+    }
+
+    if (order != null) {
+      query.setOrder(order);
+    }
+
+    if (fileId != null) {
+      query.setFileId(fileId.getOperator(), fileId.getValue());
+    }
+
+    if (nodeId != null) {
+      query.setNodeId(nodeId.getOperator(), nodeId.getValue());
+    }
+
+    return query;
   }
 
   @Override
   public @NonNull Page<Node> call() {
-    return null;
+    return call(client.getTimeout());
   }
 
   @Override
   public @NonNull Page<Node> call(@NonNull Duration timeout) {
-    return null;
+    NetworkAddressBookQuery query = getQuery();
+    return query.execute(client, timeout);
   }
 }

@@ -1,5 +1,6 @@
 package io.github.manishdait.hieromirror.resource;
 
+import io.github.manishdait.hieromirror.resource.wrapper.NetworkAddressBookRequest;
 import io.github.manishdait.hieromirror.resource.wrapper.NetworkExchangeRateRequest;
 import io.github.manishdait.hieromirror.resource.wrapper.NetworkFeeRequest;
 import io.github.manishdait.hieromirror.resource.wrapper.NetworkStakingInfoRequest;
@@ -11,4 +12,6 @@ public interface NetworkResource {
   @NonNull NetworkFeeRequest fees();
 
   @NonNull NetworkStakingInfoRequest stakingInfo();
+
+  @NonNull NetworkAddressBookRequest addressBook();
 }
