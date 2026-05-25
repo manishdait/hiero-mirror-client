@@ -63,7 +63,7 @@ public final class ScheduleListQuery extends Query<Page<ScheduleInfo>> {
    * @return {@code this}
    * @throws IllegalArgumentException if limit is outside range [1, 100]
    */
-  public ScheduleListQuery getLimit(final int limit) {
+  public ScheduleListQuery setLimit(final int limit) {
     if (limit < 0 || limit > 100) {
       throw new IllegalArgumentException("limit must be greater than 0 and less than 100");
     }

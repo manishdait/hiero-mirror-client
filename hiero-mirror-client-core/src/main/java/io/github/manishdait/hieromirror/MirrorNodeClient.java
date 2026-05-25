@@ -3,9 +3,11 @@ package io.github.manishdait.hieromirror;
 import io.github.manishdait.hieromirror.internal.resource.AccountResourceImpl;
 import io.github.manishdait.hieromirror.internal.resource.BlockResourceImpl;
 import io.github.manishdait.hieromirror.internal.resource.NetworkResourceImpl;
+import io.github.manishdait.hieromirror.internal.resource.ScheduleResourceImpl;
 import io.github.manishdait.hieromirror.resource.AccountResource;
 import io.github.manishdait.hieromirror.resource.BlockResource;
 import io.github.manishdait.hieromirror.resource.NetworkResource;
+import io.github.manishdait.hieromirror.resource.ScheduleResource;
 import java.time.Duration;
 import java.util.Objects;
 import org.jspecify.annotations.NonNull;
@@ -49,5 +51,10 @@ public class MirrorNodeClient {
   /** Access point for executing network related queries. */
   public NetworkResource networks() {
     return new NetworkResourceImpl(this);
+  }
+
+  /** Access point for executing schedule related queries. */
+  public ScheduleResource schedules() {
+    return new ScheduleResourceImpl(this);
   }
 }
