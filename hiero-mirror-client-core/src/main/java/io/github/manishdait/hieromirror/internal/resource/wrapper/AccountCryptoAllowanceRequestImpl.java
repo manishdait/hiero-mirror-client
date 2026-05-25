@@ -48,7 +48,7 @@ public class AccountCryptoAllowanceRequestImpl implements AccountCryptoAllowance
   }
 
   @Override
-  public @NonNull AccountCryptoAllowanceQuery getQuery() {
+  public @NonNull AccountCryptoAllowanceQuery buildQuery() {
     AccountCryptoAllowanceQuery query =
         new AccountCryptoAllowanceQuery().setAlias(idOrAliasOrEvmAddress);
 
@@ -74,7 +74,7 @@ public class AccountCryptoAllowanceRequestImpl implements AccountCryptoAllowance
 
   @Override
   public @NonNull Page<CryptoAllowance> call(@NonNull Duration timeout) {
-    AccountCryptoAllowanceQuery query = getQuery();
+    AccountCryptoAllowanceQuery query = buildQuery();
     return query.execute(client, timeout);
   }
 }

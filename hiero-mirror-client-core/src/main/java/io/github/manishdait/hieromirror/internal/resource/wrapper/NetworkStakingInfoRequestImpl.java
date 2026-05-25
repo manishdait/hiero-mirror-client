@@ -18,7 +18,7 @@ public class NetworkStakingInfoRequestImpl implements NetworkStakingInfoRequest 
   }
 
   @Override
-  public @NonNull NetworkStakingInfoQuery getQuery() {
+  public @NonNull NetworkStakingInfoQuery buildQuery() {
     return new NetworkStakingInfoQuery();
   }
 
@@ -29,7 +29,7 @@ public class NetworkStakingInfoRequestImpl implements NetworkStakingInfoRequest 
 
   @Override
   public @NonNull Optional<StakeInfo> call(@NonNull Duration timeout) {
-    NetworkStakingInfoQuery query = getQuery();
+    NetworkStakingInfoQuery query = buildQuery();
     return query.execute(client, timeout);
   }
 }

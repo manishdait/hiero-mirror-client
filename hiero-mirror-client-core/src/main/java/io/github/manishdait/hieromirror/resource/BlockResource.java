@@ -6,9 +6,9 @@ import org.jspecify.annotations.NonNull;
 
 /** Access point for executing block related queries. */
 public interface BlockResource {
-  /** Prepares a query wrapper to fetch list of block. */
+  /** Prepares a query request to fetch list of block. */
   @NonNull BlockListRequest findAll();
 
-  /** Prepares a query wrapper to fetch single block based on the hash or blockNumber. */
+  /** Prepares a query request to fetch single block based on the hash or blockNumber. */
   @NonNull BlockRequest findByHashOrNumber(final @NonNull String hashOrNumber);
 }

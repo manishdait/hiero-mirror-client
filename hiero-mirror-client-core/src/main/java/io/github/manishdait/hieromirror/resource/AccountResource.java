@@ -10,16 +10,16 @@ import org.jspecify.annotations.NonNull;
 /** Access point for executing account related queries. */
 public interface AccountResource {
 
-  /** Prepares a query wrapper to fetch list of accounts. */
+  /** Prepares a query request to fetch list of accounts. */
   @NonNull AccountListRequest findAll();
 
-  /** Prepares a query wrapper to fetch a single account by AccountId. */
+  /** Prepares a query request to fetch a single account by AccountId. */
   default @NonNull AccountRequest findByIdOrAliasOrEvmAddress(final @NonNull AccountId accountId) {
     Objects.requireNonNull(accountId, "accountId must not be null");
     return findByIdOrAliasOrEvmAddress(accountId.toString());
   }
 
-  /** Prepares a query wrapper to fetch a single account by EvmAddress. */
+  /** Prepares a query request to fetch a single account by EvmAddress. */
   default @NonNull AccountRequest findByIdOrAliasOrEvmAddress(
       final @NonNull EvmAddress evmAddress) {
     Objects.requireNonNull(evmAddress, "evmAddress must not be null");
@@ -27,7 +27,7 @@ public interface AccountResource {
   }
 
   /**
-   * Prepares a query wrapper to fetch a single account by raw string AccountId or EvmAddress or
+   * Prepares a query request to fetch a single account by raw string AccountId or EvmAddress or
    * Alias.
    */
   @NonNull AccountRequest findByIdOrAliasOrEvmAddress(final @NonNull String idOrAliasOrEvmAddress);

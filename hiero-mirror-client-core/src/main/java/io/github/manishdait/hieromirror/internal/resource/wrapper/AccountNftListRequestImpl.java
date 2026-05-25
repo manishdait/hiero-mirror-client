@@ -63,7 +63,7 @@ public class AccountNftListRequestImpl implements AccountNftListRequest {
   }
 
   @Override
-  public @NonNull AccountNftListQuery getQuery() {
+  public @NonNull AccountNftListQuery buildQuery() {
     AccountNftListQuery query = new AccountNftListQuery().setAlias(idOrAliasOrEvmAddress);
 
     if (limit != null) {
@@ -96,7 +96,7 @@ public class AccountNftListRequestImpl implements AccountNftListRequest {
 
   @Override
   public @NonNull Page<Nft> call(@NonNull Duration timeout) {
-    AccountNftListQuery query = getQuery();
+    AccountNftListQuery query = buildQuery();
     return query.execute(client, timeout);
   }
 }

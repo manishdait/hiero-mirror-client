@@ -37,7 +37,7 @@ public class NetworkFeeRequestImpl implements NetworkFeeRequest {
   }
 
   @Override
-  public @NonNull NetworkFeeQuery getQuery() {
+  public @NonNull NetworkFeeQuery buildQuery() {
     NetworkFeeQuery query = new NetworkFeeQuery();
 
     if (order != null) {
@@ -58,7 +58,7 @@ public class NetworkFeeRequestImpl implements NetworkFeeRequest {
 
   @Override
   public @NonNull Optional<NetworkFee> call(@NonNull Duration timeout) {
-    NetworkFeeQuery query = getQuery();
+    NetworkFeeQuery query = buildQuery();
     return query.execute(client, timeout);
   }
 }

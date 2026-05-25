@@ -50,7 +50,7 @@ public class NetworkAddressBookRequestImpl implements NetworkAddressBookRequest 
   }
 
   @Override
-  public @NonNull NetworkAddressBookQuery getQuery() {
+  public @NonNull NetworkAddressBookQuery buildQuery() {
     NetworkAddressBookQuery query = new NetworkAddressBookQuery();
 
     if (limit != null) {
@@ -79,7 +79,7 @@ public class NetworkAddressBookRequestImpl implements NetworkAddressBookRequest 
 
   @Override
   public @NonNull Page<Node> call(@NonNull Duration timeout) {
-    NetworkAddressBookQuery query = getQuery();
+    NetworkAddressBookQuery query = buildQuery();
     return query.execute(client, timeout);
   }
 }

@@ -29,7 +29,7 @@ public class NetworkExchangeRateRequestImpl implements NetworkExchangeRateReques
   }
 
   @Override
-  public @NonNull NetworkExchangeRateQuery getQuery() {
+  public @NonNull NetworkExchangeRateQuery buildQuery() {
     NetworkExchangeRateQuery query = new NetworkExchangeRateQuery();
 
     if (timestamp != null) {
@@ -46,7 +46,7 @@ public class NetworkExchangeRateRequestImpl implements NetworkExchangeRateReques
 
   @Override
   public @NonNull Optional<ExchangeRate> call(@NonNull Duration timeout) {
-    NetworkExchangeRateQuery query = getQuery();
+    NetworkExchangeRateQuery query = buildQuery();
     return query.execute(client, timeout);
   }
 }

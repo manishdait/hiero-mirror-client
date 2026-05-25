@@ -49,7 +49,7 @@ public class AccountStakingRewardRequestImpl implements AccountStakingRewardRequ
   }
 
   @Override
-  public @NonNull AccountStakingRewardQuery getQuery() {
+  public @NonNull AccountStakingRewardQuery buildQuery() {
     AccountStakingRewardQuery query =
         new AccountStakingRewardQuery().setAlias(idOrAliasOrEvmAddress);
 
@@ -75,7 +75,7 @@ public class AccountStakingRewardRequestImpl implements AccountStakingRewardRequ
 
   @Override
   public @NonNull Page<StakingReward> call(@NonNull Duration timeout) {
-    AccountStakingRewardQuery query = getQuery();
+    AccountStakingRewardQuery query = buildQuery();
     return query.execute(client, timeout);
   }
 }

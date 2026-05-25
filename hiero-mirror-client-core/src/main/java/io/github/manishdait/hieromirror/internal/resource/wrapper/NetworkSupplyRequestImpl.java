@@ -29,7 +29,7 @@ public class NetworkSupplyRequestImpl implements NetworkSupplyRequest {
   }
 
   @Override
-  public @NonNull NetworkSupplyQuery getQuery() {
+  public @NonNull NetworkSupplyQuery buildQuery() {
     NetworkSupplyQuery query = new NetworkSupplyQuery();
 
     if (timestamp != null) {
@@ -46,7 +46,7 @@ public class NetworkSupplyRequestImpl implements NetworkSupplyRequest {
 
   @Override
   public @NonNull Optional<NetworkSupply> call(@NonNull Duration timeout) {
-    NetworkSupplyQuery query = getQuery();
+    NetworkSupplyQuery query = buildQuery();
     return query.execute(client, timeout);
   }
 }

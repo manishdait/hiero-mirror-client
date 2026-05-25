@@ -56,7 +56,7 @@ public class AccountTokenAllowanceRequestImpl implements AccountTokenAllowanceRe
   }
 
   @Override
-  public @NonNull AccountTokenAllowanceQuery getQuery() {
+  public @NonNull AccountTokenAllowanceQuery buildQuery() {
     AccountTokenAllowanceQuery query =
         new AccountTokenAllowanceQuery().setAlias(idOrAliasOrEvmAddress);
 
@@ -86,7 +86,7 @@ public class AccountTokenAllowanceRequestImpl implements AccountTokenAllowanceRe
 
   @Override
   public @NonNull Page<TokenAllowance> call(@NonNull Duration timeout) {
-    AccountTokenAllowanceQuery query = getQuery();
+    AccountTokenAllowanceQuery query = buildQuery();
     return query.execute(client, timeout);
   }
 }

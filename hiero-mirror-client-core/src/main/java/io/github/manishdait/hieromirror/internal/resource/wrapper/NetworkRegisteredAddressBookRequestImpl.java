@@ -51,7 +51,7 @@ public class NetworkRegisteredAddressBookRequestImpl
   }
 
   @Override
-  public @NonNull NetworkRegisteredAddressBookQuery getQuery() {
+  public @NonNull NetworkRegisteredAddressBookQuery buildQuery() {
     NetworkRegisteredAddressBookQuery query = new NetworkRegisteredAddressBookQuery();
 
     if (limit != null) {
@@ -80,7 +80,7 @@ public class NetworkRegisteredAddressBookRequestImpl
 
   @Override
   public @NonNull Page<RegisteredNode> call(@NonNull Duration timeout) {
-    NetworkRegisteredAddressBookQuery query = getQuery();
+    NetworkRegisteredAddressBookQuery query = buildQuery();
     return query.execute(client, timeout);
   }
 }

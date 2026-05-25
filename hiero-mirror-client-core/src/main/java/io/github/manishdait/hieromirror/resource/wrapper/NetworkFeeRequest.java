@@ -9,8 +9,21 @@ import java.util.List;
 import java.util.Optional;
 import org.jspecify.annotations.NonNull;
 
+/** Request Wrapper for NetworkFeeQuery. */
 public interface NetworkFeeRequest extends QueryRequest<NetworkFeeQuery, Optional<NetworkFee>> {
+  /**
+   * Sets the sorting order for the query items.
+   *
+   * @param order the {@link Order} sequence to enforce
+   * @return {@code this}
+   */
   @NonNull NetworkFeeRequest order(Order order);
 
+  /**
+   * Sets the timestamp criteria filter.
+   *
+   * @param timestamp list of timestamp criterial params
+   * @return {@code this}
+   */
   @NonNull NetworkFeeRequest timestamp(List<CriteriaParam<Instant>> timestamp);
 }

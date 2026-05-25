@@ -36,14 +36,17 @@ public class MirrorNodeClient {
     this.timeout = Objects.requireNonNull(timeout, "timeout must not be null");
   }
 
+  /** Access point for executing account related queries. */
   public AccountResource accounts() {
     return new AccountResourceImpl(this);
   }
 
+  /** Access point for executing block related queries. */
   public BlockResource blocks() {
     return new BlockResourceImpl(this);
   }
 
+  /** Access point for executing network related queries. */
   public NetworkResource networks() {
     return new NetworkResourceImpl(this);
   }

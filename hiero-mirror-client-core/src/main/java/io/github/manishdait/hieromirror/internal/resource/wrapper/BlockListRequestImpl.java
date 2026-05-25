@@ -51,7 +51,7 @@ public class BlockListRequestImpl implements BlockListRequest {
   }
 
   @Override
-  public @NonNull BlockListQuery getQuery() {
+  public @NonNull BlockListQuery buildQuery() {
     BlockListQuery query = new BlockListQuery();
 
     if (order != null) {
@@ -80,7 +80,7 @@ public class BlockListRequestImpl implements BlockListRequest {
 
   @Override
   public @NonNull Page<Block> call(@NonNull Duration timeout) {
-    BlockListQuery query = getQuery();
+    BlockListQuery query = buildQuery();
     return query.execute(client, timeout);
   }
 }

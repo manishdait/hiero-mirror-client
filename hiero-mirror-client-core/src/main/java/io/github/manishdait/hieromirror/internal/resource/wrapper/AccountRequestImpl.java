@@ -45,13 +45,13 @@ public class AccountRequestImpl implements AccountRequest {
   }
 
   @Override
-  public @NonNull AccountRequest limit(Integer limit) {
+  public @NonNull AccountRequest limit(int limit) {
     this.limit = limit;
     return this;
   }
 
   @Override
-  public @NonNull AccountRequest includeTransaction(Boolean includeTransaction) {
+  public @NonNull AccountRequest includeTransaction(boolean includeTransaction) {
     this.includeTransaction = includeTransaction;
     return this;
   }
@@ -94,7 +94,7 @@ public class AccountRequestImpl implements AccountRequest {
   }
 
   @Override
-  public @NonNull AccountQuery getQuery() {
+  public @NonNull AccountQuery buildQuery() {
     AccountQuery query = new AccountQuery().setAlias(idOrAliasOrEvmAddress);
 
     if (order != null) {
@@ -127,7 +127,7 @@ public class AccountRequestImpl implements AccountRequest {
 
   @Override
   public @NonNull Optional<AccountInfo> call(@NonNull Duration timeout) {
-    AccountQuery query = getQuery();
+    AccountQuery query = buildQuery();
     return query.execute(client, timeout);
   }
 }

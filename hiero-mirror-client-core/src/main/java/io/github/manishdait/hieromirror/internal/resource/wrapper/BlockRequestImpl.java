@@ -23,7 +23,7 @@ public class BlockRequestImpl implements BlockRequest {
   }
 
   @Override
-  public @NonNull BlockQuery getQuery() {
+  public @NonNull BlockQuery buildQuery() {
     return new BlockQuery().setHash(hashOrNumber);
   }
 
@@ -34,7 +34,7 @@ public class BlockRequestImpl implements BlockRequest {
 
   @Override
   public @NonNull Optional<Block> call(@NonNull Duration timeout) {
-    BlockQuery query = getQuery();
+    BlockQuery query = buildQuery();
     return query.execute(client, timeout);
   }
 }

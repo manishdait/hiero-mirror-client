@@ -8,7 +8,14 @@ import java.util.List;
 import java.util.Optional;
 import org.jspecify.annotations.NonNull;
 
+/** Request Wrapper for NetworkSupplyQuery. */
 public interface NetworkSupplyRequest
     extends QueryRequest<NetworkSupplyQuery, Optional<NetworkSupply>> {
+  /**
+   * Sets the timestamp criteria filter.
+   *
+   * @param timestamp list of timestamp criterial params
+   * @return {@code this}
+   */
   @NonNull NetworkSupplyRequest timestamp(List<CriteriaParam<Instant>> timestamp);
 }

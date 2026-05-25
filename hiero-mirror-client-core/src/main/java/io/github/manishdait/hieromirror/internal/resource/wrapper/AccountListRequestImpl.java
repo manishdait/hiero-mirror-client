@@ -66,7 +66,7 @@ public class AccountListRequestImpl implements AccountListRequest {
   }
 
   @Override
-  public @NonNull AccountListQuery getQuery() {
+  public @NonNull AccountListQuery buildQuery() {
     AccountListQuery query = new AccountListQuery();
     if (order != null) {
       query.setOrder(order);
@@ -102,7 +102,7 @@ public class AccountListRequestImpl implements AccountListRequest {
 
   @Override
   public @NonNull Page<AccountInfo> call(@NonNull Duration timeout) {
-    AccountListQuery query = getQuery();
+    AccountListQuery query = buildQuery();
     return query.execute(client, timeout);
   }
 }

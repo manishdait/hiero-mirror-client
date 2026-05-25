@@ -45,8 +45,8 @@ public class AccountNftAllowanceRequestImpl implements AccountNftAllowanceReques
   }
 
   @Override
-  public @NonNull AccountNftAllowanceRequest accountId(CriteriaParam<AccountId> accountId) {
-    this.accountId = accountId;
+  public @NonNull AccountNftAllowanceRequest spenderId(CriteriaParam<AccountId> spenderId) {
+    this.accountId = spenderId;
     return this;
   }
 
@@ -63,7 +63,7 @@ public class AccountNftAllowanceRequestImpl implements AccountNftAllowanceReques
   }
 
   @Override
-  public @NonNull AccountNftAllowanceQuery getQuery() {
+  public @NonNull AccountNftAllowanceQuery buildQuery() {
     AccountNftAllowanceQuery query = new AccountNftAllowanceQuery().setAlias(idOrAliasOrEvmAddress);
 
     if (limit != null) {
@@ -96,7 +96,7 @@ public class AccountNftAllowanceRequestImpl implements AccountNftAllowanceReques
 
   @Override
   public @NonNull Page<NftAllowance> call(@NonNull Duration timeout) {
-    AccountNftAllowanceQuery query = getQuery();
+    AccountNftAllowanceQuery query = buildQuery();
     return query.execute(client, timeout);
   }
 }
