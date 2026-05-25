@@ -13,9 +13,8 @@ import io.github.manishdait.hieromirror.resource.wrapper.NetworkExchangeRateRequ
 import io.github.manishdait.hieromirror.resource.wrapper.NetworkFeeRequest;
 import io.github.manishdait.hieromirror.resource.wrapper.NetworkRegisteredAddressBookRequest;
 import io.github.manishdait.hieromirror.resource.wrapper.NetworkStakingInfoRequest;
-import java.util.Objects;
-
 import io.github.manishdait.hieromirror.resource.wrapper.NetworkSupplyRequest;
+import java.util.Objects;
 import org.jspecify.annotations.NonNull;
 
 public class NetworkResourceImpl implements NetworkResource {

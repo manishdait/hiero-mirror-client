@@ -8,12 +8,12 @@ import io.github.manishdait.hieromirror.model.RegisteredNode;
 import io.github.manishdait.hieromirror.model.RegisteredServiceType;
 import io.github.manishdait.hieromirror.query.NetworkRegisteredAddressBookQuery;
 import io.github.manishdait.hieromirror.resource.wrapper.NetworkRegisteredAddressBookRequest;
-import org.jspecify.annotations.NonNull;
-
 import java.time.Duration;
 import java.util.Objects;
+import org.jspecify.annotations.NonNull;
 
-public class NetworkRegisteredAddressBookRequestImpl implements NetworkRegisteredAddressBookRequest {
+public class NetworkRegisteredAddressBookRequestImpl
+    implements NetworkRegisteredAddressBookRequest {
   private final MirrorNodeClient client;
 
   private Integer limit;
