@@ -25,6 +25,7 @@ public class AccountResourceImpl implements AccountResource {
   @Override
   public @NonNull AccountRequest findByIdOrAliasOrEvmAddress(
       @NonNull String idOrAliasOrEvmAddress) {
+    Objects.requireNonNull(idOrAliasOrEvmAddress, "idOrAliasOrEvmAddress must not be null");
     return new AccountRequestImpl(client, idOrAliasOrEvmAddress);
   }
 }
