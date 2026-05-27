@@ -5,12 +5,14 @@ import io.github.manishdait.hieromirror.internal.resource.BlockResourceImpl;
 import io.github.manishdait.hieromirror.internal.resource.NetworkResourceImpl;
 import io.github.manishdait.hieromirror.internal.resource.ScheduleResourceImpl;
 import io.github.manishdait.hieromirror.internal.resource.TokenResourceImpl;
+import io.github.manishdait.hieromirror.internal.resource.TopicResourceImpl;
 import io.github.manishdait.hieromirror.internal.resource.TransactionResourceImpl;
 import io.github.manishdait.hieromirror.resource.AccountResource;
 import io.github.manishdait.hieromirror.resource.BlockResource;
 import io.github.manishdait.hieromirror.resource.NetworkResource;
 import io.github.manishdait.hieromirror.resource.ScheduleResource;
 import io.github.manishdait.hieromirror.resource.TokenResource;
+import io.github.manishdait.hieromirror.resource.TopicResource;
 import io.github.manishdait.hieromirror.resource.TransactionResource;
 import java.time.Duration;
 import java.util.Objects;
@@ -27,7 +29,6 @@ public class MirrorNodeClient {
 
   public MirrorNodeClient(final @NonNull String baseUrl) {
     this.baseUrl = Objects.requireNonNull(baseUrl, "baseUrl must not be null");
-    ;
   }
 
   public @NonNull String getBaseUrl() {
@@ -70,5 +71,10 @@ public class MirrorNodeClient {
   /** Access point for executing transaction related queries. */
   public TransactionResource transactions() {
     return new TransactionResourceImpl(this);
+  }
+
+  /** Access point for executing topic related queries. */
+  public TopicResource topics() {
+    return new TopicResourceImpl(this);
   }
 }

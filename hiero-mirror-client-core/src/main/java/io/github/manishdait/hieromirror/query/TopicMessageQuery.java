@@ -5,6 +5,7 @@ import io.github.manishdait.hieromirror.MirrorNodeClient;
 import io.github.manishdait.hieromirror.internal.core.MirrorNodeJsonParser;
 import io.github.manishdait.hieromirror.internal.core.MirrorNodeRequest;
 import io.github.manishdait.hieromirror.model.TopicMessage;
+import java.time.Instant;
 import java.util.Objects;
 import java.util.Optional;
 import org.jspecify.annotations.NonNull;
@@ -71,8 +72,21 @@ public final class TopicMessageQuery extends Query<Optional<TopicMessage>> {
    * @return {@code this}
    */
   public TopicMessageQuery setTimestamp(final @Nullable String timestamp) {
+    Objects.requireNonNull(timestamp, "timestamp must not be null");
     this.timestamp = timestamp;
     return this;
+  }
+
+  /**
+   * Sets the timestamp.
+   *
+   * @param timestamp the timestamp
+   * @return {@code this}
+   */
+  public TopicMessageQuery setTimestamp(final @Nullable Instant timestamp) {
+    Objects.requireNonNull(timestamp, "timestamp must not be null");
+    String str = timestamp.getEpochSecond() + "." + timestamp.getNano();
+    return setTimestamp(str);
   }
 
   /**
