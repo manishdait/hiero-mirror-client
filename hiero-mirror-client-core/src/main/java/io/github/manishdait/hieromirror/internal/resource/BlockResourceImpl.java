@@ -13,7 +13,7 @@ public class BlockResourceImpl implements BlockResource {
   private final MirrorNodeClient client;
 
   public BlockResourceImpl(final @NonNull MirrorNodeClient client) {
-    Objects.requireNonNull(client, "client must nor be null");
+    Objects.requireNonNull(client, "client must not be null");
     this.client = client;
   }
 

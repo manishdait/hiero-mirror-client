@@ -14,7 +14,7 @@ public class ScheduleResourceImpl implements ScheduleResource {
   private final MirrorNodeClient client;
 
   public ScheduleResourceImpl(final @NonNull MirrorNodeClient client) {
-    Objects.requireNonNull(client, "client must nor be null");
+    Objects.requireNonNull(client, "client must not be null");
     this.client = client;
   }
 

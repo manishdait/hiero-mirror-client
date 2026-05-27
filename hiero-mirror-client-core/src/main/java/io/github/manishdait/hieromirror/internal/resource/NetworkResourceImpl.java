@@ -21,7 +21,7 @@ public class NetworkResourceImpl implements NetworkResource {
   private final MirrorNodeClient client;
 
   public NetworkResourceImpl(final @NonNull MirrorNodeClient client) {
-    Objects.requireNonNull(client, "client must nor be null");
+    Objects.requireNonNull(client, "client must not be null");
     this.client = client;
   }
 

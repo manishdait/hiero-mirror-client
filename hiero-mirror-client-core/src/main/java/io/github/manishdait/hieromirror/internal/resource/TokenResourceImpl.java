@@ -21,7 +21,7 @@ public class TokenResourceImpl implements TokenResource {
   private final MirrorNodeClient client;
 
   public TokenResourceImpl(final @NonNull MirrorNodeClient client) {
-    Objects.requireNonNull(client, "client must nor be null");
+    Objects.requireNonNull(client, "client must not be null");
     this.client = client;
   }
 
