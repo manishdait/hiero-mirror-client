@@ -55,7 +55,11 @@ jobs:
           hieroVersion: v0.73.0
 
       - name: Build & Stage
-        run: ./mvnw -B -Ppublication deploy
+        env:
+          OPERATOR_ID: ${{ steps.solo.outputs.accountId }}
+          OPERATOR_KEY: ${{ steps.solo.outputs.privateKey }}
+          NETWORK: "solo"
+        run: ./mvnw -B -Ppublication deploy -DNETWORK="${NETWORK}" -DOPERATOR_KEY="${OPERATOR_KEY}" -DOPERATOR_ID="${OPERATOR_ID}"
 
       - name: Publish with JReleaser
         run: ./mvnw -B -Ppublication jreleaser:full-release -N

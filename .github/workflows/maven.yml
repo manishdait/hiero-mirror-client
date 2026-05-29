@@ -35,6 +35,6 @@ jobs:
         env:
             OPERATOR_ID: ${{ steps.solo.outputs.accountId }}
             OPERATOR_KEY: ${{ steps.solo.outputs.privateKey }}
-            NETWORK: solo
+            NETWORK: "solo"
         run: |
-          ./mvnw -B verify
+          ./mvnw -B verify -DNETWORK="${NETWORK}" -DOPERATOR_KEY="${OPERATOR_KEY}" -DOPERATOR_ID="${OPERATOR_ID}"

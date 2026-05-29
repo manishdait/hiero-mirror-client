@@ -26,6 +26,8 @@ public class AccountQueryIntegrationTest {
 
     var accountId = receipt.accountId;
 
+    Thread.sleep(10000);
+
     var result = new AccountQuery().setAccountId(accountId).execute(mirrorNodeClient);
     env.close();
 
