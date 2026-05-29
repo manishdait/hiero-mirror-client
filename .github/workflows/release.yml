@@ -33,14 +33,32 @@ jobs:
           echo "pinentry-mode loopback" >> ~/.gnupg/gpg.conf
           echo "use-agent" >> ~/.gnupg/gpg.conf
 
-      - name: Set Maven version
-        run: ./mvnw -B versions:set versions:commit -DnewVersion=${GITHUB_REF_NAME#v}
+      - name: Verify POM Version
+        run: |
+          POM_VERSION=$(./mvnw help:evaluate -Dexpression=project.version -q -DforceStdout)
+          TAG_VERSION="${GITHUB_REF_NAME#v}"
+
+          if [ "$POM_VERSION" != "$TAG_VERSION" ]; then
+            echo "Error: Version mismatch, POM version ($POM_VERSION) does not match tag ($TAG_VERSION)"
+            exit 1
+          fi
+
+          echo "Success: POM version matches the tag"
+
+      - name: Prepare Hiero Solo
+        id: solo
+        uses: hiero-ledger/hiero-solo-action@328bc84c3b00a990a151418144fd682a4eb76ea6 # v0.19.0
+        with:
+          installMirrorNode: true
+          soloVersion: v0.69.0
+          mirrorNodeVersion: v0.153.0
+          hieroVersion: v0.73.0
 
       - name: Build & Stage
         run: ./mvnw -B -Ppublication deploy
 
       - name: Publish with JReleaser
-        run: ./mvnw -B -Ppublication jreleaser:full-release --non-recursive
+        run: ./mvnw -B -Ppublication jreleaser:full-release -N
         env:
           JRELEASER_GPG_SECRET_KEY: ${{ secrets.GPG_KEY_CONTENTS }}
           JRELEASER_GPG_PASSPHRASE: ${{ secrets.GPG_PASSPHRASE }}

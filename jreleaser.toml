@@ -9,6 +9,7 @@ active = "RELEASE"
 url = "https://central.sonatype.com/api/v1/publisher"
 stagingRepositories = ["target/staging-deploy"]
 applyMavenCentralRules = true
+skipPublicationCheck = true
 
 retryDelay = 20
 maxRetries = 400
@@ -17,10 +18,13 @@ maxRetries = 400
 owner = "manishdait"
 name = "hiero-mirror-client"
 skipTag = true
-skipRelease = true
+skipRelease = false
+overwrite = true
 
 [release.github.update]
 enabled = true
+sections = ["ASSETS", "BODY"]
 
 [release.github.changelog]
-enabled = false
+enabled = true
+formatted = "ALWAYS"
