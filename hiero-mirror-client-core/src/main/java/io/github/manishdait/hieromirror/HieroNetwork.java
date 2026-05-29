@@ -6,7 +6,7 @@ public enum HieroNetwork {
   TESTNET("https://testnet.mirrornode.hedera.com"),
   MAINNET("https://mainnet.mirrornode.hedera.com"),
   PREVIEWNET("https://previewnet.mirrornode.hedera.com"),
-  SOLO("https://localhost:50112");
+  SOLO("http://localhost:5551");
 
   private final String url;
 
