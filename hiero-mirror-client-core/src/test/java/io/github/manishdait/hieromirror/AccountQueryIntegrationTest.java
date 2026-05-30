@@ -1,9 +1,7 @@
-package io.github.manishdait.hieromirror.integration;
+package io.github.manishdait.hieromirror;
 
 import com.hedera.hashgraph.sdk.AccountCreateTransaction;
 import com.hedera.hashgraph.sdk.PrivateKey;
-import io.github.manishdait.hieromirror.HieroNetwork;
-import io.github.manishdait.hieromirror.MirrorNodeClient;
 import io.github.manishdait.hieromirror.query.AccountQuery;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -16,7 +14,7 @@ public class AccountQueryIntegrationTest {
     var key = PrivateKey.generateECDSA();
     var memo = "testAccount";
 
-    var env = new IntegrationTestEnv();
+    var env = new HieroTestEnv();
     var receipt =
         new AccountCreateTransaction()
             .setKeyWithoutAlias(key)

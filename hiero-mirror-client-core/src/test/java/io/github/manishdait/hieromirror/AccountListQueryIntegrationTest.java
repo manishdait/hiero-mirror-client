@@ -1,7 +1,5 @@
-package io.github.manishdait.hieromirror.integration;
+package io.github.manishdait.hieromirror;
 
-import io.github.manishdait.hieromirror.HieroNetwork;
-import io.github.manishdait.hieromirror.MirrorNodeClient;
 import io.github.manishdait.hieromirror.model.QueryOperator;
 import io.github.manishdait.hieromirror.query.AccountListQuery;
 import org.assertj.core.api.Assertions;

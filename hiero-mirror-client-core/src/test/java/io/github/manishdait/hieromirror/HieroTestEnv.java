@@ -1,4 +1,4 @@
-package io.github.manishdait.hieromirror.integration;
+package io.github.manishdait.hieromirror;
 
 import com.hedera.hashgraph.sdk.AccountId;
 import com.hedera.hashgraph.sdk.Client;
@@ -7,7 +7,7 @@ import com.hedera.hashgraph.sdk.PublicKey;
 import java.util.List;
 import java.util.Map;
 
-public class IntegrationTestEnv {
+public class HieroTestEnv {
   static final String CONSENSUS_NODE_ENDPOINT = "127.0.0.1:50211";
   public static final String MIRROR_NODE_GRPC_ENDPOINT = "127.0.0.1:5600";
   static final AccountId CONSENSUS_NODE_ACCOUNT_ID = new AccountId(0, 0, 3);
@@ -16,7 +16,7 @@ public class IntegrationTestEnv {
   public PublicKey operatorKey;
   public AccountId operatorId;
 
-  public IntegrationTestEnv() {
+  public HieroTestEnv() {
     var networkType = System.getProperty("NETWORK");
 
     if (networkType == null) {
