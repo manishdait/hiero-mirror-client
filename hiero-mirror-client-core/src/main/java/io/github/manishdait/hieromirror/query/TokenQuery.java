@@ -85,7 +85,7 @@ public final class TokenQuery extends Query<Optional<TokenInfo>> {
     Objects.requireNonNull(client, "client must not be null");
 
     if (tokenId == null) {
-      throw new IllegalStateException("tokenId must set before executing query");
+      throw new IllegalStateException("tokenId must be set before executing query");
     }
 
     MirrorNodeRequest.Builder request =
