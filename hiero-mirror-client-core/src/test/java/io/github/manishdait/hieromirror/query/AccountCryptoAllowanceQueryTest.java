@@ -1,6 +1,7 @@
 package io.github.manishdait.hieromirror.query;
 
 import com.hedera.hashgraph.sdk.AccountId;
+import com.hedera.hashgraph.sdk.PrivateKey;
 import io.github.manishdait.hieromirror.MirrorNodeClient;
 import io.github.manishdait.hieromirror.model.CriteriaParam;
 import io.github.manishdait.hieromirror.model.Order;
@@ -25,6 +26,32 @@ public class AccountCryptoAllowanceQueryTest {
     Assertions.assertThat(query.getOrder()).isEqualTo(Order.DESC);
     Assertions.assertThat(query.getLimit()).isEqualTo(25);
     Assertions.assertThat(query.getSpenderId()).isNull();
+  }
+
+  @Test
+  void shouldSetAccountId() {
+    var query = new AccountCryptoAllowanceQuery().setAccountId(ID);
+
+    Assertions.assertThat(query).isNotNull();
+    Assertions.assertThat(query.getIdOrAliasOrEvmAddress()).isEqualTo(ID.toString());
+  }
+
+  @Test
+  void shouldSetEvmAddress() {
+    var evmAddress = PrivateKey.generateECDSA().getPublicKey().toEvmAddress();
+    var query = new AccountCryptoAllowanceQuery().setEvmAddress(evmAddress);
+
+    Assertions.assertThat(query).isNotNull();
+    Assertions.assertThat(query.getIdOrAliasOrEvmAddress()).isEqualTo(evmAddress.toString());
+  }
+
+  @Test
+  void shouldSetAlias() {
+    var alias = "HIQQEXWKW53RKN4W6XXC4Q232SYNZ3SZANVZZSUME5B5PRGXL663UAQA";
+    var query = new AccountCryptoAllowanceQuery().setAlias(alias);
+
+    Assertions.assertThat(query).isNotNull();
+    Assertions.assertThat(query.getIdOrAliasOrEvmAddress()).isEqualTo(alias);
   }
 
   @Test
